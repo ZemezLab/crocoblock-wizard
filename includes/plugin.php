@@ -25,6 +25,7 @@ class Plugin {
 	public static $instance = null;
 
 	public $dashboard;
+	public $modules;
 
 	/**
 	 * Instance.
@@ -75,6 +76,7 @@ class Plugin {
 	 */
 	public function init_components() {
 		$this->dashboard = new Dashboard();
+		$this->modules   = new Modules_Manager();
 	}
 
 	/**

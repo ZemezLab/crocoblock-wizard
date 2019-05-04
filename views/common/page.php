@@ -4,5 +4,7 @@
  */
 ?>
 <div class="wrap">
-	<div id="crocoblock_wizard"></div>
+	<div id="crocoblock_wizard">
+		<cbw-main></cbw-main>
+	</div>
 </div>

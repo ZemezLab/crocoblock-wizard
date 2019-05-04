@@ -1,0 +1,49 @@
+.cbw-choice {
+	border-radius: 4px;
+	border: 1px solid $color__border-in-panel;
+	padding: 20px;
+	font-size: 15px;
+	line-height: 23px;
+	cursor: pointer;
+	display: flex;
+	transition: all 150ms linear;
+	&--selected {
+		background: $color__bg-canvas;
+		border-color: $color__bg-canvas;
+		box-shadow: 0px 4px 4px rgba( 35, 40, 45, 0.24 );
+	}
+	&__label {
+		color: $color__heading;
+		font-weight: 500;
+	}
+	&__mark {
+		margin: 1px 10px 0 0;
+		border: 2px solid $color__text;
+		box-sizing: border-box;
+		width: 18px;
+		height: 18px;
+		flex: 0 0 18px;
+		border-radius: 100%;
+		background: #fff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 150ms linear;
+		.cbw-choice--selected & {
+			border: 2px solid $color__accent;
+		}
+		&:before {
+			content: '';
+			width: 10px;
+			height: 10px;
+			border-radius: 100%;
+			transition: all 150ms linear;
+			.cbw-choice--selected & {
+				background: $color__accent;
+			}
+		}
+	}
+	+ .cbw-choice {
+		margin-top: 20px;
+	}
+}
