@@ -8,6 +8,8 @@ import Popup from './components/layout/popup';
 import ListTable from './components/layout/list-table';
 import ListTableItem from './components/layout/list-table-item';
 import ListTableHeading from './components/layout/list-table-heading';
+import Tabs from './components/layout/tabs';
+import TabsPanel from './components/layout/tabs-panel';
 
 import Input from './components/form/input';
 import Textarea from './components/form/textarea';
@@ -28,6 +30,8 @@ Vue.component( Popup.name, Popup );
 Vue.component( ListTable.name, ListTable );
 Vue.component( ListTableItem.name, ListTableItem );
 Vue.component( ListTableHeading.name, ListTableHeading );
+Vue.component( Tabs.name, Tabs );
+Vue.component( TabsPanel.name, TabsPanel );
 
 Vue.component( Input.name, Input );
 Vue.component( Textarea.name, Textarea );

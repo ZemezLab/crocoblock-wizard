@@ -2,8 +2,6 @@
 
 	"use strict";
 
-	Vue.config.devtools = true;
-
 	Vue.component( 'cbw-choices', {
 		template: '#cbw_choices',
 		props: {

@@ -134,6 +134,8 @@ if ( ! class_exists( 'CX_Vue_UI' ) ) {
 				'list-table',
 				'list-table-heading',
 				'list-table-item',
+				'tabs',
+				'tabs-panel',
 
 				// Form elements
 				'input',

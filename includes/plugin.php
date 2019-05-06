@@ -26,6 +26,8 @@ class Plugin {
 
 	public $dashboard;
 	public $modules;
+	public $skins;
+	public $settings;
 
 	/**
 	 * Instance.
@@ -75,8 +77,11 @@ class Plugin {
 	 * @return void
 	 */
 	public function init_components() {
-		$this->dashboard = new Dashboard();
-		$this->modules   = new Modules_Manager();
+		$this->dashboard     = new Dashboard();
+		$this->modules       = new Modules_Manager();
+		$this->settings      = new Settings();
+		$this->skins         = new Skins();
+		$this->files_manager = new Files_Manager();
 	}
 
 	/**
