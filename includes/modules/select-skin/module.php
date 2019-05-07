@@ -96,6 +96,76 @@ class Module extends Module_Base {
 
 		$result = $uploader->upload();
 
+		if ( ! $result ) {
+			wp_send_json_error( array(
+				'message' => $uploader->get_error(),
+			) );
+		}
+
+		$info = array();
+
+		ob_start();
+		include $result['settings.json'];
+		$settings = ob_get_clean();
+		$settings = json_decode( $settings, true );
+
+		if ( empty( $settings ) || ! isset( $settings['name'] ) || ! isset( $settings['slug'] )  || ! isset( $settings['settings'] ) ) {
+
+			$uploader->delete_skin();
+
+			wp_send_json_error( array(
+				'message' => __( 'Incorrect settings file format', 'crocoblock-wizard' ),
+			) );
+		}
+
+		wp_send_json_success( array(
+			'name'      => $settings['name'],
+			'slug'      => $settings['slug'],
+			'demo'      => isset( $settings['demo'] ) ? $settings['demo'] : false,
+			'thumbnail' => isset( $settings['thumbnail'] ) ? $settings['thumbnail'] : false,
+		) );
+
+	}
+
+	/**
+	 * Delete uploaded skin
+	 *
+	 * @return [type] [description]
+	 */
+	public function delete_uploaded_skin() {
+		$slug = isset( $_REQUEST['slug'] ) ? esc_attr( $_REQUEST['slug'] ) : '';
+		Plugin::instance()->files_manager->delete_dir( $slug );
+	}
+
+	/**
+	 * Prepare passed skin for installation
+	 *
+	 * @return [type] [description]
+	 */
+	public function prepare_skin_installation() {
+
+		$is_uploaded = isset( $_REQUEST['is_uploaded'] ) ? $_REQUEST['is_uploaded'] : false;
+		$is_uploaded = filter_var( $is_uploaded, FILTER_VALIDATE_BOOLEAN );
+		$skin        = ! empty( $_REQUEST['slug'] ) ? esc_attr( $_REQUEST['slug'] ) : false;
+
+		if ( ! $skin ) {
+			wp_send_json_error( array(
+				'message' => __( 'Skin slug not found in request', 'crocoblock-wizard' ),
+			) );
+		}
+
+		Plugin::instance()->storage->store( 'install_skin', $skin );
+
+		wp_send_json_success( array(
+			'redirect' => add_query_arg(
+				array(
+					'skin'        => $skin,
+					'is_uploaded' => $is_uploaded
+				),
+				Plugin::instance()->dashboard->page_url( 'install-plugins' )
+			)
+		) );
+
 	}
 
 }

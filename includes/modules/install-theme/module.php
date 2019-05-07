@@ -12,8 +12,8 @@ if ( ! defined( 'WPINC' ) ) {
 class Module extends Module_Base {
 
 	public $settings = array(
-		'parent_data' => 'crocoblock-wizard-installed-parent',
-		'child_data'  => 'crocoblock-wizard-installed-child',
+		'parent_data' => 'installed_parent',
+		'child_data'  => 'installed_child',
 	);
 
 	/**
@@ -96,7 +96,7 @@ class Module extends Module_Base {
 	 */
 	public function install_parent() {
 
-		$install_data = get_transient( Plugin::instance()->dashboard->page_slug );
+		$install_data = Plugin::instance()->storage->get( 'theme_data' );
 		$theme_url    = isset( $install_data['link'] ) ? $install_data['link'] : false;
 		$theme_slug   = isset( $install_data['id'] ) ? $install_data['id'] : false;
 
@@ -123,7 +123,7 @@ class Module extends Module_Base {
 			) );
 		}
 
-		update_option( $this->settings['parent_data'], array(
+		Plugin::instance()->storage->store( $this->settings['parent_data'], array(
 			'TextDomain' => $theme_slug,
 			'ThemeName'  => ucfirst( $theme_slug ),
 		) );
@@ -159,8 +159,8 @@ class Module extends Module_Base {
 	 */
 	public function get_child() {
 
-		$theme_data   = get_option( $this->settings['parent_data'] );
-		$install_data = get_transient( Plugin::instance()->dashboard->page_slug );
+		$theme_data   = Plugin::instance()->storage->get( $this->settings['parent_data'] );
+		$install_data = Plugin::instance()->storage->get( 'theme_data' );
 		$id           = isset( $install_data['id'] ) ? esc_attr( $install_data['id'] ) : false;
 		$slug         = isset( $theme_data['TextDomain'] ) ? esc_attr( $theme_data['TextDomain'] ) : false;
 		$name         = isset( $theme_data['ThemeName'] ) ? esc_attr( $theme_data['ThemeName'] ) : false;
@@ -227,11 +227,11 @@ class Module extends Module_Base {
 			) );
 		}
 
-		$parent_data = get_option( $this->settings['parent_data'] );
+		$parent_data = Plugin::instance()->storage->get( $this->settings['parent_data'] );
 		$slug        = isset( $parent_data['TextDomain'] ) ? esc_attr( $parent_data['TextDomain'] ) : false;
 		$name        = isset( $parent_data['ThemeName'] ) ? esc_attr( $parent_data['ThemeName'] ) : false;
 
-		update_option( $this->settings['child_data'], array(
+		Plugin::instance()->storage->store( $this->settings['child_data'], array(
 			'TextDomain' => $slug . '-child',
 			'ThemeName'  => $name . ' Child',
 		) );
@@ -273,7 +273,7 @@ class Module extends Module_Base {
 		}
 
 		$option     = $type . '_data';
-		$theme_data = get_option( $this->settings[ $option ] );
+		$theme_data = Plugin::instance()->storage->get( $this->settings[ $option ] );
 
 		/**
 		 * Fires before theme activation

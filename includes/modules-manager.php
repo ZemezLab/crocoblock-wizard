@@ -17,9 +17,10 @@ class Modules_Manager {
 	 * @var array
 	 */
 	private $_modules = array(
-		'license'       => '\\Crocoblock_Wizard\\Modules\\License\\Module',
-		'install-theme' => '\\Crocoblock_Wizard\\Modules\\Install_Theme\\Module',
-		'select-skin'   => '\\Crocoblock_Wizard\\Modules\\Select_Skin\\Module',
+		'license'         => '\\Crocoblock_Wizard\\Modules\\License\\Module',
+		'install-theme'   => '\\Crocoblock_Wizard\\Modules\\Install_Theme\\Module',
+		'select-skin'     => '\\Crocoblock_Wizard\\Modules\\Select_Skin\\Module',
+		'install-plugins' => '\\Crocoblock_Wizard\\Modules\\Install_Plugins\\Module',
 	);
 
 	public function __construct() {

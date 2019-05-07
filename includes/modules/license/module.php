@@ -61,7 +61,7 @@ class Module extends Module_Base {
 			) );
 		} else {
 
-			set_transient( Plugin::instance()->dashboard->page_slug, $install_data, DAY_IN_SECONDS );
+			Plugin::instance()->storage->store( 'theme_data', $install_data );
 
 			wp_send_json_success( array(
 				'message'     => esc_html__( 'Your license is activated. Downloading and installing theme...', 'crocoblock-wizard' ),

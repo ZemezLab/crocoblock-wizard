@@ -22,11 +22,11 @@
 			padding-top: 75%;
 			position: relative;
 			overflow: hidden;
+			border-bottom: 1px solid $color__border-in-panel;
 		}
 	}
 	&__content {
 		padding: 15px 20px 20px;
-		border-top: 1px solid $color__border-in-panel;
 	}
 	&__name {
 		font-weight: 500;
@@ -58,6 +58,26 @@
 		flex-direction: column;
 		.cbw-uploader--active & {
 			background: $color__accent-lighter;
+		}
+	}
+}
+
+.cbw-uploaded-skin {
+	max-width: 300px;
+	margin: 0;
+	&__cnacel {
+		&-heading {
+			padding: 10px 0;
+			font-weight: 500;
+			font-size: 15px;
+			line-height: 23px;
+			color: $color__heading;
+			text-align: center;
+		}
+		.cx-vui-button {
+			background: $color__error;
+			color: #fff;
+			width: 100%;
 		}
 	}
 }

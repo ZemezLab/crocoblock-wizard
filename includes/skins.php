@@ -148,7 +148,11 @@ class Skins {
 	 * @param  string $slug Skin name.
 	 * @return string
 	 */
-	public function get_skin_plugins( $slug = null ) {
+	public function get_skin_plugins( $slug = null, $is_uploaded = false ) {
+
+		if ( $is_uploaded ) {
+			return $this->get_uploaded_skin_plugins( $slug );
+		}
 
 		$skins = $this->get_skins();
 		$skin  = isset( $skins[ $slug ] ) ? $skins[ $slug ] : false;
@@ -178,6 +182,32 @@ class Skins {
 		}
 
 		return $registered;
+
+	}
+
+	/**
+	 * Returns plugins list for uploaded skin
+	 */
+	public function get_uploaded_skin_plugins( $slug ) {
+
+		$path = Plugin::instance()->files_manager->base_path() . $slug . '/settings.json';
+
+		if ( ! is_readable( $path ) ) {
+			return array();
+		}
+
+		ob_start();
+		include $path;
+		$settings = ob_get_clean();
+
+		$settings = json_decode( $settings, true );
+
+		if ( empty( $settings['settings'] ) ) {
+			return array();
+		}
+
+		return isset( $settings['settings']['full'] ) ? $settings['settings']['full'] : array();
+
 	}
 
 }

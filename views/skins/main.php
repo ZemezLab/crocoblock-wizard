@@ -17,6 +17,7 @@
 				<cbw-skin
 					v-for="( skin, slug ) in skinsByTypes[ typeSlug ]"
 					:skin="skin"
+					:slug="slug"
 					:key="typeSlug + slug"
 				></cbw-skin>
 			</div>
@@ -25,7 +26,29 @@
 			:name="'upload-skin'"
 			:label="'<?php _e( 'Upload Yours', 'crocoblock-wizard' ); ?>'"
 		>
-			<cbw-skin-uploader></cbw-skin-uploader>
+			<div
+				class="cbw-uploaded-skin"
+				v-if="uploadedSkin"
+			>
+				<cbw-skin
+					:skin="uploadedSkin"
+					:slug="uploadedSkinSlug"
+				></cbw-skin>
+				<div class="cbw-uploaded-skin__cnacel">
+					<div class="cbw-uploaded-skin__cnacel-heading"><?php _e( 'or', 'crocoblock-wizard' ); ?></div>
+					<cx-vui-button
+						@click="cancelUpload"
+					>
+						<span slot="label"><?php
+							_e( 'Cancel and upload new one', 'crocoblock-wizard' );
+						?></span>
+					</cx-vui-button>
+				</div>
+			</div>
+			<cbw-skin-uploader
+				v-else
+				@on-upload="setUploadedSkin"
+			></cbw-skin-uploader>
 		</cx-vui-tabs-panel>
 	</cx-vui-tabs>
 </div>

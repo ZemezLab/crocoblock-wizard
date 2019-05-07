@@ -8,9 +8,41 @@
 			return {
 				skinsByTypes: window.CBWPageConfig.skins_by_types,
 				allowedTypes: window.CBWPageConfig.allowed_types,
+				uploadedSkin: false,
+				uploadedSkinSlug: false,
 			};
 		},
 		methods: {
+			cancelUpload: function() {
+
+				var slug = this.uploadedSkinSlug;
+
+				this.uploadedSkin     = false;
+				this.uploadedSkinSlug = false;
+
+				jQuery.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						action: window.CBWPageConfig.action_mask.replace( /%module%/, window.CBWPageConfig.module ),
+						handler: 'delete_uploaded_skin',
+						slug: slug,
+						nonce: window.CBWPageConfig.nonce,
+					},
+				});
+			},
+			setUploadedSkin: function( skinData ) {
+
+				this.uploadedSkin = {
+					name: skinData.name,
+					thumb: skinData.thumbnail,
+					demo: skinData.demo,
+					is_uploaded: true,
+				};
+
+				this.uploadedSkinSlug = skinData.slug;
+			},
 		}
 	} );
 
@@ -22,9 +54,48 @@
 				default: function() {
 					return {};
 				}
-			}
+			},
+			slug: {
+				type: String,
+				default: '',
+			},
+		},
+		data: function() {
+			return {
+				loading: false,
+			};
 		},
 		methods: {
+			startInstall: function() {
+
+				var isUploaded = false;
+
+				this.loading = true;
+
+				if ( this.skin.is_uploaded ) {
+					isUploaded = true;
+				}
+
+				jQuery.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						action: window.CBWPageConfig.action_mask.replace( /%module%/, window.CBWPageConfig.module ),
+						handler: 'prepare_skin_installation',
+						slug: this.slug,
+						is_uploaded: isUploaded,
+						nonce: window.CBWPageConfig.nonce,
+					},
+				}).done( function( response ) {
+					if ( ! response.success ) {
+						alert( response.data.message );
+					} else {
+						window.location = response.data.redirect;
+					}
+				} );
+
+			}
 		}
 	} );
 
@@ -88,9 +159,18 @@
 
 				xhr.open( 'POST', ajaxurl, true );
 
-				xhr.onload = function( e ) {
+				xhr.onload = function( e, r ) {
 					if ( xhr.status == 200 ) {
-						console.log( e );
+						var response = e.currentTarget.response;
+						response = JSON.parse( response );
+
+						if ( ! response.success ) {
+							self.error = response.data.message;
+							return;
+						} else {
+							self.$emit( 'on-upload', response.data );
+						}
+
 					} else {
 						self.error = xhr.status;
 					}

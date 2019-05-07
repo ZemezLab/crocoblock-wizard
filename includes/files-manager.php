@@ -11,12 +11,9 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class Files_Manager {
 
-
-	/**
-	 * Data inmporter file manager base path
-	 * @var [type]
-	 */
 	private $base_path = false;
+	private $base_url  = false;
+	private $base_slug = 'crocoblock-wizard/';
 
 	/**
 	 * Returns base path
@@ -29,7 +26,7 @@ class Files_Manager {
 
 			$upload_dir      = wp_upload_dir();
 			$upload_base_dir = $upload_dir['basedir'];
-			$this->base_path = trailingslashit( $upload_base_dir ) . 'crocoblock-wizard/';
+			$this->base_path = trailingslashit( $upload_base_dir ) . $this->base_slug;
 
 			if ( ! is_dir( $this->base_path ) ) {
 				mkdir( $this->base_path );
@@ -40,6 +37,30 @@ class Files_Manager {
 		return $this->base_path;
 
 	}
+
+	/**
+	 * Returns base path
+	 *
+	 * @return string
+	 */
+	public function base_url() {
+
+		if ( ! $this->base_url ) {
+
+			// Ensure folder is created
+			if ( ! $this->base_path ) {
+				$this->base_path();
+			}
+
+			$upload_dir      = wp_upload_dir();
+			$upload_base_url = $upload_dir['baseurl'];
+			$this->base_url  = trailingslashit( $upload_base_url ) . $this->base_slug;
+		}
+
+		return $this->base_url;
+
+	}
+
 
 	/**
 	 * Returns base path
@@ -68,6 +89,47 @@ class Files_Manager {
 		$content = ob_get_clean();
 
 		return json_decode( $content, true );
+
+	}
+
+	/**
+	 * Remove directory with all fils inside it
+	 *
+	 * @param  [type] $dirname [description]
+	 * @return [type]          [description]
+	 */
+	public function delete_dir( $dirname ) {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$target = trailingslashit( $this->base_path() . $dirname );
+		$this->_delete_dir( $target );
+
+	}
+
+	/**
+	 * Remove directory with all fils inside it
+	 *
+	 * @param  [type] $dirname [description]
+	 * @return [type]          [description]
+	 */
+	public function _delete_dir( $target ) {
+
+		if ( is_dir( $target ) ) {
+
+			$files = glob( $target . '*', GLOB_MARK );
+
+			foreach( $files as $file ){
+				$this->_delete_dir( $file );
+			}
+
+			rmdir( $target );
+
+		} elseif( is_file( $target ) ) {
+			unlink( $target );
+		}
 
 	}
 

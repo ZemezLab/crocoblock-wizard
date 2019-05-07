@@ -11,6 +11,8 @@
 	font-family: $font_family;
 	outline: none;
 	position: relative;
+	box-sizing: border-box;
+	text-decoration: none;
 	&__content {
 		display: flex;
 		justify-content: center;
@@ -25,6 +27,7 @@
 			color: $color__accent;
 			&:hover {
 				box-shadow: none;
+				color: $color__accent;
 				background: $color__bg-input-hover;
 			}
 		}
@@ -33,6 +36,7 @@
 			color: #fff;
 			&:hover {
 				box-shadow: none;
+				color: #fff;
 				background: $color__accent-hover;
 			}
 		}
