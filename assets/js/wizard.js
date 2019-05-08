@@ -41,6 +41,16 @@
 		},
 	} );
 
+	Vue.component( 'cbw-progress', {
+		template: '#cbw_progress',
+		props: {
+			value: {
+				type: Number,
+				default: 0,
+			},
+		},
+	} );
+
 	Vue.component( 'cbw-main', {
 		template: '#cbw_main',
 		data: function() {

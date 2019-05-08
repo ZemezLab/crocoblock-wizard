@@ -46,19 +46,41 @@ class Module extends Module_Base {
 	 */
 	public function page_config( $config = array(), $subpage = '' ) {
 
-		$skin        = isset( $_GET['skin'] ) ? $_GET['skin'] : false;
-		$is_uploaded = isset( $_GET['is_uploaded'] ) ? $_GET['is_uploaded'] : false;
+		$skin         = isset( $_GET['skin'] ) ? $_GET['skin'] : false;
+		$is_uploaded  = isset( $_GET['is_uploaded'] ) ? $_GET['is_uploaded'] : false;
+		$skin_plugins = Plugin::instance()->skins->get_skin_plugins( $skin, $is_uploaded );
+		$all_plugins  = Plugin::instance()->settings->get_all_plugins();
 
 		$config['title']         = __( 'Configure plugins', 'crocoblock-wizard' );
+		$config['install_title'] = __( 'Install Plugins', 'crocoblock-wizard' );
 		$config['cover']         = CB_WIZARD_URL . 'assets/img/cover-3.png';
 		$config['body']          = 'cbw-plugins';
 		$config['wrapper_css']   = 'vertical-flex';
 		$config['is_uploaded']   = $is_uploaded;
 		$config['skin']          = $skin;
-		$config['rec_plugins']   = Plugin::instance()->skins->get_skin_plugins( $skin, $is_uploaded );
-		$config['extra_plugins'] = Plugin::instance()->skins->get_skin_plugins( $skin, $is_uploaded );
+		$config['rec_plugins']   = $skin_plugins;
+		$config['extra_plugins'] = $this->get_rest_of_plugins( $skin_plugins, $all_plugins );
+		$config['all_plugins']   = $all_plugins;
+		$config['prev_step']     = Plugin::instance()->dashboard->page_url( 'select-skin' );
 
 		return $config;
+
+	}
+
+	/**
+	 * Returns rest of registered plugins
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_rest_of_plugins( $skin_plugins, $all_plugins ) {
+
+		array_walk( $all_plugins, function( &$plugin, $slug ) use ( $skin_plugins ) {
+			if ( in_array( $slug, $skin_plugins ) ) {
+				$plugin = false;
+			}
+		} );
+
+		return array_keys( array_filter( $all_plugins ) );
 
 	}
 
@@ -71,8 +93,9 @@ class Module extends Module_Base {
 	 */
 	public function page_templates( $templates = array(), $subpage = '' ) {
 
-		$templates['plugins']        = 'install-plugins/main';
-		$templates['select_plugins'] = 'install-plugins/select';
+		$templates['plugins']         = 'install-plugins/main';
+		$templates['select_plugins']  = 'install-plugins/select';
+		$templates['install_plugins'] = 'install-plugins/install';
 		return $templates;
 
 	}

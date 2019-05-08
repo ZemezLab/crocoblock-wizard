@@ -18,9 +18,11 @@
 	&__content {
 		padding: 40px;
 		flex: 1 1 auto;
+		box-sizing: border-box;
 		.vertical-flex & {
 			display: flex;
 			flex-direction: column;
+			max-width: calc( 100% - 270px );
 		}
 	}
 	&__cover {
@@ -70,6 +72,12 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	&__bottom {
+		&.buttons-group {
+			display: flex;
+			justify-content: space-between;
+		}
+	}
 	&__error-message {
 		color: $color__error;
 		font-size: 13px;

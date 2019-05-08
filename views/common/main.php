@@ -10,6 +10,13 @@
 	</div>
 	<div class="cbw-body__content">
 		<div class="cbw-body__title">{{ title }}</div>
-		<component v-if="body" :is="body"></component>
+		<component
+			v-if="body"
+			:is="body"
+			@change-title="title = $event"
+			@change-cover="cover = $event"
+			@change-body="body = $event"
+			@change-wrapper-css="wrapperCSS = $event"
+		></component>
 	</div>
 </div>

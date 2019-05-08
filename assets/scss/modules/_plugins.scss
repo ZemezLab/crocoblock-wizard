@@ -1,0 +1,65 @@
+.cx-vui-component.cx-vui-component--check-group {
+	padding: 0;
+	display: block;
+	.cx-vui-checkgroup {
+		columns: 3;
+		font-size: 15px;
+		line-height: 23px;
+		.cx-vui-checkbox-wrap {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			.cx-vui-checkbox__label {
+				text-overflow: ellipsis;
+			}
+		}
+	}
+}
+
+.cbw-pluigns,
+.cbw-select-plugins {
+	height: 100%;
+	.cbw-block {
+		height: 100%;
+	}
+}
+
+.cbw-plugins-group {
+	padding: 15px 0 20px 22px;
+	position: relative;
+	+ .cbw-plugins-group {
+		border-top: 1px solid $color__border-in-panel;
+		padding-top: 20px;
+	}
+	&__heading {
+		font-size: 15px;
+		line-height: 23px;
+		position: relative;
+		cursor: pointer;
+		&:before {
+			content: "";
+			position: absolute;
+			left: -22px;
+			top: 4px;
+			width: 14px;
+			height: 14px;
+			background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDcgMTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEuMzI5MTEgMEw3IDZMMS4zMjkxMSAxMkwwIDEwLjU5MzhMNC4zNDE3NyA2TDAgMS40MDYyNUwxLjMyOTExIDBaIiBmaWxsPSIjMDA3Q0JBIi8+PC9zdmc+);
+			background-repeat: no-repeat;
+			background-position: center center;
+		}
+		&--active {
+			&:before {
+				transform: rotate( 90deg );
+			}
+		}
+
+		&-title {
+			font-weight: 500;
+			color: $color__accent;
+			padding: 0 0 2px;
+		}
+	}
+	&__body {
+		padding: 15px 0 0 0;
+	}
+}

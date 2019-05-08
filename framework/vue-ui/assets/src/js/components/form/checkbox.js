@@ -206,7 +206,7 @@ const Checkbox = {
 					if ( ! oneOf( value, this.currentValues ) ) {
 						this.currentValues.push( value );
 					} else {
-						this.currentValues.push( value );
+						this.currentValues.splice( this.currentValues.indexOf( value ), 1 );
 					}
 
 					break;

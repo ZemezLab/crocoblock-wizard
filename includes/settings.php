@@ -203,6 +203,16 @@ class Settings {
 	}
 
 	/**
+	 * Get all registered plugins list
+	 *
+	 * @return array
+	 */
+	public function get_all_plugins() {
+		$registered = $this->get( array( 'plugins' ) );
+		return $registered;
+	}
+
+	/**
 	 * Clear transien data cahces
 	 *
 	 * @return [type] [description]

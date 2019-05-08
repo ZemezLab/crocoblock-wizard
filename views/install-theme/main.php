@@ -22,7 +22,7 @@
 			:loading="loading"
 			@click="goToNextStep"
 		>
-			<span slot="label"><?php _e( 'Start Install', 'crocoblock-wizard' ); ?></span>
+			<span slot="label"><?php _e( 'Continue', 'crocoblock-wizard' ); ?></span>
 			<svg slot="label" width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.32911 0L7 6L1.32911 12L0 10.5938L4.34177 6L0 1.40625L1.32911 0Z" fill="white"/></svg>
 		</cx-vui-button>
 	</div>

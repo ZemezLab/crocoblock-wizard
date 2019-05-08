@@ -117,9 +117,10 @@ class Dashboard {
 		$templates = apply_filters(
 			'crocoblock-wizard/dashboard/js-page-templates',
 			array(
-				'main'    => 'common/main',
-				'logger'  => 'common/logger',
-				'choices' => 'common/choices',
+				'main'     => 'common/main',
+				'logger'   => 'common/logger',
+				'choices'  => 'common/choices',
+				'progress' => 'common/progress',
 			),
 			$this->get_subpage()
 		);
