@@ -21,7 +21,10 @@ class Modules_Manager {
 		'install-theme'   => '\\Crocoblock_Wizard\\Modules\\Install_Theme\\Module',
 		'select-skin'     => '\\Crocoblock_Wizard\\Modules\\Select_Skin\\Module',
 		'install-plugins' => '\\Crocoblock_Wizard\\Modules\\Install_Plugins\\Module',
+		'import-content'  => '\\Crocoblock_Wizard\\Modules\\Import_Content\\Module',
 	);
+
+	private $_loaded_modules = array();
 
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'init_modules' ) );
@@ -97,7 +100,8 @@ class Modules_Manager {
 
 		$class_name = $this->_modules[ $module ];
 
-		new $class_name();
+		return new $class_name();
+
 	}
 
 }

@@ -11,6 +11,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 class Module extends Module_Base {
 
+	private $api = false;
+
 	/**
 	 * Returns module slug
 	 *
@@ -38,6 +40,40 @@ class Module extends Module_Base {
 	}
 
 	/**
+	 * Returns licensing API instance
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_api() {
+
+		if ( ! $this->api ) {
+			$this->api = new API();
+		}
+
+		return $this->api;
+	}
+
+	/**
+	 * Return URL to licensing API server
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_license_api_host() {
+		$license_api = $this->get_api();
+		return $license_api->api;
+	}
+
+	/**
+	 * Returns stored license key
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_license() {
+		$license_api = $this->get_api();
+		return $license_api->get_license();
+	}
+
+	/**
 	 * Verify license key
 	 *
 	 * @return [type] [description]
@@ -52,7 +88,7 @@ class Module extends Module_Base {
 			) );
 		}
 
-		$license_api  = new API();
+		$license_api  = $this->get_api();
 		$install_data = $license_api->activate_license( $license );
 
 		if ( ! $install_data ) {

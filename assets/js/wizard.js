@@ -25,6 +25,7 @@
 			makeChoice: function( choice, index ) {
 				this.selected = index;
 				this.$emit( 'input', choice.value );
+				this.$emit( 'change', choice.value );
 			},
 		},
 	} );

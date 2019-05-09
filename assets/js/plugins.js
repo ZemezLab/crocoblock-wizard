@@ -9,7 +9,7 @@
 				isUpload: window.CBWPageConfig.is_upload,
 				skin: window.CBWPageConfig.skin,
 				currentComponent: 'cbw-select-plugins',
-				pluginsToInstall: [],
+				pluginsToInstall: window.CBWPageConfig.rec_plugins,
 			};
 		},
 		methods: {
@@ -23,6 +23,7 @@
 
 				this.currentComponent = component;
 				this.$emit( 'change-title', newTitle );
+
 			}
 		}
 	} );
@@ -37,13 +38,131 @@
 				},
 			},
 		},
+		mounted: function() {
+
+			if ( ! this.pluginsToInstall.length ) {
+				return;
+			}
+
+			this.installPlugin();
+
+		},
 		data: function() {
 			return {
 				progress: 0,
+				installedPlugins: {},
+				done: false,
+				loading: false,
 			};
 		},
 		methods: {
+			goToNextStep: function() {
+				this.loading    = true;
+				window.location = window.CBWPageConfig.next_step;
+			},
+			goToPrevStep: function() {
+				this.$emit( 'switch-component', 'cbw-select-plugins' );
+			},
+			itemClasses: function( plugin ) {
+				var classes = [ 'cbw-plugin', 'cbw-plugin--' + plugin.status ];
 
+				if ( ! plugin.collapsed ) {
+					classes.push( 'cbw-plugin--expanded' );
+				}
+
+				return classes;
+
+			},
+			installPlugin: function( index ) {
+
+				var self = this;
+
+				if ( ! index ) {
+					index = 0;
+				}
+
+				if ( ! this.pluginsToInstall[ index ] ) {
+					return;
+				}
+
+				var plugin     = this.pluginsToInstall[ index ],
+					pluginData = {
+						name: self.getPluginName( plugin ),
+						log: '',
+						status: 'in-progress',
+						collapsed: true,
+					};
+
+				self.$set( self.installedPlugins, plugin, pluginData );
+
+				jQuery.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						action: window.CBWPageConfig.action_mask.replace( /%module%/, window.CBWPageConfig.module ),
+						handler: 'install_plugin',
+						plugin: plugin,
+						nonce: window.CBWPageConfig.nonce,
+					},
+				}).done( function( response ) {
+
+					pluginData['log'] = response.data.message;
+
+					if ( response.success ) {
+						pluginData['status'] = 'success';
+					} else {
+						pluginData['status'] = 'error';
+					}
+
+					self.$set( self.installedPlugins, plugin, pluginData );
+
+					self.goToNext( index );
+
+				}).fail( function( xhr, textStatus, error ) {
+
+					pluginData['status'] = 'error';
+					pluginData['log']    = error;
+
+					self.$set( self.installedPlugins, plugin, pluginData );
+
+					self.goToNext( index );
+
+				} );
+
+			},
+			goToNext: function( index ) {
+
+				this.updateProgress( index );
+
+				if ( index + 1 < this.pluginsToInstall.length ) {
+					this.installPlugin( index + 1 );
+				} else {
+					this.done = true;
+				}
+
+			},
+			updateProgress: function( index ) {
+
+				var result = ( index + 1 ) / this.pluginsToInstall.length;
+
+				result = result * 100;
+				result = Math.ceil( result );
+
+				if ( 100 < result ) {
+					result = 100;
+				}
+
+				this.progress = result;
+
+			},
+			getPluginName: function( plugin ) {
+				if ( window.CBWPageConfig.all_plugins[ plugin ] ) {
+					return window.CBWPageConfig.all_plugins[ plugin ].name;
+				} else {
+					return plugin.replace( /-/, ' ' );
+				}
+			}
 		}
 	} );
 

@@ -62,6 +62,13 @@ class Module extends Module_Base {
 		$config['extra_plugins'] = $this->get_rest_of_plugins( $skin_plugins, $all_plugins );
 		$config['all_plugins']   = $all_plugins;
 		$config['prev_step']     = Plugin::instance()->dashboard->page_url( 'select-skin' );
+		$config['next_step']     = add_query_arg(
+			array(
+				'skin'        => $skin,
+				'is_uploaded' => $is_uploaded
+			),
+			Plugin::instance()->dashboard->page_url( 'import-content' )
+		);
 
 		return $config;
 
@@ -97,6 +104,31 @@ class Module extends Module_Base {
 		$templates['select_plugins']  = 'install-plugins/select';
 		$templates['install_plugins'] = 'install-plugins/install';
 		return $templates;
+
+	}
+
+	/**
+	 * Install plugin
+	 *
+	 * @return void
+	 */
+	public function install_plugin() {
+
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			wp_send_json_error(
+				array( 'message' => esc_html__( 'You don\'t have permissions to do this', 'crocoblock-wizard' ) )
+			);
+		}
+
+		$plugin    = isset( $_REQUEST['plugin'] ) ? esc_attr( $_REQUEST['plugin'] ) : false;
+		$installer = new Installer( $plugin );
+		$installed = $installer->do_plugin_install();
+
+		if ( ! $installed ) {
+			wp_send_json_error( array( 'message' => $installer->get_log() ) );
+		} else {
+			wp_send_json_success( array( 'message' => $installer->get_log() ) );
+		}
 
 	}
 
