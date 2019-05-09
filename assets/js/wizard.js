@@ -49,6 +49,17 @@
 				default: 0,
 			},
 		},
+		data: function() {
+			return {
+				dots: 28,
+			};
+		},
+		methods: {
+			dotIsDone: function( n ) {
+				var done = ( this.value * this.dots ) / 100;
+				return n <= Math.floor( done );
+			},
+		}
 	} );
 
 	Vue.component( 'cbw-main', {
