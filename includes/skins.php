@@ -119,11 +119,13 @@ class Skins {
 	 * @param  string $key Key name.
 	 * @return mixed
 	 */
-	public function get_skin_data( $key = null ) {
+	public function get_skin_data( $key = null, $skin = null ) {
 
 		if ( empty( $this->skin ) ) {
 
-			$skin = isset( $_GET['skin'] ) ? esc_attr( $_GET['skin'] ) : false;
+			if ( ! $skin ) {
+				$skin = isset( $_GET['skin'] ) ? esc_attr( $_GET['skin'] ) : false;
+			}
 
 			if ( ! $skin ) {
 				return false;
@@ -132,6 +134,10 @@ class Skins {
 			$data = Plugin::instance()->settings->get( array( 'skins', $skin ) );
 			$this->the_skin( $skin, $data );
 
+		}
+
+		if ( ! $key ) {
+			return $this->skin;
 		}
 
 		if ( empty( $this->skin[ $key ] ) ) {
@@ -164,24 +170,10 @@ class Skins {
 		$plugins = $skin[ 'full' ];
 
 		if ( empty( $plugins ) ) {
-			return '';
+			return array();
+		} else {
+			return $plugins;
 		}
-
-		$registered  = Plugin::instance()->settings->get( array( 'plugins' ) );
-		$plugins_str = '';
-
-		foreach ( $plugins as $plugin ) {
-
-			$plugin_data = isset( $registered[ $plugin ] ) ? $registered[ $plugin ] : false;
-
-			if ( ! $plugin_data ) {
-				continue;
-			}
-
-			$plugins_str .= sprintf( $format, $plugin_data['name'] );
-		}
-
-		return $registered;
 
 	}
 

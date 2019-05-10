@@ -1,5 +1,5 @@
 <?php
-namespace Crocoblock_Wizard;
+namespace Crocoblock_Wizard\Tools;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {

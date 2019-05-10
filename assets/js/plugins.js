@@ -225,6 +225,9 @@
 			}
 		},
 		methods: {
+			skipPlugins: function() {
+				window.location = window.CBWPageConfig.next_step;
+			},
 			emitPluginsToInstall: function() {
 				this.$emit( 'update-plugins-list', this.pluginsToInstall );
 			},

@@ -136,6 +136,9 @@ class Settings {
 			'plugins' => isset( $settings['plugins'] ) ? $settings['plugins'] : $this->get_defaults( 'plugins' ),
 			'skins'   => isset( $settings['skins'] )   ? $settings['skins']   : $this->get_defaults( 'skins' ),
 			'texts'   => isset( $settings['texts'] )   ? $settings['texts']   : $this->get_defaults( 'texts' ),
+			'remap'   => isset( $settings['texts'] )   ? $settings['texts']   : $this->get_defaults( 'remap' ),
+			'import'  => isset( $settings['import'] )   ? $settings['import']   : $this->get_defaults( 'import' ),
+			'export'  => isset( $settings['export'] )   ? $settings['export']   : $this->get_defaults( 'export' ),
 		);
 
 		$this->all_settings = $this->maybe_update_remote_data( $all_settings );
@@ -244,10 +247,34 @@ class Settings {
 				'theme-name' => 'Kava'
 			);
 
+			$import = array(
+				'chunk_size'            => 10,
+				'regenerate_chunk_size' => 3,
+				'allow_types'           => false,
+			);
+
+			$remap = array(
+				'post_meta' => array(),
+				'term_meta' => array(),
+				'options'   => array(
+					'jet_woo_builder',
+					'woocommerce_catalog_columns',
+					'woocommerce_catalog_rows',
+				),
+			);
+
+			$export = array(
+				'options' => array(),
+				'tables'  => array(),
+			);
+
 			$this->defaults = array(
 				'plugins' => $plugins,
 				'skins'   => $skins,
 				'texts'   => $texts,
+				'remap'   => $remap,
+				'import'  => $import,
+				'export'  => $export,
 			);
 
 		}

@@ -81,8 +81,8 @@ class Plugin {
 		$this->modules       = new Modules_Manager();
 		$this->settings      = new Settings();
 		$this->skins         = new Skins();
-		$this->files_manager = new Files_Manager();
-		$this->storage       = new Storage();
+		$this->files_manager = new Tools\Files_Manager();
+		$this->storage       = new Tools\Storage();
 	}
 
 	/**

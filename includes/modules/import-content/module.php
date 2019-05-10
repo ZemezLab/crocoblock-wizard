@@ -11,6 +11,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 class Module extends Module_Base {
 
+	private $import_file = null;
+	private $importer    = null;
+
 	/**
 	 * Returns module slug
 	 *
@@ -58,22 +61,33 @@ class Module extends Module_Base {
 		$config['wrapper_css']      = 'vertical-flex';
 		$config['is_uploaded']      = $is_uploaded;
 		$config['skin']             = $skin;
-		$config['prev_step']        = Plugin::instance()->dashboard->page_url( 'install-plugins' );
+		$config['prev_step']        = add_query_arg(
+			array(
+				'skin'        => $skin,
+				'is_uploaded' => $is_uploaded,
+			),
+			Plugin::instance()->dashboard->page_url( 'install-plugins' )
+		);
 		$config['next_step']        = '#';
-		$config['choices']          = array(
-			'append' => array(
+		$config['import_types']     = array(
+			array(
+				'value'       => 'append',
 				'label'       => __( 'Append demo content to my existing content', 'crocoblock-wizard' ),
 				'description' => __( 'Skip child theme installation and continute with parent theme.', 'crocoblock-wizard' ),
 			),
-			'replace' => array(
+			array(
+				'value'       => 'replace',
 				'label'       => __( 'Replace my existing content with demo content', 'crocoblock-wizard' ),
 				'description' => __( 'Download and install child theme. We recommend doing this, because it’s the most safe way to make future modifications.', 'crocoblock-wizard' ),
 			),
-			'skip' => array(
+			array(
+				'value'       => 'skip',
 				'label'       => __( 'Skip demo content installation', 'crocoblock-wizard' ),
 				'description' => __( 'Download and install child theme. We recommend doing this, because it’s the most safe way to make future modifications.', 'crocoblock-wizard' ),
 			),
 		);
+
+		$this->get_import_file( $skin, $is_uploaded );
 
 		return $config;
 
@@ -105,9 +119,157 @@ class Module extends Module_Base {
 	 */
 	public function page_templates( $templates = array(), $subpage = '' ) {
 
-		$templates['content']     = 'import-content/main';
-		$templates['select_type'] = 'import-content/select-type';
+		$templates['content']        = 'import-content/main';
+		$templates['select_type']    = 'import-content/select-type';
+		$templates['import_content'] = 'import-content/import-content';
 		return $templates;
+
+	}
+
+	/**
+	 * Returns information about current import session
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_import_info() {
+
+		$importer = $this->get_importer();
+		$importer->prepare_import();
+
+		$total   = $importer->cache->get( 'total_count' );
+		$summary = $importer->cache->get( 'import_summary' );
+
+		var_dump( $total );
+		var_dump( $summary );
+
+	}
+
+	/**
+	 * Get path to imported XML file
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_import_file( $skin = null, $is_uploaded = null ) {
+
+		if ( null !== $this->import_file ) {
+			return $this->import_file;
+		}
+
+		$file = null;
+
+		if ( ! $skin ) {
+			$skin = ! empty( $_REQUEST['skin'] ) ? esc_attr( $_REQUEST['skin'] ) : false;
+		}
+
+		if ( ! $skin ) {
+			return false;
+		}
+
+		if ( null === $is_uploaded ) {
+			$is_uploaded =  ! empty( $_REQUEST['is_uploaded'] ) ? esc_attr( $_REQUEST['is_uploaded'] ) : false;
+		}
+
+		if ( ! empty( $is_uploaded ) ) {
+			$file = $this->get_uploaded_file( $skin );
+		} else {
+			$file = $this->get_remote_file( $skin );
+		}
+
+		if ( ! $file || ! file_exists( $file ) ) {
+			return false;
+		} else {
+			$this->import_file = $file;
+			return $this->import_file;
+		}
+
+	}
+
+	/**
+	 * Copy file into root of base dir and return file path
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_uploaded_file( $skin = null ) {
+
+		$filename  = 'sample-data.xml';
+		$from_path = Plugin::instance()->files_manager->base_path() . $skin . '/' . $filename;
+		$to_path   = Plugin::instance()->files_manager->base_path() . $skin . '.xml';
+
+		if ( file_exists( $to_path ) ) {
+			return $to_path;
+		}
+
+		if ( ! file_exists( $from_path ) ) {
+			return false;
+		}
+
+		$copied = copy( $from_path, $to_path );
+
+		if ( $copied ) {
+			return $to_path;
+		} else {
+			return false;
+		}
+
+	}
+
+	/**
+	 * Returns remote file
+	 *
+	 * @param  [type] $skin [description]
+	 * @return [type]       [description]
+	 */
+	public  function get_remote_file( $skin = null ) {
+
+		$file_url = Plugin::instance()->skins->get_skin_data( 'full_xml', $skin );
+
+		if ( ! $file_url ) {
+			return false;
+		}
+
+		$filename  = $skin . '.xml';
+		$base_path = Plugin::instance()->files_manager->base_path();
+		$to_path   = $base_path . $filename;
+
+		if ( file_exists( $to_path ) ) {
+			return $to_path;
+		}
+
+		$tmpath = download_url( esc_url( $file_url ) );
+
+		if ( ! $tmpath ) {
+			return false;
+		}
+
+		if ( ! copy( $tmpath, $to_path ) ) {
+			return false;
+		}
+
+		unlink( $tmpath );
+
+		return $to_path;
+
+	}
+
+	/**
+	 * Returns importer instance
+	 *
+	 * @return WXR_Importer
+	 */
+	public function get_importer() {
+
+		if ( null !== $this->importer ) {
+			return $this->importer;
+		}
+
+		$options = array();
+		$file    = $this->get_import_file();
+
+		if ( ! $file ) {
+			return false;
+		}
+
+		return $this->importer = new WXR_Importer( $options, $file );
 
 	}
 
