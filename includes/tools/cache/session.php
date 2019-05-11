@@ -42,6 +42,7 @@ class Session extends Base {
 		$this->setup_cahe_group( $group );
 
 		$_SESSION[ $this->base_group ][ $group ][ $key ] = $value;
+
 	}
 
 	/**

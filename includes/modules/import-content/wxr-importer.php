@@ -117,8 +117,8 @@ class WXR_Importer extends \WP_Importer {
 
 		$this->file   = $file;
 		$this->reader = $this->get_reader( $this->file );
-		$this->logger = new Tools\Logger();
 		$this->cache  = new Tools\Cache();
+		$this->logger = new Tools\Logger( $this->cache );
 
 	}
 
@@ -469,9 +469,10 @@ class WXR_Importer extends \WP_Importer {
 					break;
 
 				case 'wp:term':
-					$node = $this->reader->expand();
 
+					$node   = $this->reader->expand();
 					$parsed = $this->parse_term_node( $node );
+
 					if ( is_wp_error( $parsed ) ) {
 						// Skip the rest of this post
 						$this->next();
@@ -685,7 +686,7 @@ class WXR_Importer extends \WP_Importer {
 						// Bail now
 						return new \WP_Error(
 							'wxr_importer.post.cannot_import_draft',
-							__( 'Cannot import auto-draft posts', 'jet-data-importer' ),
+							__( 'Cannot import auto-draft posts', 'crocoblock-wizard' ),
 							$data
 						);
 					}
@@ -963,7 +964,7 @@ class WXR_Importer extends \WP_Importer {
 	 */
 	protected function process_options( $data ) {
 
-		do_action( 'jet-data-importer/import/before-options-processing', $data );
+		do_action( 'crocoblock-wizard/import/before-options-processing', $data );
 
 		if ( empty( $data ) ) {
 			return;
@@ -982,7 +983,7 @@ class WXR_Importer extends \WP_Importer {
 			$this->maybe_clone_child_options( $key, $value );
 		}
 
-		do_action( 'jet-data-importer/import/after-options-processing', $data );
+		do_action( 'crocoblock-wizard/import/after-options-processing', $data );
 
 	}
 
@@ -995,7 +996,7 @@ class WXR_Importer extends \WP_Importer {
 	 */
 	protected function maybe_clone_child_options( $option, $value ) {
 
-		$to_copy = apply_filters( 'jet-data-importer/import/copy-options-to-child', array(
+		$to_copy = apply_filters( 'crocoblock-wizard/import/copy-options-to-child', array(
 			'theme_mods_%s',
 			'%s_sidebars',
 		) );
@@ -1059,7 +1060,7 @@ class WXR_Importer extends \WP_Importer {
 
 		}
 
-		do_action( 'jet-data-importer/import/after-import-tables' );
+		do_action( 'crocoblock-wizard/import/after-import-tables' );
 
 	}
 
@@ -1101,9 +1102,9 @@ class WXR_Importer extends \WP_Importer {
 		}
 
 		// Hook before import
-		do_action( 'jet-data-importer/import/before-widgets-processing' );
+		do_action( 'crocoblock-wizard/import/before-widgets-processing' );
 
-		$data = apply_filters( 'jet-data-importer/import/widgets-data', $data );
+		$data = apply_filters( 'crocoblock-wizard/import/widgets-data', $data );
 
 		// Get all available widgets site supports
 		$available_widgets = Tools\Widgets::available_widgets();
@@ -1139,7 +1140,7 @@ class WXR_Importer extends \WP_Importer {
 				$use_sidebar_id       = 'wp_inactive_widgets'; // add to inactive if sidebar does not exist in theme
 				$sidebar_message_type = 'error';
 				$sidebar_message      = esc_html__(
-					'Sidebar does not exist in theme (using Inactive)', 'jet-data-importer'
+					'Sidebar does not exist in theme (using Inactive)', 'crocoblock-wizard'
 				);
 			}
 
@@ -1164,13 +1165,13 @@ class WXR_Importer extends \WP_Importer {
 				if ( ! $fail && ! isset( $available_widgets[ $id_base ] ) ) {
 					$fail                = true;
 					$widget_message_type = 'error';
-					$widget_message      = esc_html__( 'Site does not support widget', 'jet-data-importer' ); // explain why widget not imported
+					$widget_message      = esc_html__( 'Site does not support widget', 'crocoblock-wizard' ); // explain why widget not imported
 				}
 
 				// Filter to modify settings object before conversion to array and import
 				// Leave this filter here for backwards compatibility with manipulating objects (before conversion to array below)
 				// Ideally the newer wie_widget_settings_array below will be used instead of this
-				$widget = apply_filters( 'jet-data-importer/import/widget-settings', $widget ); // object
+				$widget = apply_filters( 'crocoblock-wizard/import/widget-settings', $widget ); // object
 
 				// Convert multidimensional objects to multidimensional arrays
 				// Some plugins like Jetpack Widget Visibility store settings as multidimensional arrays
@@ -1182,7 +1183,7 @@ class WXR_Importer extends \WP_Importer {
 				// Filter to modify settings array
 				// This is preferred over the older wie_widget_settings filter above
 				// Do before identical check because changes may make it identical to end result (such as URL replacements)
-				$widget = apply_filters( 'jet-data-importer/import/widget-settings-array', $widget );
+				$widget = apply_filters( 'crocoblock-wizard/import/widget-settings-array', $widget );
 
 				// Does widget with identical settings already exist in same sidebar?
 				if ( ! $fail && isset( $widget_instances[ $id_base ] ) ) {
@@ -1200,7 +1201,7 @@ class WXR_Importer extends \WP_Importer {
 
 							$fail                = true;
 							$widget_message_type = 'warning';
-							$widget_message      = esc_html__( 'Widget already exists', 'jet-data-importer' ); // explain why widget not imported
+							$widget_message      = esc_html__( 'Widget already exists', 'crocoblock-wizard' ); // explain why widget not imported
 
 							break;
 
@@ -1256,22 +1257,22 @@ class WXR_Importer extends \WP_Importer {
 						'widget_id_num_old' => $instance_id_number
 					);
 
-					do_action( 'jet-data-importer/import/after-widget-import', $after_widget_import );
+					do_action( 'crocoblock-wizard/import/after-widget-import', $after_widget_import );
 
 					// Success message
 					if ( $sidebar_available ) {
 						$widget_message_type = 'success';
-						$widget_message = esc_html__( 'Imported', 'jet-data-importer' );
+						$widget_message = esc_html__( 'Imported', 'crocoblock-wizard' );
 					} else {
 						$widget_message_type = 'warning';
-						$widget_message = esc_html__( 'Imported to Inactive', 'jet-data-importer' );
+						$widget_message = esc_html__( 'Imported to Inactive', 'crocoblock-wizard' );
 					}
 
 				}
 
 				// Result for widget instance
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['name'] = isset( $available_widgets[ $id_base ]['name'] ) ? $available_widgets[ $id_base ]['name'] : $id_base; // widget name or ID if name not available (not supported by site)
-				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title'] = ! empty( $widget['title'] ) ? $widget['title'] : esc_html__( 'No Title', 'jet-data-importer' ); // show "No Title" if widget instance is untitled
+				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title'] = ! empty( $widget['title'] ) ? $widget['title'] : esc_html__( 'No Title', 'crocoblock-wizard' ); // show "No Title" if widget instance is untitled
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message_type'] = $widget_message_type;
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message']      = $widget_message;
 
@@ -1306,10 +1307,10 @@ class WXR_Importer extends \WP_Importer {
 		}
 
 		// Hook after import
-		do_action( 'jet-data-importer/import/after-process-widget', $sidebars_widgets );
+		do_action( 'crocoblock-wizard/import/after-process-widget', $sidebars_widgets );
 
 		// Return results
-		return apply_filters( 'jet-data-importer/import/widget-import-results', $results );
+		return apply_filters( 'crocoblock-wizard/import/widget-import-results', $results );
 
 	}
 
@@ -1405,7 +1406,7 @@ class WXR_Importer extends \WP_Importer {
 		 * @param bool
 		 * @param array
 		 */
-		$skip_post = apply_filters( 'jet-data-importer/import/skip-post', false, $data );
+		$skip_post = apply_filters( 'crocoblock-wizard/import/skip-post', false, $data );
 
 		if ( $skip_post ) {
 			return;
@@ -1416,7 +1417,7 @@ class WXR_Importer extends \WP_Importer {
 		// Is this type even valid?
 		if ( ! $post_type_object ) {
 			$this->logger->warning( sprintf(
-				__( 'Failed to import "%s": Invalid post type %s', 'jet-data-importer' ),
+				__( 'Failed to import "%s": Invalid post type %s', 'crocoblock-wizard' ),
 				$data['post_title'],
 				$data['post_type']
 			) );
@@ -1427,7 +1428,7 @@ class WXR_Importer extends \WP_Importer {
 		$post_exists = $this->post_exists( $data );
 		if ( $post_exists ) {
 			$this->logger->info( sprintf(
-				__('%s "%s" already exists.', 'jet-data-importer'),
+				__('%s "%s" already exists.', 'crocoblock-wizard'),
 				$post_type_object->labels->singular_name,
 				$data['post_title']
 			) );
@@ -1507,7 +1508,7 @@ class WXR_Importer extends \WP_Importer {
 		if ( 'attachment' === $postdata['post_type'] ) {
 			if ( ! $this->options['fetch_attachments'] ) {
 				$this->logger->notice( sprintf(
-					__( 'Skipping attachment "%s", fetching attachments disabled', 'jet-data-importer' ),
+					__( 'Skipping attachment "%s", fetching attachments disabled', 'crocoblock-wizard' ),
 					$data['post_title']
 				) );
 
@@ -1523,7 +1524,7 @@ class WXR_Importer extends \WP_Importer {
 
 		if ( is_wp_error( $post_id ) ) {
 			$this->logger->error( sprintf(
-				__( 'Failed to import "%s" (%s)', 'jet-data-importer' ),
+				__( 'Failed to import "%s" (%s)', 'crocoblock-wizard' ),
 				$data['post_title'],
 				$post_type_object->labels->singular_name
 			) );
@@ -1560,12 +1561,12 @@ class WXR_Importer extends \WP_Importer {
 		$this->cache->update( 'posts', $processed_posts, 'mapping' );
 
 		$this->logger->info( sprintf(
-			__( 'Imported "%s" (%s)', 'jet-data-importer' ),
+			__( 'Imported "%s" (%s)', 'crocoblock-wizard' ),
 			$data['post_title'],
 			$post_type_object->labels->singular_name
 		) );
 		$this->logger->debug( sprintf(
-			__( 'Post %d remapped to %d', 'jet-data-importer' ),
+			__( 'Post %d remapped to %d', 'crocoblock-wizard' ),
 			$original_id,
 			$post_id
 		) );
@@ -1702,7 +1703,7 @@ class WXR_Importer extends \WP_Importer {
 
 		if ( is_wp_error( $user_id ) ) {
 			$this->logger->error( sprintf(
-				__( 'Failed to import user "%s"', 'jet-data-importer' ),
+				__( 'Failed to import user "%s"', 'crocoblock-wizard' ),
 				$userdata['user_login']
 			) );
 			$this->logger->debug( $user_id->get_error_message() );
@@ -1724,12 +1725,12 @@ class WXR_Importer extends \WP_Importer {
 		$processed_user_slug[ $original_slug ] = $user_id;
 
 		$this->logger->info( sprintf(
-			__( 'Imported user "%s"', 'jet-data-importer' ),
+			__( 'Imported user "%s"', 'crocoblock-wizard' ),
 			$userdata['user_login']
 		) );
 
 		$this->logger->debug( sprintf(
-			__( 'User %d remapped to %d', 'jet-data-importer' ),
+			__( 'User %d remapped to %d', 'crocoblock-wizard' ),
 			$original_id,
 			$user_id
 		) );
@@ -1830,7 +1831,7 @@ class WXR_Importer extends \WP_Importer {
 		$result = wp_insert_term( $data['name'], $data['taxonomy'], $termdata );
 		if ( is_wp_error( $result ) ) {
 			$this->logger->warning( sprintf(
-				__( 'Failed to import %s %s', 'jet-data-importer' ),
+				__( 'Failed to import %s %s', 'crocoblock-wizard' ),
 				$data['taxonomy'],
 				$data['name']
 			) );
@@ -1866,12 +1867,12 @@ class WXR_Importer extends \WP_Importer {
 		$this->cache->update( 'terms', $remap_terms, 'requires_remapping' );
 
 		$this->logger->info( sprintf(
-			__( 'Imported "%s" (%s)', 'jet-data-importer' ),
+			__( 'Imported "%s" (%s)', 'crocoblock-wizard' ),
 			$data['name'],
 			$data['taxonomy']
 		) );
 		$this->logger->debug( sprintf(
-			__( 'Term %d remapped to %d', 'jet-data-importer' ),
+			__( 'Term %d remapped to %d', 'crocoblock-wizard' ),
 			$original_id,
 			$term_id
 		) );
@@ -2299,7 +2300,7 @@ class WXR_Importer extends \WP_Importer {
 		$info = wp_check_filetype( $upload['file'] );
 
 		if ( ! $info ) {
-			return new \WP_Error( 'attachment_processing_error', __( 'Invalid file type', 'jet-data-importer' ) );
+			return new \WP_Error( 'attachment_processing_error', __( 'Invalid file type', 'crocoblock-wizard' ) );
 		}
 
 		$post['post_mime_type'] = $info['type'];
@@ -2379,7 +2380,7 @@ class WXR_Importer extends \WP_Importer {
 			@unlink( $upload['file'] );
 			return new \WP_Error(
 				'import_file_error',
-				__( 'Zero size file downloaded', 'jet-data-importer' )
+				__( 'Zero size file downloaded', 'crocoblock-wizard' )
 			);
 		}
 
@@ -2388,7 +2389,7 @@ class WXR_Importer extends \WP_Importer {
 			@unlink( $upload['file'] );
 			return new \WP_Error(
 				'import_file_error',
-				sprintf( __( 'Remote file is too large, limit is %s', 'jet-data-importer' ), size_format( $max_size ) )
+				sprintf( __( 'Remote file is too large, limit is %s', 'crocoblock-wizard' ), size_format( $max_size ) )
 			);
 		}
 
@@ -2536,6 +2537,10 @@ class WXR_Importer extends \WP_Importer {
 		$this->cache->update( 'terms', $existing_terms, 'exists' );
 	}
 
+	public function close_reader() {
+		return $this->reader->close();
+	}
+
 	/**
 	 * Get a stream reader for the file.
 	 *
@@ -2557,11 +2562,15 @@ class WXR_Importer extends \WP_Importer {
 		}
 
 		if ( ! $status ) {
-			return new \WP_Error( 'wxr_importer.cannot_parse', __( 'Could not open the file for parsing', 'jet-data-importer' ) );
+			return new \WP_Error( 'wxr_importer.cannot_parse', __( 'Could not open the file for parsing', 'crocoblock-wizard' ) );
 		}
 
 		return $reader;
 
+	}
+
+	public function __destruct() {
+		$this->close_reader();
 	}
 
 }

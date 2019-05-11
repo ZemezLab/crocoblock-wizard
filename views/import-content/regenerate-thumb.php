@@ -1,0 +1,1 @@
+<cbw-progress :value="progress"></cbw-progress>

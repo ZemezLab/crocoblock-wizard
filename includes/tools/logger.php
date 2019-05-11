@@ -1,8 +1,6 @@
 <?php
 namespace Crocoblock_Wizard\Tools;
 
-use Crocoblock_Wizard\Plugin as Plugin;
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -12,6 +10,12 @@ if ( ! defined( 'WPINC' ) ) {
  * Define logger class
  */
 class Logger {
+
+	private $cache;
+
+	public function __construct( $cache_handler = null ) {
+		$this->cache = $cache_handler;
+	}
 
 	/**
 	 * Add warning message into log.
@@ -72,7 +76,7 @@ class Logger {
 	 */
 	public function add_message( $message = null, $type = 'info' ) {
 
-		$messages = Plugin::instance()->cache->get( $type, 'log' );
+		$messages = $this->cache->get( $type, 'log' );
 
 		if ( empty( $messages ) || ! is_array( $messages ) ) {
 			$messages = array();
@@ -80,7 +84,7 @@ class Logger {
 
 		$messages[] = $message;
 
-		Plugin::instance()->cache->update( $type, $messages, 'log' );
+		$this->cache->update( $type, $messages, 'log' );
 	}
 
 }

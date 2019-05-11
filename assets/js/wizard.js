@@ -65,6 +65,16 @@
 		}
 	} );
 
+	Vue.component( 'cbw-progress-alt', {
+		template: '#cbw_progress_alt',
+		props: {
+			value: {
+				type: Number,
+				default: 0,
+			},
+		},
+	} );
+
 	Vue.component( 'cbw-main', {
 		template: '#cbw_main',
 		data: function() {

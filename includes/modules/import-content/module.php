@@ -13,6 +13,7 @@ class Module extends Module_Base {
 
 	private $import_file = null;
 	private $importer    = null;
+	private $chunk_size  = null;
 
 	/**
 	 * Returns module slug
@@ -61,6 +62,14 @@ class Module extends Module_Base {
 		$config['wrapper_css']      = 'vertical-flex';
 		$config['is_uploaded']      = $is_uploaded;
 		$config['skin']             = $skin;
+		$config['summary']          = array(
+			'posts'    => __( 'Posts', 'crocoblock-wizard' ),
+			'authors'  => __( 'Authors', 'crocoblock-wizard' ),
+			'media'    => __( 'Media', 'crocoblock-wizard' ),
+			'comments' => __( 'Comments', 'crocoblock-wizard' ),
+			'terms'    => __( 'Terms', 'crocoblock-wizard' ),
+			'tables'   => __( 'Custom DB Tables', 'crocoblock-wizard' ),
+		);
 		$config['prev_step']        = add_query_arg(
 			array(
 				'skin'        => $skin,
@@ -68,7 +77,7 @@ class Module extends Module_Base {
 			),
 			Plugin::instance()->dashboard->page_url( 'install-plugins' )
 		);
-		$config['next_step']        = '#';
+		$config['next_step']        = Plugin::instance()->dashboard->page_url( 'onboarding' );
 		$config['import_types']     = array(
 			array(
 				'value'       => 'append',
@@ -94,23 +103,6 @@ class Module extends Module_Base {
 	}
 
 	/**
-	 * Returns rest of registered plugins
-	 *
-	 * @return [type] [description]
-	 */
-	public function get_rest_of_plugins( $skin_plugins, $all_plugins ) {
-
-		array_walk( $all_plugins, function( &$plugin, $slug ) use ( $skin_plugins ) {
-			if ( in_array( $slug, $skin_plugins ) ) {
-				$plugin = false;
-			}
-		} );
-
-		return array_keys( array_filter( $all_plugins ) );
-
-	}
-
-	/**
 	 * Add license component template
 	 *
 	 * @param  array  $templates [description]
@@ -119,12 +111,193 @@ class Module extends Module_Base {
 	 */
 	public function page_templates( $templates = array(), $subpage = '' ) {
 
-		$templates['content']        = 'import-content/main';
-		$templates['select_type']    = 'import-content/select-type';
-		$templates['import_content'] = 'import-content/import-content';
+		$templates['content']          = 'import-content/main';
+		$templates['select_type']      = 'import-content/select-type';
+		$templates['import_content']   = 'import-content/import-content';
+		$templates['regenerate_thumb'] = 'import-content/regenerate-thumb';
 		return $templates;
 
 	}
+
+	public function chunk_size() {
+
+		if ( ! $this->chunk_size ) {
+			$this->chunk_size = Plugin::instance()->settings->get( array( 'import', 'chunk_size' ) );
+		}
+
+		return $this->chunk_size;
+
+	}
+
+	/**
+	 * Returns true if regenerate thumbnails step is required, false - if not.
+	 *
+	 * @return boolean
+	 */
+	private function is_regenerate_required() {
+
+		$count = wp_count_attachments();
+		$count = (array) $count;
+
+		if ( empty( $count ) ) {
+			return false;
+		}
+
+		$total = 0;
+
+		if ( ! empty( $count['image/jpeg'] ) ) {
+			$total += absint( $count['image/jpeg'] );
+		}
+
+		if ( ! empty( $count['image/png'] ) ) {
+			$total += absint( $count['image/png'] );
+		}
+
+		if ( 0 === $total ) {
+			return false;
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * Process single chunk import
+	 *
+	 * @return void
+	 */
+	public function import_chunk() {
+
+		$importer = $this->get_importer();
+
+		if ( empty( $_REQUEST['chunk'] ) ) {
+
+			$importer->cache->write_cache();
+			wp_send_json_error( array(
+				'message' => esc_html__( 'Chunk number is missing in request', 'crocoblock-wizard' ),
+			) );
+		}
+
+		$chunk  = intval( $_REQUEST['chunk'] );
+		$chunks = $importer->cache->get( 'chunks_count' );
+
+		if ( ! $chunks ) {
+			wp_send_json_error( array(
+				'message' => __( 'Can`t calculate import steps. Please relaod page and try again.', $domain = 'default' )
+			) );
+		}
+
+		new Importer_Extensions();
+
+		switch ( $chunk ) {
+
+			case $chunks:
+
+				// Process last step (remapping and finalizing)
+				$this->remap_all( $importer );
+				$importer->cache->clear_cache();
+				flush_rewrite_rules();
+
+				$processed = $importer->cache->get( 'processed_summary' );
+
+				/**
+				 * Hook on last import chunk
+				 */
+				do_action( 'crocoblock-wizard/import/finish' );
+
+				$data = array(
+					'isLast'     => true,
+					'complete'   => 100,
+					'processed'  => $processed,
+					'regenerate' => $this->is_regenerate_required(),
+				);
+
+				// Remove XML file for remote files after successfull import.
+				$file = $this->get_import_file();
+
+				$importer->close_reader();
+
+				if ( $file ) {
+					unlink( $file );
+				}
+
+				break;
+
+			default:
+
+				// Process regular step
+				$offset = $this->chunk_size() * ( $chunk - 1 );
+
+				$importer->chunked_import( $this->chunk_size(), $offset );
+
+				$processed = $importer->cache->get( 'processed_summary' );
+
+				/**
+				 * Hook on last import chunk
+				 */
+				do_action( 'crocoblock-wizard/import/chunk', $chunk );
+
+				$data = array(
+					'action'    => 'jet-data-import-chunk',
+					'chunk'     => $chunk + 1,
+					'complete'  => round( ( $chunk * 100 ) / $chunks ),
+					'processed' => $processed,
+				);
+
+				break;
+		}
+
+		$importer->cache->write_cache();
+		wp_send_json_success( $data );
+
+	}
+
+	/**
+	 * Remap all required data after installation completed
+	 *
+	 * @return void
+	 */
+	public function remap_all( $importer ) {
+
+		//require_once jdi()->path( 'includes/import/class-jet-data-importer-remap-callbacks.php' );
+
+		/**
+		 * Attach all posts remapping related callbacks to this hook
+		 *
+		 * @param  array Posts remapping data. Format: old_id => new_id
+		 */
+		do_action( 'jet-data-importer/import/remap-posts', $importer->cache->get( 'posts', 'mapping' ) );
+
+		/**
+		 * Attach all terms remapping related callbacks to this hook
+		 *
+		 * @param  array Terms remapping data. Format: old_id => new_id
+		 */
+		do_action( 'jet-data-importer/import/remap-terms', $importer->cache->get( 'term_id', 'mapping' ) );
+
+		/**
+		 * Attach all comments remapping related callbacks to this hook
+		 *
+		 * @param  array COmments remapping data. Format: old_id => new_id
+		 */
+		do_action( 'jet-data-importer/import/remap-comments', $importer->cache->get( 'comments', 'mapping' ) );
+
+		/**
+		 * Attach all posts_meta remapping related callbacks to this hook
+		 *
+		 * @param  array posts_meta data. Format: new_id => related keys array
+		 */
+		do_action( 'jet-data-importer/import/remap-posts-meta', $importer->cache->get( 'posts_meta', 'requires_remapping' ) );
+
+		/**
+		 * Attach all terms meta remapping related callbacks to this hook
+		 *
+		 * @param  array terms meta data. Format: new_id => related keys array
+		 */
+		do_action( 'jet-data-importer/import/remap-terms-meta', $importer->cache->get( 'terms_meta', 'requires_remapping' ) );
+
+	}
+
 
 	/**
 	 * Returns information about current import session
@@ -136,11 +309,20 @@ class Module extends Module_Base {
 		$importer = $this->get_importer();
 		$importer->prepare_import();
 
-		$total   = $importer->cache->get( 'total_count' );
-		$summary = $importer->cache->get( 'import_summary' );
+		$total        = $importer->cache->get( 'total_count' );
+		$summary      = $importer->cache->get( 'import_summary' );
+		$chunks_count = ceil( intval( $total ) / $this->chunk_size() );
 
-		var_dump( $total );
-		var_dump( $summary );
+		// Adds final step with ID and URL remapping. Sometimes it's expensive step so its separated
+		$chunks_count++;
+
+		$importer->cache->update( 'chunks_count', $chunks_count );
+		$importer->cache->write_cache();
+
+		wp_send_json_success( array(
+			'total'   => $total,
+			'summary' => $summary,
+		) );
 
 	}
 

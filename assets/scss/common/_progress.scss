@@ -30,3 +30,20 @@
 		text-align: right;
 	}
 }
+
+.cbw-progress-alt {
+	&__bar {
+		width: 100%;
+	}
+	&__done {
+		height: 14px;
+		border-radius: 7px;
+		min-width: 14px;
+		max-width: 100%;
+		background: $color__accent;
+		box-shadow: 0px 1px 4px rgba(35, 40, 45, 0.24);
+		.cbw-progress-alt--complete & {
+			background: $color__success;
+		}
+	}
+}
