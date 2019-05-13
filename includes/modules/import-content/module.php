@@ -3,6 +3,8 @@ namespace Crocoblock_Wizard\Modules\Import_Content;
 
 use Crocoblock_Wizard\Base\Module as Module_Base;
 use Crocoblock_Wizard\Plugin as Plugin;
+use Crocoblock_Wizard\Tools\Cache as Cache;
+use Crocoblock_Wizard\Tools\DB_Tables as DB_Tables;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -62,6 +64,7 @@ class Module extends Module_Base {
 		$config['wrapper_css']      = 'vertical-flex';
 		$config['is_uploaded']      = $is_uploaded;
 		$config['skin']             = $skin;
+		$config['regenerate_chunk'] = Plugin::instance()->settings->get( array( 'import', 'regenerate_chunk_size' ) );
 		$config['summary']          = array(
 			'posts'    => __( 'Posts', 'crocoblock-wizard' ),
 			'authors'  => __( 'Authors', 'crocoblock-wizard' ),
@@ -115,6 +118,7 @@ class Module extends Module_Base {
 		$templates['select_type']      = 'import-content/select-type';
 		$templates['import_content']   = 'import-content/import-content';
 		$templates['regenerate_thumb'] = 'import-content/regenerate-thumb';
+		$templates['clear_content']    = 'import-content/clear-content';
 		return $templates;
 
 	}
@@ -158,6 +162,50 @@ class Module extends Module_Base {
 		}
 
 		return true;
+
+	}
+
+	/**
+	 * Clear content before import
+	 *
+	 * @return [type] [description]
+	 */
+	public function clear_content() {
+
+		$cache = new Cache();
+
+		if ( empty( $_REQUEST['password'] ) ) {
+
+			$cache->write_cache();
+
+			wp_send_json_error( array(
+				'message' => esc_html__( 'Password is empty', 'jet-data-importer' ),
+			) );
+
+		}
+
+		$password = esc_attr( $_REQUEST['password'] );
+		$user_id  = get_current_user_id();
+		$data     = get_userdata( $user_id );
+
+		if ( wp_check_password( $password, $data->user_pass, $user_id ) ) {
+
+			DB_Tables::clear_content();
+
+			$cache->write_cache();
+
+			wp_send_json_success( array(
+				'message' => esc_html__( 'Content successfully removed', 'jet-data-importer' ),
+			) );
+
+		} else {
+
+			$cache->write_cache();
+
+			wp_send_json_error( array(
+				'message' => esc_html__( 'Entered password is invalid', 'jet-data-importer' ),
+			) );
+		}
 
 	}
 
@@ -248,6 +296,91 @@ class Module extends Module_Base {
 		}
 
 		$importer->cache->write_cache();
+		wp_send_json_success( $data );
+
+	}
+
+	/**
+	 * Process single regenerate chunk
+	 *
+	 * @return void
+	 */
+	public function regenerate_chunk() {
+
+		$required = array(
+			'offset',
+			'step',
+			'total',
+		);
+
+		$cache = new Cache();
+
+		foreach ( $required as $field ) {
+
+			if ( ! isset( $_REQUEST[ $field ] ) ) {
+
+				$cache->write_cache();
+
+				wp_send_json_error( array(
+					'message' => sprintf(
+						esc_html__( '%s is missing in request', 'jet-data-importer' ), $field
+					),
+				) );
+			}
+
+		}
+
+		$offset = (int) $_REQUEST['offset'];
+		$step   = (int) $_REQUEST['step'];
+		$total  = (int) $_REQUEST['total'];
+
+		if ( empty( $total ) ) {
+
+			$count = wp_count_attachments();
+			$count = (array) $count;
+
+			$total = 0;
+
+			foreach ( $count as $mime => $num ) {
+
+				if ( false === strpos( $mime, 'image' ) ) {
+					continue;
+				}
+
+				$total = $total + (int) $num;
+			}
+
+		}
+
+		$is_last = ( $total * $step <= $offset + $step ) ? true : false;
+
+		$attachments = get_posts( array(
+			'post_type'   => 'attachment',
+			'numberposts' => $step,
+			'offset'      => $offset,
+		) );
+
+		if ( ! empty( $attachments ) ) {
+			foreach ( $attachments as $attachment ) {
+
+				$id       = $attachment->ID;
+				$file     = get_attached_file( $id );
+				$metadata = wp_generate_attachment_metadata( $id, $file );
+
+				wp_update_attachment_metadata( $id, $metadata );
+			}
+		}
+
+		$data = array(
+			'offset'   => $offset + $step,
+			'step'     => $step,
+			'total'    => $total,
+			'isLast'   => $is_last,
+			'complete' => round( ( $offset + $step ) * 100 / ( $total * $step ) ),
+		);
+
+		$cache->write_cache();
+
 		wp_send_json_success( $data );
 
 	}
@@ -449,6 +582,10 @@ class Module extends Module_Base {
 
 		if ( ! $file ) {
 			return false;
+		}
+
+		if ( ! class_exists( '\\WP_Importer' ) ) {
+			require_once ABSPATH . '/wp-admin/includes/class-wp-importer.php';
 		}
 
 		return $this->importer = new WXR_Importer( $options, $file );

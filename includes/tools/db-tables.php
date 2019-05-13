@@ -29,10 +29,9 @@ class DB_Tables {
 	/**
 	 * Check if passed table is exists in database
 	 *
-	 * @param  string  $table Table name.
 	 * @return boolean
 	 */
-	public static function clear_content( $table = '' ) {
+	public static function clear_content() {
 
 		if ( ! current_user_can( 'delete_users' ) ) {
 			return;

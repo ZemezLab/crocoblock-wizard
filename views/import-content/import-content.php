@@ -1,4 +1,8 @@
 <div class="cbw-import-content">
+	<cbw-clear-content
+		v-if="'replace' === importType && ready"
+		@content-cleared="startImport"
+	></cbw-clear-content>
 	<cbw-progress :value="progress"></cbw-progress>
 	<div class="cbw-import-summary">
 		<table>

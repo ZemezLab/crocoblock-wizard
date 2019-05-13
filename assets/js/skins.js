@@ -10,6 +10,7 @@
 				allowedTypes: window.CBWPageConfig.allowed_types,
 				uploadedSkin: false,
 				uploadedSkinSlug: false,
+				backURL: window.CBWPageConfig.default_back,
 			};
 		},
 		methods: {

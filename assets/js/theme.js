@@ -18,14 +18,14 @@
 
 				var config = window.CBWPageConfig;
 
+				this.loading = true;
+
 				switch ( this.nextStep ) {
 					case 'parent':
 						window.location = config.next_step;
 						break;
 
 					case 'child':
-
-						self.loading = true;
 
 						this.recursiveRequest(
 							{

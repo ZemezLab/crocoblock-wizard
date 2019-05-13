@@ -55,7 +55,7 @@
 	.cx-vui-button {
 		&__content {
 			svg {
-				margin: 0 7px 0 0;
+				margin: -1px 7px 0 0;
 			}
 			span + svg {
 				margin: -1px 0 0 7px;
@@ -63,7 +63,10 @@
 		}
 	}
 	.cx-vui-tabs {
-		margin: 0 -40px;
+		margin: 0 -40px 20px;
+	}
+	&__back {
+		margin: 0 0 20px;
 	}
 }
 

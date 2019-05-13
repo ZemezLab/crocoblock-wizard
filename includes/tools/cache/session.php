@@ -26,6 +26,11 @@ class Session extends Base {
 	 * Constructor for the class
 	 */
 	public function __construct( $base_group ) {
+
+		if ( ! session_id() ) {
+			session_start();
+		}
+
 		$this->base_group = $base_group;
 	}
 

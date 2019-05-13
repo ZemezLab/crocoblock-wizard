@@ -50,6 +50,7 @@ class Module extends Module_Base {
 		$config['cover']          = false;
 		$config['body']           = 'cbw-skins';
 		$config['wrapper_css']    = 'panel-wide';
+		$config['default_back']   = Plugin::instance()->dashboard->page_url( 'install-theme' );
 		$config['skins_by_types'] = Plugin::instance()->skins->get_skins_by_types();
 		$config['allowed_types']  = Plugin::instance()->skins->get_types();
 		$config['upload_hook']    = array(

@@ -5,7 +5,7 @@
 	<cx-vui-tabs
 		:invert="true"
 		:in-panel="true"
-		:value="'upload-skin'"
+		value="skin"
 	>
 		<cx-vui-tabs-panel
 			v-for="( typeLabel, typeSlug ) in allowedTypes"
@@ -23,8 +23,8 @@
 			</div>
 		</cx-vui-tabs-panel>
 		<cx-vui-tabs-panel
-			:name="'upload-skin'"
-			:label="'<?php _e( 'Upload Yours', 'crocoblock-wizard' ); ?>'"
+			name="upload-skin"
+			label="<?php _e( 'Upload Yours', 'crocoblock-wizard' ); ?>"
 		>
 			<div
 				class="cbw-uploaded-skin"
@@ -51,4 +51,11 @@
 			></cbw-skin-uploader>
 		</cx-vui-tabs-panel>
 	</cx-vui-tabs>
+	<cx-vui-button
+		tag-name="a"
+		:url="backURL"
+	>
+		<svg slot="label" width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.67089 0L-4.76837e-07 6L5.67089 12L7 10.5938L2.65823 6L7 1.40625L5.67089 0Z" fill="#007CBA"/></svg>
+		<span slot="label"><?php _e( 'Back', 'crocoblock-wizard' ); ?></span>
+	</cx-vui-button>
 </div>

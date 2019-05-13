@@ -24,10 +24,10 @@
 		},
 		mounted: function() {
 
-			var importType = storage.getItem( 'cbwImortType' );
+			var curretStep = storage.getItem( 'cbw-import-content-step' );
 
-			if ( importType && ( 'append' === importType || 'replace' === importType ) ) {
-				this.currentComponent = 'cbw-import-content';
+			if ( curretStep ) {
+				this.currentComponent = curretStep;
 				this.onComponentSwitch( this.currentComponent );
 			}
 
@@ -54,7 +54,7 @@
 							value: 'cbw-import-content',
 						};
 
-						storage.removeItem( 'cbwImortType' );
+						storage.removeItem( 'cbw-import-type' );
 						this.nextStepAllowed = false;
 
 						break;
@@ -115,16 +115,87 @@
 				} else {
 					this.currentComponent = this.prevStep.value;
 					this.onComponentSwitch( this.currentComponent );
+
+					storage.setItem( 'cbw-import-content-step', this.currentComponent );
 				}
 			},
 			goToNextStep: function() {
+
 				if ( 'url' === this.nextStep.type ) {
 					window.location = this.nextStep.value;
 				} else {
 					this.currentComponent = this.nextStep.value;
 					this.onComponentSwitch( this.currentComponent );
+
+					storage.setItem( 'cbw-import-content-step', this.currentComponent );
+
 				}
 			},
+		}
+	} );
+
+	Vue.component( 'cbw-clear-content', {
+		template: '#cbw_clear_content',
+		data: function() {
+			return {
+				password: '',
+				loading: false,
+				error: false,
+				success: false,
+				message: '',
+			};
+		},
+		methods: {
+			clearContent: function() {
+
+				var self = this;
+
+				self.loading = true;
+
+				this.xhr = jQuery.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						action: window.CBWPageConfig.action_mask.replace( /%module%/, window.CBWPageConfig.module ),
+						handler: 'clear_content',
+						password: self.password,
+						nonce: window.CBWPageConfig.nonce,
+					},
+				}).done( function( response ) {
+
+					if ( response.success ) {
+
+						self.success = true;
+						self.loading = false;
+						self.error   = false;
+						self.message = response.data.message;
+
+						self.$emit( 'content-cleared' );
+
+					} else {
+						self.error   = true;
+						self.message = response.data.message;
+					}
+
+				}).fail( function( xhr, textStatus, error ) {
+					self.error = true;
+					lf.message = textStatus;
+				} );
+
+			},
+			getSummaryProgress: function( key ) {
+
+				var current = this.summaryCurrent[ key ],
+					total   = this.summaryTotal[ key ];
+
+				if ( ! total ) {
+					return 0;
+				}
+
+				return Math.ceil( current * 100 / total );
+
+			}
 		}
 	} );
 
@@ -133,17 +204,18 @@
 		data: function() {
 			return {
 				progress: 0,
+				step: window.CBWPageConfig.regenerate_chunk,
 			};
 		},
 		mounted: function() {
-			this.regenerateChunk( 1 );
+			this.regenerateChunk( this.step, 0, 0 );
 		},
 		methods: {
-			regenerateChunk: function( chunk ) {
+			regenerateChunk: function( step, offset, total ) {
 
 				var self = this;
 
-				if ( ! chunk ) {
+				if ( ! step ) {
 					return;
 				}
 
@@ -154,41 +226,22 @@
 					data: {
 						action: window.CBWPageConfig.action_mask.replace( /%module%/, window.CBWPageConfig.module ),
 						handler: 'regenerate_chunk',
-						skin: window.CBWPageConfig.skin,
-						chunk: chunk,
-						is_uploaded: window.CBWPageConfig.is_uploaded,
+						step: step,
+						offset: offset,
+						total: total,
 						nonce: window.CBWPageConfig.nonce,
 					},
 				}).done( function( response ) {
 
 					if ( response.success ) {
 
-						if ( response.data.processed ) {
-
-							var parts = [ 'posts', 'authors', 'media', 'comments', 'terms', 'tables' ];
-
-							parts.forEach( function( part ) {
-
-								var newVal = response.data.processed[ part ];
-
-								if ( newVal > self.summaryTotal[ part ] ) {
-									newVal = self.summaryTotal[ part ];
-								}
-
-								self.$set( self.summaryCurrent, part, response.data.processed[ part ] );
-							} );
-
-						}
-
-						if ( response.data.chunk ) {
-							self.importChunk( response.data.chunk );
-						}
-
 						if ( response.data.complete ) {
 							self.progress = response.data.complete;
 						}
 
-						if ( response.data.isLast ) {
+						if ( ! response.data.isLast ) {
+							self.regenerateChunk( response.data.step, response.data.offset, response.data.total );
+						} else {
 							self.$emit( 'next-allowed', true );
 						}
 
@@ -224,8 +277,10 @@
 				nextStep: '',
 				summaryInfo: window.CBWPageConfig.summary,
 				progress: 0,
+				ready: false,
 				total: 0,
 				error: '',
+				importType: storage.getItem( 'cbw-import-type' ),
 				summaryTotal: {
 					posts: 0,
 					authors: 0,
@@ -249,6 +304,10 @@
 
 			var self = this;
 
+			if ( ! self.importType ) {
+				self.importType = 'append';
+			}
+
 			this.xhr = jQuery.ajax({
 				url: ajaxurl,
 				type: 'GET',
@@ -263,10 +322,14 @@
 			}).done( function( response ) {
 
 				if ( response.success ) {
+
+					self.ready        = true;
 					self.total        = response.data.total;
 					self.summaryTotal = response.data.summary;
 
-					self.importChunk( 1 );
+					if ( 'append' === self.importType ) {
+						self.importChunk( 1 );
+					}
 
 				} else {
 					self.error = textStatus;
@@ -277,6 +340,9 @@
 			} );
 		},
 		methods: {
+			startImport: function() {
+				this.importChunk( 1 );
+			},
 			importChunk: function( chunk ) {
 
 				var self = this;
@@ -365,7 +431,7 @@
 		methods: {
 			storeImportType: function( importType ) {
 				this.$emit( 'next-allowed', true );
-				storage.setItem( 'cbwImortType', importType );
+				storage.setItem( 'cbw-import-type', importType );
 			}
 		}
 	} );

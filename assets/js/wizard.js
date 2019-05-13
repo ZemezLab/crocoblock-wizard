@@ -83,6 +83,7 @@
 				cover: window.CBWPageConfig.cover,
 				wrapperCSS: window.CBWPageConfig.wrapper_css,
 				body: window.CBWPageConfig.body,
+				defaultBackURL: window.CBWPageConfig.default_back,
 			};
 		}
 	} );

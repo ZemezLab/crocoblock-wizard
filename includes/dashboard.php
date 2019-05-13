@@ -86,13 +86,14 @@ class Dashboard {
 			'crocoblock-wizard',
 			'CBWPageConfig',
 			apply_filters( 'crocoblock-wizard/dashboard/js-page-config', array(
-				'title'       => false,
-				'cover'       => false,
-				'wrapper_css' => false,
-				'body'        => false,
-				'action_mask' => $this->page_slug . '/%module%',
-				'module'      => $this->get_subpage(),
-				'nonce'       => wp_create_nonce( $this->page_slug ),
+				'title'        => false,
+				'cover'        => false,
+				'wrapper_css'  => false,
+				'body'         => false,
+				'action_mask'  => $this->page_slug . '/%module%',
+				'module'       => $this->get_subpage(),
+				'nonce'        => wp_create_nonce( $this->page_slug ),
+				'default_back' => false,
 			), $this->get_subpage() )
 		);
 
