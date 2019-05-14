@@ -89,3 +89,35 @@
 		padding: 5px 0 0 0;
 	}
 }
+
+.cx-vui-component--fields-group.cx-vui-component {
+	width: 100%;
+	border-bottom: 1px solid $color__border-in-panel;
+	padding: 20px 0;
+	.cx-vui-component {
+		&__meta {
+			flex: 0 0 300px;
+		}
+		&__control {
+			flex: 1 1 auto;
+			margin: 0;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			.include-switcher {
+				flex: 0 0 15%;
+				box-sizing: border-box;
+				padding: 0 0 0 20px;
+			}
+			.source-select {
+				flex: 0 0 35%;
+				padding: 0 20px;
+				box-sizing: border-box;
+			}
+			.zip-url {
+				flex: 0 0 50%;
+				box-sizing: border-box;
+			}
+		}
+	}
+}

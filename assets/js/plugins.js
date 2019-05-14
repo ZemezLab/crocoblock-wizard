@@ -6,7 +6,7 @@
 		template: '#cbw_plugins',
 		data: function() {
 			return {
-				isUpload: window.CBWPageConfig.is_upload,
+				isUpload: window.CBWPageConfig.is_uploaded,
 				skin: window.CBWPageConfig.skin,
 				currentComponent: 'cbw-select-plugins',
 				pluginsToInstall: window.CBWPageConfig.rec_plugins,
@@ -103,6 +103,8 @@
 						action: window.CBWPageConfig.action_mask.replace( /%module%/, window.CBWPageConfig.module ),
 						handler: 'install_plugin',
 						plugin: plugin,
+						skin: window.CBWPageConfig.skin,
+						is_uploaded: window.CBWPageConfig.is_uploaded,
 						nonce: window.CBWPageConfig.nonce,
 					},
 				}).done( function( response ) {

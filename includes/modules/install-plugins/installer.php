@@ -15,9 +15,9 @@ class Installer {
 	private $log;
 	private $installer;
 
-	public function __construct( $slug ) {
+	public function __construct( $slug, $skin = null, $is_uploaded = false ) {
 
-		$plugins = Plugin::instance()->settings->get_all_plugins();
+		$plugins = Plugin::instance()->skins->get_all_plugins( $skin, $is_uploaded );
 
 		if ( ! isset( $plugins[ $slug ] ) ) {
 

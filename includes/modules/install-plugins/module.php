@@ -49,7 +49,7 @@ class Module extends Module_Base {
 		$skin         = isset( $_GET['skin'] ) ? $_GET['skin'] : false;
 		$is_uploaded  = isset( $_GET['is_uploaded'] ) ? $_GET['is_uploaded'] : false;
 		$skin_plugins = Plugin::instance()->skins->get_skin_plugins( $skin, $is_uploaded );
-		$all_plugins  = Plugin::instance()->settings->get_all_plugins();
+		$all_plugins  = Plugin::instance()->skins->get_all_plugins( $skin, $is_uploaded );
 
 		$config['title']         = __( 'Configure plugins', 'crocoblock-wizard' );
 		$config['install_title'] = __( 'Install Plugins', 'crocoblock-wizard' );
@@ -120,9 +120,11 @@ class Module extends Module_Base {
 			);
 		}
 
-		$plugin    = isset( $_REQUEST['plugin'] ) ? esc_attr( $_REQUEST['plugin'] ) : false;
-		$installer = new Installer( $plugin );
-		$installed = $installer->do_plugin_install();
+		$plugin      = isset( $_REQUEST['plugin'] ) ? esc_attr( $_REQUEST['plugin'] ) : false;
+		$skin        = isset( $_REQUEST['skin'] ) ? esc_attr( $_REQUEST['skin'] ) : false;
+		$is_uploaded = isset( $_REQUEST['is_uploaded'] ) ? esc_attr( $_REQUEST['is_uploaded'] ) : false;
+		$installer   = new Installer( $plugin );
+		$installed   = $installer->do_plugin_install();
 
 		if ( ! $installed ) {
 			wp_send_json_error( array( 'message' => $installer->get_log() ) );

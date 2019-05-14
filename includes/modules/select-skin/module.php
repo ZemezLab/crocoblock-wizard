@@ -110,13 +110,14 @@ class Module extends Module_Base {
 		$settings = ob_get_clean();
 		$settings = json_decode( $settings, true );
 
-		if ( empty( $settings ) || ! isset( $settings['name'] ) || ! isset( $settings['slug'] )  || ! isset( $settings['settings'] ) ) {
+		if ( empty( $settings ) || ! isset( $settings['name'] ) || ! isset( $settings['slug'] ) ) {
 
 			$uploader->delete_skin();
 
 			wp_send_json_error( array(
 				'message' => __( 'Incorrect settings file format', 'crocoblock-wizard' ),
 			) );
+
 		}
 
 		wp_send_json_success( array(

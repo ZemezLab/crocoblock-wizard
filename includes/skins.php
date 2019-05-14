@@ -18,6 +18,8 @@ class Skins {
 	 */
 	private $skins = null;
 
+	private $uploaded_skins_settings = array();
+
 	/**
 	 * Holder for current skin data.
 	 *
@@ -182,23 +184,64 @@ class Skins {
 	 */
 	public function get_uploaded_skin_plugins( $slug ) {
 
-		$path = Plugin::instance()->files_manager->base_path() . $slug . '/settings.json';
+		$settings = $this->get_uploaded_skin_settings( $slug );
 
-		if ( ! is_readable( $path ) ) {
+		if ( empty( $settings['plugins'] ) ) {
 			return array();
 		}
 
-		ob_start();
-		include $path;
-		$settings = ob_get_clean();
+		return isset( $settings['plugins'] ) ? array_keys( $settings['plugins'] ) : array();
 
-		$settings = json_decode( $settings, true );
+	}
 
-		if ( empty( $settings['settings'] ) ) {
-			return array();
+	/**
+	 * Returns uploaded skins settings
+	 *
+	 * @param  [type] $slug [description]
+	 * @return [type]       [description]
+	 */
+	public function get_uploaded_skin_settings( $slug ) {
+
+		if ( empty( $this->uploaded_skins_settings[ $slug ] ) ) {
+
+			$path = Plugin::instance()->files_manager->base_path() . $slug . '/settings.json';
+
+			if ( ! is_readable( $path ) ) {
+				return array();
+			}
+
+			ob_start();
+			include $path;
+			$settings = ob_get_clean();
+			$settings = json_decode( $settings, true );
+
+			$this->uploaded_skins_settings[ $slug ] = $settings;
+
 		}
 
-		return isset( $settings['settings']['full'] ) ? $settings['settings']['full'] : array();
+		return $this->uploaded_skins_settings[ $slug ];
+
+	}
+
+	/**
+	 * Returns all registered plugins
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_all_plugins( $skin = null, $is_uploaded = false ) {
+
+		$plugins = Plugin::instance()->settings->get_all_plugins();
+
+		if ( $skin && $is_uploaded ) {
+
+			$settings = $this->get_uploaded_skin_settings( $skin );
+
+			if ( ! empty( $settings['plugins'] ) ) {
+				$plugins = array_merge( $plugins, $settings['plugins'] );
+			}
+		}
+
+		return $plugins;
 
 	}
 

@@ -72,6 +72,10 @@ class Uploader {
 			return false;
 		}
 
+		unlink( $this->zip_path );
+
+		$this->adjust_skin_path();
+
 		$required_files = array(
 			'settings.json',
 			'sample-data.xml',
@@ -108,14 +112,42 @@ class Uploader {
 
 		}
 
-		if ( is_readable( $this->unzip_path . '/thumb.png' ) ) {
-			$base_url = Plugin::instance()->files_manager->base_url();
-			$skin_data['thumb.png'] = $base_url . $this->skin_dir . '/thumb.png';
+		return $skin_data;
+
+	}
+
+	/**
+	 * Ensure unzipped skin dir is equal to skin slug
+	 *
+	 * @return void
+	 */
+	public function adjust_skin_path() {
+
+		Plugin::instance()->files_manager->fs_connect();
+
+		global $wp_filesystem;
+
+		if ( ! is_object( $wp_filesystem ) ) {
+			return false;
 		}
 
-		unlink( $this->zip_path );
+		$settings_file = $this->unzip_path . '/settings.json';
 
-		return $skin_data;
+		if ( ! is_readable( $settings_file ) ) {
+			return false;
+		}
+
+		ob_start();
+		include  $settings_file;
+
+		$settings = ob_get_clean();
+		$settings = json_decode( $settings, true );
+		$slug     = isset( $settings['slug'] ) ? esc_attr( $settings['slug'] ) : false;
+		$to_path  = trailingslashit( dirname( $this->unzip_path ) ) . $slug;
+
+		if ( $wp_filesystem->move( $this->unzip_path, $to_path ) ) {
+			$this->unzip_path = $to_path;
+		}
 
 	}
 
@@ -125,7 +157,15 @@ class Uploader {
 	 * @return void
 	 */
 	public function delete_skin() {
-		unlink( $this->unzip_path );
+
+		global $wp_filesystem;
+
+		if ( ! is_object( $wp_filesystem ) ) {
+			return false;
+		}
+
+		$del = $wp_filesystem->rmdir( $this->unzip_path, true );
+		var_dump( $del );
 	}
 
 	/**
