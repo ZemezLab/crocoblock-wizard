@@ -136,4 +136,9 @@
 		button-style="accent"
 		@click="exportSkin"
 	><span slot="label"><?php _e( 'Export Skin', 'crocoblock-wizard' ); ?></span></cx-vui-button>
+	<div
+		class="cbw-export-error"
+		v-if="error"
+		v-html="errorMessage"
+	></div>
 </div>
