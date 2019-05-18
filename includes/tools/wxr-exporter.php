@@ -256,6 +256,8 @@ class WXR_Exporter {
 			$user_tables = array_unique( array_merge( $user_tables, $instance_tables ) );
 		}
 
+		$user_tables = apply_filters( 'crocoblock-wizard/export/tables-to-export', $user_tables );
+
 		if ( empty( $user_tables ) ) {
 			return;
 		}
