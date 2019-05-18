@@ -237,7 +237,11 @@
 				window.location = window.CBWPageConfig.prev_step;
 			},
 			goToNextStep: function() {
-				this.$emit( 'switch-component', 'cbw-install-plugins' );
+				if ( ! this.pluginsToInstall.length ) {
+					window.location = window.CBWPageConfig.next_step;
+				} else {
+					this.$emit( 'switch-component', 'cbw-install-plugins' );
+				}
 			}
 		}
 	} );

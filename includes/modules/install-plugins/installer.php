@@ -207,6 +207,9 @@ class Installer {
 						),
 						$api_url
 					);
+				} else {
+					$this->log = __( 'Crocoblock plugins can`t be installed without a license', 'crocoblock-wizard' );
+					return false;
 				}
 
 				break;
