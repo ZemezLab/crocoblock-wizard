@@ -8,10 +8,12 @@
 		data: function() {
 			return {
 				licenseKey: null,
+				installationType: null,
 				loading: false,
 				log: {},
 				error: false,
 				errorMessage: '',
+				buttonLabel: window.CBWPageConfig.button_label,
 			};
 		},
 		methods: {

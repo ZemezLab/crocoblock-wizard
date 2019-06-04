@@ -86,14 +86,16 @@ class Dashboard {
 			'crocoblock-wizard',
 			'CBWPageConfig',
 			apply_filters( 'crocoblock-wizard/dashboard/js-page-config', array(
-				'title'        => false,
-				'cover'        => false,
+				'title'        => __( 'Installation Wizard', 'crocoblock-wizard' ),
+				'has_header'   => true,
 				'wrapper_css'  => false,
 				'body'         => false,
+				'prev'         => array( 'to' => false ),
+				'next'         => array( 'to' => false ),
+				'skip'         => array( 'to' => false ),
 				'action_mask'  => $this->page_slug . '/%module%',
 				'module'       => $this->get_subpage(),
 				'nonce'        => wp_create_nonce( $this->page_slug ),
-				'default_back' => false,
 			), $this->get_subpage() )
 		);
 
@@ -119,6 +121,7 @@ class Dashboard {
 			'crocoblock-wizard/dashboard/js-page-templates',
 			array(
 				'main'         => 'common/main',
+				'header'       => 'common/header',
 				'logger'       => 'common/logger',
 				'choices'      => 'common/choices',
 				'progress'     => 'common/progress',
@@ -187,7 +190,7 @@ class Dashboard {
 	 * @return string
 	 */
 	public function get_initial_page() {
-		return 'license';
+		return 'welcome';
 	}
 
 	/**

@@ -26,7 +26,7 @@ add_action( 'plugins_loaded', 'crocoblock_wizard_init' );
  */
 function crocoblock_wizard_init() {
 
-	define( 'CB_WIZARD_VERSION', '1.0.0' );
+	define( 'CB_WIZARD_VERSION', '1.0.0-' . time() );
 
 	define( 'CB_WIZARD__FILE__', __FILE__ );
 	define( 'CB_WIZARD_PLUGIN_BASE', plugin_basename( CB_WIZARD__FILE__ ) );

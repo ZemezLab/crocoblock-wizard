@@ -100,12 +100,7 @@ class Module extends Module_Base {
 			Plugin::instance()->storage->store( 'theme_data', $install_data );
 
 			wp_send_json_success( array(
-				'message'     => esc_html__( 'Your license is activated. Downloading and installing theme...', 'crocoblock-wizard' ),
-				'doNext'      => true,
-				'nextRequest' => array(
-					'action'  => Plugin::instance()->dashboard->page_slug . '/install-theme',
-					'handler' => 'install_parent',
-				),
+				'message' => esc_html__( 'Your license is activated.', 'crocoblock-wizard' ),
 			) );
 		}
 
@@ -120,10 +115,11 @@ class Module extends Module_Base {
 	 */
 	public function page_config( $config = array(), $subpage = '' ) {
 
-		$config['title']       = __( 'Please, enter your license key to start installation', 'crocoblock-wizard' );
-		$config['cover']       = CB_WIZARD_URL . 'assets/img/cover-1.png';
-		$config['body']        = 'cbw-license';
-		$config['wrapper_css'] = 'vertical-flex';
+		$config['title']              = __( 'Installation wizard', 'crocoblock-wizard' );
+		$config['body']               = 'cbw-license';
+		$config['wrapper_css']        = 'license-panel';
+		$config['button_label']       = __( 'Choose the installation type', 'crocoblock-wizard' );
+		$config['ready_button_label'] = __( 'Start Install', 'crocoblock-wizard' );
 
 		return $config;
 

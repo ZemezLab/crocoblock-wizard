@@ -75,15 +75,27 @@
 		},
 	} );
 
+	Vue.component( 'cbw-header', {
+		template: '#cbw_header',
+		props: {
+			title: {
+				type: String,
+				default: '',
+			},
+		},
+	} );
+
 	Vue.component( 'cbw-main', {
 		template: '#cbw_main',
 		data: function() {
 			return {
 				title: window.CBWPageConfig.title,
-				cover: window.CBWPageConfig.cover,
 				wrapperCSS: window.CBWPageConfig.wrapper_css,
 				body: window.CBWPageConfig.body,
-				defaultBackURL: window.CBWPageConfig.default_back,
+				prev: window.CBWPageConfig.prev,
+				next: window.CBWPageConfig.next,
+				skip: window.CBWPageConfig.skip,
+				hasHeader: window.CBWPageConfig.has_header,
 			};
 		}
 	} );

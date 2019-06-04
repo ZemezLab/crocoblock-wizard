@@ -1,0 +1,112 @@
+.cbw-welcome {
+	&__title {
+		font-weight: 500;
+		font-size: 32px;
+		line-height: 140%;
+		color: #fff;
+		padding: 50px 0 0;
+		text-align: center;
+	}
+}
+.cbw-welcome-actions {
+	padding: 45px 20px 100px;
+	max-width: 920px;
+	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+.cbw-welcome-action {
+	order: 1;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	&--featured {
+		width: 100%;
+		flex-direction: column;
+		order: 0;
+		padding: 0 0 70px;
+	}
+	&__icon {
+		margin: 0 20px 0 0;
+		.cbw-welcome-action--featured & {
+			margin: 0 0 5px;
+		}
+	}
+	&__info {
+		.cbw-welcome-action--featured & {
+			text-align: center;
+		}
+	}
+	&__title {
+		font-size: 18px;
+		font-weight: 500;
+		line-height: 140%;
+		padding: 0 0 3px;
+		.cbw-welcome-action--featured & {
+			font-size: 24px;
+			padding: 0 0 15px;
+		}
+	}
+	&__action {
+		&-link {
+			background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2h0PSIxMCIgdmlld0JveD0iMCAwIDYgMTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEuMTM5MjQgMEw2IDVMMS4xMzkyNCAxMEwwIDguODI4MTJMMy43MjE1MiA1TDAgMS4xNzE4OEwxLjEzOTI0IDBaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==);
+			background-position: right center;
+			background-repeat: no-repeat;
+			display: inline-block;
+			font-weight: 500;
+			font-size: 15px;
+			line-height: 18px;
+			text-decoration: none;
+			border-bottom: 2px solid rgba( 255, 255, 255, .4 );
+			padding: 0 10px 0 0;
+			color: #fff;
+			&:hover {
+				color: #fff;
+				border-color: #fff;
+			}
+			.cbw-welcome-action--featured & {
+				border: none;
+				background: #fff;
+				box-shadow: 0px 4px 4px rgba(35, 40, 45, 0.1);
+				border-radius: 4px;
+				color: $color__accent;
+				padding: 12px 10px;
+				width: 120px;
+				box-sizing: border-box;
+				text-align: center;
+			}
+		}
+	}
+}
+
+.cbw-welcome-info {
+	padding: 35px 20px;
+	display: flex;
+	&__item {
+		width: 25%;
+		flex: 0 0 25%;
+		padding: 0 20px;
+		font-size: 13px;
+		line-height: 140%;
+		box-sizing: border-box;
+		color: $color__text;
+		&-title {
+			color: $color__heading;
+			font-weight: 500;
+			font-size: 15px;
+			line-height: 23px;
+			padding: 0 0 8px;
+		}
+		&-desc {
+			ul {
+				margin: 0 0 10px;
+				li {
+					margin: 0 0 0 25px;
+					list-style: disc;
+				}
+			}
+		}
+	}
+}
