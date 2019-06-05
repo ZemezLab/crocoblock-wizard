@@ -4,7 +4,6 @@
 
 	Vue.component( 'cbw-license', {
 		template: '#cbw_license',
-		mixins: [ window.CBWRecursiveRequest ],
 		data: function() {
 			return {
 				licenseKey: null,
@@ -13,13 +12,29 @@
 				log: {},
 				error: false,
 				errorMessage: '',
+				success: false,
+				successMessage: '',
 				buttonLabel: window.CBWPageConfig.button_label,
+				videoURL: '',
+				showVideo: false,
+				tutorials: window.CBWPageConfig.tutorials,
 			};
 		},
 		methods: {
+			maybeChangeBtnLabel: function() {
+				if ( this.licenseKey && this.installationType ) {
+					this.buttonLabel = window.CBWPageConfig.ready_button_label;
+				} else {
+					this.buttonLabel = window.CBWPageConfig.button_label;
+				}
+			},
 			clearErrors: function() {
 				this.error        = false;
 				this.errorMessage = '';
+			},
+			openVideoPopup: function( url ) {
+				this.videoURL  = url;
+				this.showVideo = true;
 			},
 			activateLicense: function() {
 
@@ -53,13 +68,11 @@
 						self.loading      = false;
 					} else {
 
-						if ( response.data.doNext ) {
-							self.recursiveRequest( {
-								key: response.data.nextRequest.handler,
-								status: 'in-progress',
-								message: response.data.message,
-							}, response.data.nextRequest );
-						}
+						self.success        = true;
+						self.successMessage = response.data.message;
+						self.loading        = false;
+
+						window.location = window.CBWPageConfig[ 'redirect_' + self.installationType ];
 
 					}
 

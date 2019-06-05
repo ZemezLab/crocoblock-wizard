@@ -50,6 +50,19 @@
 		box-sizing: border-box;
 		border: 2px solid $color__accent;
 		border-radius: 9px;
+		box-shadow: none;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		&:checked:before {
+			content: "";
+			width: 10px;
+			height: 10px;
+			border-radius: 5px;
+			background: $color__accent;
+			margin: 0;
+		}
 	}
 }
 .cbw-popup-trigger {

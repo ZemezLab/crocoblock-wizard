@@ -32,6 +32,33 @@
 		},
 	} );
 
+	Vue.component( 'cbw-video-popup', {
+		template: '#cbw_video',
+		props: {
+			url: {
+				type: String,
+				default: '',
+			},
+			active: {
+				type: Boolean,
+				default: false,
+			},
+			width: {
+				type: Number,
+				default: 720,
+			},
+			height: {
+				type: Number,
+				default: 405,
+			}
+		},
+		methods: {
+			closePopup: function() {
+				this.$emit( 'close', true );
+			}
+		},
+	} );
+
 	Vue.component( 'cbw-logger', {
 		template: '#cbw_logger',
 		props: {

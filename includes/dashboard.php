@@ -123,6 +123,7 @@ class Dashboard {
 				'main'         => 'common/main',
 				'header'       => 'common/header',
 				'logger'       => 'common/logger',
+				'video'        => 'common/video',
 				'choices'      => 'common/choices',
 				'progress'     => 'common/progress',
 				'progress_alt' => 'common/progress-alt',
@@ -151,14 +152,18 @@ class Dashboard {
 	 * @param  [type] $subpage [description]
 	 * @return [type]          [description]
 	 */
-	public function page_url( $subpage = null ) {
-		return add_query_arg(
-			array(
-				'page' => $this->page_slug,
-				'sub'  => $subpage,
-			),
-			admin_url( 'tools.php' )
+	public function page_url( $subpage = null, $args = array() ) {
+
+		$page_args = array(
+			'page' => $this->page_slug,
+			'sub'  => $subpage,
 		);
+
+		if ( ! empty( $args ) ) {
+			$page_args = array_merge( $page_args, $args );
+		}
+
+		return add_query_arg( $page_args, admin_url( 'tools.php' ) );
 	}
 
 	/**

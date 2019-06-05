@@ -32,7 +32,7 @@ class Module extends Module_Base {
 		wp_enqueue_script(
 			'crocoblock-wizard-license',
 			CB_WIZARD_URL . 'assets/js/license.js',
-			array( 'cx-vue-ui', 'crocoblock-wizard-mixins' ),
+			array( 'cx-vue-ui' ),
 			CB_WIZARD_VERSION,
 			true
 		);
@@ -100,7 +100,7 @@ class Module extends Module_Base {
 			Plugin::instance()->storage->store( 'theme_data', $install_data );
 
 			wp_send_json_success( array(
-				'message' => esc_html__( 'Your license is activated.', 'crocoblock-wizard' ),
+				'message' => esc_html__( 'Your license is activated. Redirecting...', 'crocoblock-wizard' ),
 			) );
 		}
 
@@ -120,6 +120,15 @@ class Module extends Module_Base {
 		$config['wrapper_css']        = 'license-panel';
 		$config['button_label']       = __( 'Choose the installation type', 'crocoblock-wizard' );
 		$config['ready_button_label'] = __( 'Start Install', 'crocoblock-wizard' );
+		$config['tutorials']          = array(
+			'full'    => 'https://www.youtube.com/embed/F00H7xn8PF4',
+			'plugins' => 'https://www.youtube.com/embed/F00H7xn8PF4',
+		);
+		$config['redirect_full']      = Plugin::instance()->dashboard->page_url( 'select-theme' );
+		$config['redirect_plugins']   = Plugin::instance()->dashboard->page_url(
+			'install-plugins',
+			array( 'type' => 'plugins' )
+		);
 
 		return $config;
 

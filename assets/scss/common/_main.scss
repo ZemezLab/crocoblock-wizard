@@ -113,11 +113,19 @@
 			justify-content: space-between;
 		}
 	}
+	&__success-message {
+		color: $color__success;
+		font-size: 13px;
+		line-height: 20px;
+		padding: 5px 0 0 0;
+		margin: 0 0 -10px;
+	}
 	&__error-message {
 		color: $color__error;
 		font-size: 13px;
 		line-height: 20px;
 		padding: 5px 0 0 0;
+		margin: 0 0 -10px;
 	}
 }
 
@@ -150,5 +158,32 @@
 				box-sizing: border-box;
 			}
 		}
+	}
+}
+
+.cbw-video-popup {
+	display: flex;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	z-index: 9999;
+	align-items: center;
+	justify-content: center;
+	&__overlay {
+		background: #282C30;
+		opacity: 0.5;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 1;
+	}
+	&__body {
+		z-index: 2;
+		background: #212121;
+		box-shadow: 0px 4px 20px rgba(35, 40, 45, 0.24);
 	}
 }
