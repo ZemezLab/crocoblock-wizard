@@ -30,19 +30,47 @@
 				class="cbw-uploaded-skin"
 				v-if="uploadedSkin"
 			>
-				<cbw-skin
-					:skin="uploadedSkin"
-					:slug="uploadedSkinSlug"
-				></cbw-skin>
+				<div
+					class="cbw-uploaded-skin__thumb-wrap"
+					v-if="uploadedSkin.thumb"
+				>
+					<a :href="uploadedSkin.demo">
+						<img :src="uploadedSkin.thumb" alt="" class="cbw-uploaded-skin__thumb">
+					</a>
+				</div>
+				<div class="cbw-uploaded-skin__content">
+					<div class="cbw-uploaded-skin__name">{{ uploadedSkin.name }}</div>
+					<div class="cbw-uploaded-skin__actions">
+						<cx-vui-button
+							:size="'mini'"
+							:button-style="'accent'"
+							:loading="loading"
+							@click="startInstall( uploadedSkinSlug )"
+						>
+							<span slot="label"><?php
+								_e( 'Start Install', 'crocoblock-wizard' );
+							?></span>
+						</cx-vui-button>
+						<cx-vui-button
+							v-if="uploadedSkin.demo"
+							:size="'mini'"
+							:url="uploadedSkin.demo"
+							:tag-name="'a'"
+						>
+							<span slot="label"><?php
+								_e( 'View Demo', 'crocoblock-wizard' );
+							?></span>
+						</cx-vui-button>
+					</div>
+				</div>
 				<div class="cbw-uploaded-skin__cnacel">
-					<div class="cbw-uploaded-skin__cnacel-heading"><?php _e( 'or', 'crocoblock-wizard' ); ?></div>
-					<cx-vui-button
+					<span
+						class="cbw-uploaded-skin__cnacel-link"
 						@click="cancelUpload"
 					>
-						<span slot="label"><?php
-							_e( 'Cancel and upload new one', 'crocoblock-wizard' );
-						?></span>
-					</cx-vui-button>
+						<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.28516 14.1922V3.42871H13.7137V14.1922C13.7137 14.6687 13.5203 15.0892 13.1334 15.4536C12.7465 15.8179 12.3 16.0001 11.7941 16.0001H4.2048C3.69885 16.0001 3.25242 15.8179 2.86551 15.4536C2.47861 15.0892 2.28516 14.6687 2.28516 14.1922Z" fill="#C92C2C"/><path d="M14.8569 1.14286V2.28571H1.14258V1.14286H4.57115L5.5606 0H10.4388L11.4283 1.14286H14.8569Z" fill="#C92C2C"/></svg>
+						<?php _e( 'Cancel and upload new one', 'crocoblock-wizard' ); ?>
+					</span>
 				</div>
 			</div>
 			<cbw-skin-uploader

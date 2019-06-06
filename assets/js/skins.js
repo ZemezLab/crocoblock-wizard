@@ -10,6 +10,7 @@
 				allowedTypes: window.CBWPageConfig.allowed_types,
 				uploadedSkin: false,
 				uploadedSkinSlug: false,
+				loading: false,
 				backURL: window.CBWPageConfig.default_back,
 			};
 		},
@@ -32,6 +33,29 @@
 						nonce: window.CBWPageConfig.nonce,
 					},
 				});
+			},
+			startInstall: function( skin ) {
+
+				this.loading = true;
+
+				jQuery.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						action: window.CBWPageConfig.action_mask.replace( /%module%/, window.CBWPageConfig.module ),
+						handler: 'prepare_skin_installation',
+						slug: skin,
+						is_uploaded: true,
+						nonce: window.CBWPageConfig.nonce,
+					},
+				}).done( function( response ) {
+					if ( ! response.success ) {
+						alert( response.data.message );
+					} else {
+						window.location = response.data.redirect;
+					}
+				} );
 			},
 			setUploadedSkin: function( skinData ) {
 
@@ -64,9 +88,30 @@
 		data: function() {
 			return {
 				loading: false,
+				isPreview: false,
+				previewTimeout: null,
 			};
 		},
 		methods: {
+			clearPreview: function() {
+				if ( this.previewTimeout ) {
+					clearTimeout( this.previewTimeout );
+					this.isPreview = false;
+				}
+			},
+			showPreview: function() {
+
+				var self = this;
+
+				if ( self.previewTimeout ) {
+					clearTimeout( self.previewTimeout );
+				}
+
+				self.previewTimeout = setTimeout( function() {
+					self.isPreview = true;
+				}, 100 );
+
+			},
 			startInstall: function() {
 
 				var isUploaded = false;
@@ -129,7 +174,7 @@
 					return;
 				}
 
-				this.uploadFile( files );
+				this.uploadFile( e.target.files );
 
 			},
 			uploadFile: function( files ) {

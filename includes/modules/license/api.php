@@ -43,6 +43,18 @@ class API {
 	}
 
 	/**
+	 * Returns installtion data for  Kava theme
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_kava_installation_data() {
+		return array(
+			'id'   => $this->theme_slug,
+			'link' => $this->theme_link,
+		);
+	}
+
+	/**
 	 * Check if license is already active
 	 *
 	 * @return boolean
@@ -136,10 +148,7 @@ class API {
 
 				update_option( $this->license_option, $license, 'no' );
 
-				return array(
-					'id'   => $this->theme_slug,
-					'link' => $this->theme_link,
-				);
+				return $this->get_kava_installation_data();
 
 			} else {
 				return $this->set_error( $this->get_error_by_code( 'default' ) );

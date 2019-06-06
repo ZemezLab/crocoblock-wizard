@@ -16,10 +16,10 @@
 		font-size: 15px;
 		line-height: 23px;
 		margin: 0;
-		padding: 10px 0 20px;
+		padding: 0 0 20px;
 	}
 	&__content {
-		padding: 40px;
+		padding: 30px 40px 40px;
 		flex: 1 1 auto;
 		box-sizing: border-box;
 		.welcome-page & {
@@ -31,6 +31,11 @@
 			display: flex;
 			flex-direction: column;
 			max-width: calc( 100% - 270px );
+		}
+		.theme-page &,
+		.plugins-page & {
+			display: flex;
+			flex-direction: column;
 		}
 	}
 	&__cover {
@@ -46,9 +51,6 @@
 		font-size: 24px;
 		line-height: 37px;
 		color: $color__heading;
-		border-bottom: 1px solid $color__border-in-panel;
-		padding: 0 0 10px;
-		margin: 0 0 20px;
 	}
 	.cx-vui-component--vertical-layout {
 		padding: 0;
@@ -61,6 +63,9 @@
 		}
 	}
 	.cx-vui-button {
+		&--size-default {
+			padding: 10px 25px 11px;
+		}
 		&__content {
 			svg {
 				margin: -1px 7px 0 0;
@@ -71,10 +76,19 @@
 		}
 	}
 	.cx-vui-tabs {
-		margin: 0 -40px 20px;
+		margin: 0 -40px 35px;
 	}
 	&__back {
 		margin: 0 0 20px;
+	}
+}
+
+.cbw-footer {
+	padding: 40px 0 0;
+	.cx-vui-button {
+		+ .cx-vui-button {
+			margin: 0 0 0 10px;
+		}
 	}
 }
 
@@ -172,8 +186,8 @@
 	align-items: center;
 	justify-content: center;
 	&__overlay {
-		background: #282C30;
-		opacity: 0.5;
+		background: #fff;
+		opacity: 0.7;
 		position: absolute;
 		left: 0;
 		right: 0;

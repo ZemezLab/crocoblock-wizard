@@ -1,7 +1,14 @@
 <div class="cbw-block">
+	<div
+		class="cx-vui-component cx-vui-component--vertical-layout"
+		v-if="isActivated"
+	>
+		<div class="cx-vui-component__label">{{ pageTitle }}</div>
+	</div>
 	<cx-vui-input
+		v-else
 		:element-id="'license_key'"
-		:label="'<?php _e( 'Please, enter your license key to start installation', 'crocoblock-wizard' ); ?>'"
+		:label="pageTitle"
 		:size="'fullwidth'"
 		:wrapper-css="[ 'vertical-layout' ]"
 		:error="error"
@@ -49,7 +56,7 @@
 		</div>
 	</div>
 	<cx-vui-button
-		:disabled="!licenseKey || !installationType"
+		:disabled="startLocked"
 		:button-style="'accent'"
 		:loading="loading"
 		@click="activateLicense"

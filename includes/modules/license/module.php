@@ -115,16 +115,27 @@ class Module extends Module_Base {
 	 */
 	public function page_config( $config = array(), $subpage = '' ) {
 
+		$license_api = $this->get_api();
+		$is_active   = $license_api->is_active();
+
+		if ( $is_active ) {
+			$page_title = __( 'Select installation type', 'crocoblock-wizard' );
+		} else {
+			$page_title = __( 'Please, enter your license key to start installation', 'crocoblock-wizard' );
+		}
+
 		$config['title']              = __( 'Installation wizard', 'crocoblock-wizard' );
 		$config['body']               = 'cbw-license';
 		$config['wrapper_css']        = 'license-panel';
 		$config['button_label']       = __( 'Choose the installation type', 'crocoblock-wizard' );
 		$config['ready_button_label'] = __( 'Start Install', 'crocoblock-wizard' );
+		$config['license_is_active']  = $is_active;
+		$config['page_title']         = $page_title;
 		$config['tutorials']          = array(
 			'full'    => 'https://www.youtube.com/embed/F00H7xn8PF4',
 			'plugins' => 'https://www.youtube.com/embed/F00H7xn8PF4',
 		);
-		$config['redirect_full']      = Plugin::instance()->dashboard->page_url( 'select-theme' );
+		$config['redirect_full']      = Plugin::instance()->dashboard->page_url( 'install-theme' );
 		$config['redirect_plugins']   = Plugin::instance()->dashboard->page_url(
 			'install-plugins',
 			array( 'type' => 'plugins' )

@@ -119,12 +119,9 @@
 				title: window.CBWPageConfig.title,
 				wrapperCSS: window.CBWPageConfig.wrapper_css,
 				body: window.CBWPageConfig.body,
-				prev: window.CBWPageConfig.prev,
-				next: window.CBWPageConfig.next,
-				skip: window.CBWPageConfig.skip,
 				hasHeader: window.CBWPageConfig.has_header,
 			};
-		}
+		},
 	} );
 
 	new Vue({

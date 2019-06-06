@@ -11,6 +11,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 class Module extends Module_Base {
 
+	private $message = null;
+
 	public $settings = array(
 		'parent_data' => 'installed_parent',
 		'child_data'  => 'installed_child',
@@ -51,28 +53,128 @@ class Module extends Module_Base {
 	 */
 	public function page_config( $config = array(), $subpage = '' ) {
 
-		$config['title']       = __( 'Use child theme?', 'crocoblock-wizard' );
-		$config['cover']       = CB_WIZARD_URL . 'assets/img/cover-2.png';
-		$config['body']        = 'cbw-install-theme';
-		$config['wrapper_css'] = 'vertical-flex';
-		$config['prev_step']   = Plugin::instance()->dashboard->page_url( 'license' );
-		$config['next_step']   = Plugin::instance()->dashboard->page_url( 'select-skin' );
-		$config['get_child']   = __( 'Generating child theme...', 'crocoblock-wizard' );
-		$config['choices']     = array(
-			array(
-				'value'       => 'parent',
-				'label'       => __( 'Continue with parent theme', 'crocoblock-wizard' ),
-				'description' => __( 'Skip child theme installation and continute with paarent theme.', 'crocoblock-wizard' ),
-			),
-			array(
-				'value'       => 'child',
-				'label'       => __( 'Use child theme', 'crocoblock-wizard' ),
-				'description' => __( 'Download and install child theme. We recommend doing this, because it’s the most safe way to make future modifications.', 'crocoblock-wizard' ),
-			),
-		);
+		$config['body']        = 'cbw-select-theme';
+		$config['wrapper_css'] = 'theme-page';
+		$config['install']     = $this->get_install_config();
+		$config['select']      = $this->get_select_config();
 
 		return $config;
 
+	}
+
+	/**
+	 * Returns select theme onfiguration data
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_select_config() {
+		return array(
+			'next_step' => array(
+				'selected' => 'cbw-install-theme',
+				'current'  => Plugin::instance()->dashboard->page_url( 'select-skin' ),
+			),
+			'themes'    => $this->get_available_themes(),
+			'prev'      => Plugin::instance()->dashboard->page_url( 'license' ),
+		);
+	}
+
+	/**
+	 * Returns available themes list
+	 * @return [type] [description]
+	 */
+	public function get_available_themes() {
+		return apply_filters( 'crocoblock-wizard/install-theme/available-themes', array(
+			'kava' => array(
+				'source' => 'crocoblock',
+				'logo'   => CB_WIZARD_URL . 'assets/img/kava.png',
+			),
+			'oceanwp' => array(
+				'source' => 'wordpress',
+				'logo'   => CB_WIZARD_URL . 'assets/img/ocean.png',
+			),
+			'astra' => array(
+				'source' => 'wordpress',
+				'logo'   => CB_WIZARD_URL . 'assets/img/astra.png',
+			),
+			'generatepress' => array(
+				'source' => 'wordpress',
+				'logo'   => CB_WIZARD_URL . 'assets/img/generatepress.png',
+			),
+			'hello-elementor' => array(
+				'source' => 'wordpress',
+				'logo'   => CB_WIZARD_URL . 'assets/img/hello.png',
+			),
+		) );
+	}
+
+	/**
+	 * Returns theme URL
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_theme_url( $theme ) {
+
+		$themes = $this->get_available_themes();
+		$data   = ! empty( $themes[ $theme ] ) ? $themes[ $theme ] : false;
+
+		if ( ! $data ) {
+			return false;
+		}
+
+		switch ( $data['source'] ) {
+
+			case 'wordpress':
+
+				if ( ! function_exists( 'themes_api' ) ) {
+					include_once( ABSPATH . 'wp-admin/includes/theme.php' );
+				}
+
+				$api = themes_api(
+					'theme_information',
+					array(
+						'slug'   => $theme,
+						'fields' => array( 'sections' => false ),
+					)
+				);
+
+				if ( is_wp_error( $api ) ) {
+					$this->message = $api->get_error_message();
+					return false;
+				} else {
+					return $api->download_link;
+				}
+
+			case 'remote':
+				return isset( $data['url'] ) ? $data['url'] : false;
+		}
+
+	}
+
+	/**
+	 * Returns install theme configuration data
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_install_config() {
+		return array(
+			'get_parent' => __( 'Installing theme...', 'crocoblock-wizard' ),
+			'prev'      => array(
+				'to'   => 'cbw-install-theme',
+				'type' => 'component',
+			),
+			'choices'   => array(
+				array(
+					'value'       => 'parent',
+					'label'       => __( 'Continue with parent theme', 'crocoblock-wizard' ),
+					'description' => __( 'Skip child theme installation and continute with paarent theme.', 'crocoblock-wizard' ),
+				),
+				array(
+					'value'       => 'child',
+					'label'       => __( 'Use child theme', 'crocoblock-wizard' ),
+					'description' => __( 'Download and install child theme. We recommend doing this, because it’s the most safe way to make future modifications.', 'crocoblock-wizard' ),
+				),
+			),
+		);
 	}
 
 	/**
@@ -84,7 +186,8 @@ class Module extends Module_Base {
 	 */
 	public function page_templates( $templates = array(), $subpage = '' ) {
 
-		$templates['install_theme'] = 'install-theme/main';
+		$templates['install_theme'] = 'install-theme/install';
+		$templates['select_theme']  = 'install-theme/select';
 		return $templates;
 
 	}
@@ -96,9 +199,41 @@ class Module extends Module_Base {
 	 */
 	public function install_parent() {
 
-		$install_data = Plugin::instance()->storage->get( 'theme_data' );
-		$theme_url    = isset( $install_data['link'] ) ? $install_data['link'] : false;
-		$theme_slug   = isset( $install_data['id'] ) ? $install_data['id'] : false;
+		$theme         = ! empty( $_REQUEST['theme'] ) ? esc_attr( $_REQUEST['theme'] ) : false;
+		$install_child = ! empty( $_REQUEST['child'] ) ? esc_attr( $_REQUEST['child'] ) : false;
+
+		if ( ! $theme ) {
+			$theme = 'kava';
+		}
+
+		if ( 'kava' === $theme ) {
+			$license      = Plugin::instance()->modules->load_module( 'license' );
+			$api          = $license->get_api();
+			$install_data = $api->get_kava_installation_data();
+		} else {
+
+			$theme_url = $this->get_theme_url( $theme );
+
+			if ( ! $theme_url ) {
+				if ( ! $this->message ) {
+					wp_send_json_error( array(
+						'message' => __( 'Theme URL not found', 'crocoblock-wizard' ),
+					) );
+				} else {
+					wp_send_json_error( array(
+						'message' => $this->message,
+					) );
+				}
+			}
+
+			$install_data = array(
+				'id'   => $theme,
+				'link' => $theme_url,
+			);
+		}
+
+		$theme_url  = isset( $install_data['link'] ) ? $install_data['link'] : false;
+		$theme_slug = isset( $install_data['id'] ) ? $install_data['id'] : false;
 
 		/**
 		 * Allow to filter parent theme URL
@@ -133,12 +268,20 @@ class Module extends Module_Base {
 		 */
 		do_action( 'crocoblock-wizard/install-theme/parent-installed' );
 
+		$install_child = filter_var( $install_child, FILTER_VALIDATE_BOOLEAN );
+
+		if ( $install_child ) {
+			$handler = 'get_child';
+		} else {
+			$handler = 'activate_parent';
+		}
+
 		wp_send_json_success( array(
 			'message'     => $result['message'],
 			'doNext'      => true,
 			'nextRequest' => array(
 				'action'  => Plugin::instance()->dashboard->page_slug . '/install-theme',
-				'handler' => 'activate_parent',
+				'handler' => $handler,
 			),
 		) );
 	}
@@ -149,7 +292,7 @@ class Module extends Module_Base {
 	 * @return void
 	 */
 	public function activate_parent() {
-		$this->activate_theme( 'parent', $this->get_page_link() );
+		$this->activate_theme( 'parent', Plugin::instance()->dashboard->page_url( 'select-skin' ) );
 	}
 
 	/**

@@ -14,15 +14,30 @@
 				errorMessage: '',
 				success: false,
 				successMessage: '',
+				pageTitle: window.CBWPageConfig.page_title,
 				buttonLabel: window.CBWPageConfig.button_label,
+				isActivated: window.CBWPageConfig.license_is_active,
 				videoURL: '',
 				showVideo: false,
 				tutorials: window.CBWPageConfig.tutorials,
 			};
 		},
+		mounted: function() {
+			var storage = window.sessionStorage;
+			storage.removeItem( 'cbw-theme-to-install' );
+		},
+		computed: {
+			startLocked: function() {
+				if ( this.isActivated ) {
+					return null === this.installationType;
+				} else {
+					return null === this.installationType || null === this.licenseKey;
+				}
+			},
+		},
 		methods: {
 			maybeChangeBtnLabel: function() {
-				if ( this.licenseKey && this.installationType ) {
+				if ( ! this.startLocked ) {
 					this.buttonLabel = window.CBWPageConfig.ready_button_label;
 				} else {
 					this.buttonLabel = window.CBWPageConfig.button_label;
@@ -42,6 +57,11 @@
 
 				self.loading = true;
 				self.log     = {};
+
+				if ( self.isActivated ) {
+					window.location = window.CBWPageConfig[ 'redirect_' + self.installationType ];
+					return;
+				}
 
 				jQuery.ajax({
 					url: ajaxurl,
