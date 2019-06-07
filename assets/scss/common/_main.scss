@@ -30,20 +30,11 @@
 		.vertical-flex & {
 			display: flex;
 			flex-direction: column;
-			max-width: calc( 100% - 270px );
 		}
 		.theme-page &,
 		.plugins-page & {
 			display: flex;
 			flex-direction: column;
-		}
-	}
-	&__cover {
-		flex: 0 0 270px;
-		background: #F0F2FF;
-		&-img {
-			width: 100%;
-			height: auto;
 		}
 	}
 	&__title {
@@ -85,9 +76,17 @@
 
 .cbw-footer {
 	padding: 40px 0 0;
+	display: flex;
+	align-items: flex-start;
+	.cbw-install-plugins & {
+		padding: 20px 0 0;
+	}
 	.cx-vui-button {
 		+ .cx-vui-button {
 			margin: 0 0 0 10px;
+		}
+		&.cx-vui-button--style-accent {
+			margin-bottom: -1px;
 		}
 	}
 }

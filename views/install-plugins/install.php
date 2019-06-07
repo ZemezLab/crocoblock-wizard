@@ -1,5 +1,8 @@
-<div class="cbw-block">
-	<div class="cbw-install-plugins cbw-block__top">
+<div class="cbw-install-plugins">
+	<div class="cbw-block">
+		<div class="cbw-body__title"><?php
+			_e( 'Install plugins', 'crocoblock-wizard' );
+		?></div>
 		<cbw-progress :value="progress"></cbw-progress>
 		<p>
 			<?php _e( 'Before demo data import a set of required plugins will bee installed.', 'crocoblock-wizard' ); ?><br>
@@ -34,13 +37,13 @@
 			_e( 'All plugins are installed! Press Continue to start demo content import', 'crocoblock-wizard' );
 		?></p>
 	</div>
-	<div class="cbw-block__bottom">
+	<div class="cbw-footer">
 		<cx-vui-button
 			@click="goToPrevStep"
 		>
 			<svg slot="label" width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.67089 0L-4.76837e-07 6L5.67089 12L7 10.5938L2.65823 6L7 1.40625L5.67089 0Z" fill="#007CBA"/></svg>
 			<span slot="label"><?php _e( 'Back', 'crocoblock-wizard' ); ?></span>
-		</cx-vui-button>&nbsp;
+		</cx-vui-button>
 		<cx-vui-button
 			:disabled="!done"
 			:button-style="'accent'"

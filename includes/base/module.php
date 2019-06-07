@@ -14,6 +14,8 @@ abstract class Module {
 
 	public function __construct() {
 
+		$this->init();
+
 		add_action(
 			'crocoblock-wizard/dashboard/before-enqueue-assets/' . $this->get_slug(),
 			array( $this, 'assets' )
@@ -22,6 +24,13 @@ abstract class Module {
 		add_action( 'wp_ajax_crocoblock-wizard/' . $this->get_slug(), array( $this, 'process_ajax' ) );
 
 	}
+
+	/**
+	 * Initialize module-specific parts
+	 *
+	 * @return [type] [description]
+	 */
+	public function init() {}
 
 	/**
 	 * Register module assets

@@ -131,6 +131,9 @@
 
 				}
 			},
+			skipContent: function() {
+				window.location = window.CBWPageConfig.next_step;
+			},
 		}
 	} );
 

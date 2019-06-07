@@ -1,4 +1,7 @@
 <div class="cbw-import-content">
+	<div class="cbw-body__title"><?php
+		_e( 'Importing sample data', 'crocoblock-wizard' );
+	?></div>
 	<cbw-clear-content
 		v-if="'replace' === importType && ready"
 		@content-cleared="startImport"

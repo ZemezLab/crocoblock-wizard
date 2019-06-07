@@ -5,6 +5,7 @@ use Crocoblock_Wizard\Base\Module as Module_Base;
 use Crocoblock_Wizard\Plugin as Plugin;
 use Crocoblock_Wizard\Tools\Cache as Cache;
 use Crocoblock_Wizard\Tools\DB_Tables as DB_Tables;
+use Crocoblock_Wizard\Tools\Features_Slider as Features_Slider;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -44,6 +45,15 @@ class Module extends Module_Base {
 	}
 
 	/**
+	 * Initialize module-specific parts
+	 *
+	 * @return [type] [description]
+	 */
+	public function init() {
+		new Features_Slider();
+	}
+
+	/**
 	 * License page config
 	 *
 	 * @param  array  $config  [description]
@@ -55,13 +65,8 @@ class Module extends Module_Base {
 		$skin         = isset( $_GET['skin'] ) ? $_GET['skin'] : false;
 		$is_uploaded  = isset( $_GET['is_uploaded'] ) ? $_GET['is_uploaded'] : false;
 
-		$config['title']            = __( 'We’re almost there!', 'crocoblock-wizard' );
-		$config['import_title']     = __( 'Importing sample data', 'crocoblock-wizard' );
-		$config['regenerate_title'] = __( 'Regenerating thumbnails', 'crocoblock-wizard' );
-		$config['cover']            = CB_WIZARD_URL . 'assets/img/cover-4.png';
-		$config['cover_import']     = CB_WIZARD_URL . 'assets/img/cover-5.png';
 		$config['body']             = 'cbw-content';
-		$config['wrapper_css']      = 'vertical-flex';
+		$config['wrapper_css']      = 'content-page vertical-flex';
 		$config['is_uploaded']      = $is_uploaded;
 		$config['skin']             = $skin;
 		$config['regenerate_chunk'] = Plugin::instance()->settings->get( array( 'import', 'regenerate_chunk_size' ) );
@@ -90,11 +95,6 @@ class Module extends Module_Base {
 			array(
 				'value'       => 'replace',
 				'label'       => __( 'Replace my existing content with demo content', 'crocoblock-wizard' ),
-				'description' => __( 'Download and install child theme. We recommend doing this, because it’s the most safe way to make future modifications.', 'crocoblock-wizard' ),
-			),
-			array(
-				'value'       => 'skip',
-				'label'       => __( 'Skip demo content installation', 'crocoblock-wizard' ),
 				'description' => __( 'Download and install child theme. We recommend doing this, because it’s the most safe way to make future modifications.', 'crocoblock-wizard' ),
 			),
 		);

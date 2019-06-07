@@ -51,8 +51,6 @@ class Module extends Module_Base {
 		$skin_plugins = Plugin::instance()->skins->get_skin_plugins( $skin, $is_uploaded );
 		$all_plugins  = Plugin::instance()->skins->get_all_plugins( $skin, $is_uploaded );
 
-		$config['install_title'] = __( 'Install Plugins', 'crocoblock-wizard' );
-		$config['cover']         = CB_WIZARD_URL . 'assets/img/cover-3.png';
 		$config['body']          = 'cbw-plugins';
 		$config['wrapper_css']   = 'plugins-page';
 		$config['is_uploaded']   = $is_uploaded;
