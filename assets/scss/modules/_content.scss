@@ -120,4 +120,15 @@
 
 .cbw-slide {
 	text-align: center;
+	&__title {
+		font-weight: 500;
+		font-size: 18px;
+		line-height: 140%;
+		color: $color__heading;
+		padding: 23px 0 6px;
+	}
+	&__desc {
+		font-size: 15px;
+		line-height: 140%;
+	}
 }

@@ -7,6 +7,9 @@
 		data: function() {
 			return {
 				slides: [],
+				slider: false,
+				autoplay: 5000,
+				autoplayInterval: false,
 			};
 		},
 		mounted: function() {
@@ -20,11 +23,33 @@
 			}).done( function( response ) {
 				self.slides = response;
 				self.$nextTick( function() {
-					new Siema();
+					self.slider = new Siema({
+						loop: true,
+						duration: 500,
+					});
 				} );
+
+				self.setAutoplay();
 			});
 
 		},
+		methods: {
+			setAutoplay: function() {
+
+				var self = this;
+
+				self.autoplayInterval = setInterval( function() {
+					if ( self.slider ) {
+						self.slider.next();
+					}
+				}, self.autoplay );
+
+			},
+			resetAutoplay: function() {
+				clearInterval( this.autoplayInterval );
+				this.setAutoplay();
+			}
+		}
 	} );
 
 })();

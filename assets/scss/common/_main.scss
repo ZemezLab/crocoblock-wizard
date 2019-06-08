@@ -27,6 +27,13 @@
 			background: $color__bg-input;
 			border-radius: 0 0 6px 6px;
 		}
+		.onboarding-page & {
+			padding: 0;
+			border-radius: 6px;
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+		}
 		.vertical-flex & {
 			display: flex;
 			flex-direction: column;
@@ -94,6 +101,7 @@
 .cbw-header {
 	background: linear-gradient( 90deg, #5B77E7 0%, #49B5D2 53.65%, #26E8A8 100% );
 	border-radius: 6px 6px 0 0;
+	width: 100%;
 	&__bg {
 		background-position: right top;
 		background-repeat: no-repeat;

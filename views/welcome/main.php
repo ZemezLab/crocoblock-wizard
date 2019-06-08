@@ -24,7 +24,9 @@
 						<a
 							class="cbw-welcome-action__action-link"
 							:href="action.action_url"
-						>{{ action.action_label }}</a>
+						>
+							{{ action.action_label }}
+						</a>
 					</div>
 				</div>
 			</div>

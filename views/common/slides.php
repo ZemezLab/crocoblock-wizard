@@ -4,6 +4,7 @@
 			class="cbw-slide"
 			v-for="( slide, index ) in slides"
 			:key="index"
+			@click="resetAutoplay"
 		>
 			<div
 				v-if="slide.img"
