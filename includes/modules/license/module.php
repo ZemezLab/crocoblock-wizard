@@ -3,6 +3,7 @@ namespace Crocoblock_Wizard\Modules\License;
 
 use Crocoblock_Wizard\Base\Module as Module_Base;
 use Crocoblock_Wizard\Plugin as Plugin;
+use Crocoblock_Wizard\Tools\Files_Download as Files_Download;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -118,6 +119,22 @@ class Module extends Module_Base {
 		$license_api = $this->get_api();
 		$is_active   = $license_api->is_active();
 
+		if ( true !== $license_api->connection_status ) {
+
+			$config['body']        = 'cbw-connection-error';
+			$config['wrapper_css'] = 'license-panel';
+			$config['report_url']  = add_query_arg(
+				array(
+					'action'  => Plugin::instance()->dashboard->page_slug . '/' . $this->get_slug(),
+					'handler' => 'download_report',
+					'nonce'   => $config['nonce'],
+				),
+				admin_url( 'admin-ajax.php' )
+			);
+
+			return $config;
+		}
+
 		if ( $is_active ) {
 			$page_title = __( 'Select installation type', 'crocoblock-wizard' );
 		} else {
@@ -146,6 +163,53 @@ class Module extends Module_Base {
 	}
 
 	/**
+	 * Download report handler
+	 *
+	 * @return [type] [description]
+	 */
+	public function download_report() {
+
+		$license_api = $this->get_api();
+		$connection  = $license_api->check_connection_status();
+
+		if ( ! is_wp_error( $connection ) ) {
+			wp_redirect( Plugin::instance()->dashboard->page_url( 'license' ) );
+			die();
+		}
+
+		ob_start();
+
+		echo '####################' . PHP_EOL . PHP_EOL;
+		echo 'Error Message:' . PHP_EOL;
+		echo  $connection->get_error_message() . PHP_EOL . PHP_EOL;
+		echo '####################' . PHP_EOL . PHP_EOL;
+		echo 'Server Info:' . PHP_EOL . PHP_EOL;
+		echo 'Operating System: ' . PHP_OS . PHP_EOL;
+		echo 'PHP Version: ' . PHP_VERSION . PHP_EOL;
+		echo 'Software: ' . $_SERVER['SERVER_SOFTWARE'] . PHP_EOL;
+
+		if ( function_exists( 'curl_version' ) ) {
+			echo 'cURL Info:' . PHP_EOL;
+
+			foreach ( curl_version() as $key => $value ) {
+
+				if ( is_array( $value ) ) {
+					$value = implode( ', ', $value );
+				}
+
+				echo '    ' . $key . ': ' . $value . PHP_EOL;
+			}
+
+		}
+
+		$content = ob_get_clean();
+		$fd      = new Files_Download( 'error-report.txt', false, 'txt', $content );
+
+		$fd->download();
+
+	}
+
+	/**
 	 * Add license component template
 	 *
 	 * @param  array  $templates [description]
@@ -154,7 +218,9 @@ class Module extends Module_Base {
 	 */
 	public function page_templates( $templates = array(), $subpage = '' ) {
 
-		$templates['license'] = 'license/main';
+		$templates['license']          = 'license/main';
+		$templates['connection_error'] = 'license/connection-error';
+
 		return $templates;
 
 	}

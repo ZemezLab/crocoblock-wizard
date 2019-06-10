@@ -65,6 +65,15 @@
 			&:hover {
 				color: #fff;
 				border-color: #fff;
+				box-shadow: none;
+				outline: none;
+			}
+			&:focus,
+			&:active {
+				color: #fff;
+				border-color: #fff;
+				box-shadow: none;
+				outline: none;
 			}
 			.cbw-welcome-action--featured & {
 				border: none;

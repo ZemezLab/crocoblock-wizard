@@ -110,6 +110,11 @@
 				default: '',
 			},
 		},
+		data: function() {
+			return {
+				mainPage: window.CBWPageConfig.main_page,
+			};
+		}
 	} );
 
 	Vue.component( 'cbw-main', {

@@ -28,6 +28,17 @@
 	.license-panel & {
 		width: 530px;
 		flex: 0 0 530px;
+		&.cbw-connection-error {
+			width: 80%;
+			max-width: 700px;
+			flex: 0 0 80%;
+			text-align: center;
+			align-items: center;
+			justify-content: center;
+			.cbw-body__title {
+				padding: 0 0 20px;
+			}
+		}
 	}
 }
 

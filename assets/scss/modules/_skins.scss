@@ -35,6 +35,24 @@
 			border-bottom: 1px solid $color__border-in-panel;
 		}
 	}
+	&__choices {
+		.cx-vui-component {
+			padding: 0;
+			&__control {
+				width: 100%;
+				flex: 0 0 100%;
+			}
+			.cx-vui-radiogroup {
+				display: flex;
+				justify-content: space-between;
+			}
+			.cx-vui-radio{
+				&__mark {
+					border-color: $color__accent;
+				}
+			}
+		}
+	}
 	&__content {
 		padding: 14px 20px 14px;
 		.cbw-skin-preview & {

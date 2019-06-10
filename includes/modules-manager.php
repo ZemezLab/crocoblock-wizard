@@ -25,6 +25,7 @@ class Modules_Manager {
 		'import-content'  => '\\Crocoblock_Wizard\\Modules\\Import_Content\\Module',
 		'onboarding'      => '\\Crocoblock_Wizard\\Modules\\Onboarding\\Module',
 		'export-skin'     => '\\Crocoblock_Wizard\\Modules\\Export_Skin\\Module',
+		'import-template' => '\\Crocoblock_Wizard\\Modules\\Import_Template\\Module',
 	);
 
 	private $_loaded_modules = array();

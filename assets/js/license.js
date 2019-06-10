@@ -2,6 +2,15 @@
 
 	"use strict";
 
+	Vue.component( 'cbw-connection-error', {
+		template: '#cbw_connection_error',
+		methods: {
+			downloadReport: function() {
+				window.location = window.CBWPageConfig.report_url;
+			}
+		}
+	} );
+
 	Vue.component( 'cbw-license', {
 		template: '#cbw_license',
 		data: function() {

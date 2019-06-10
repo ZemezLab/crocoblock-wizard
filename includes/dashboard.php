@@ -87,6 +87,7 @@ class Dashboard {
 			'CBWPageConfig',
 			apply_filters( 'crocoblock-wizard/dashboard/js-page-config', array(
 				'title'        => __( 'Installation Wizard', 'crocoblock-wizard' ),
+				'main_page'    => $this->page_url( $this->get_initial_page() ),
 				'has_header'   => true,
 				'wrapper_css'  => false,
 				'body'         => false,

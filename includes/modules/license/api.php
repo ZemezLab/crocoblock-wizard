@@ -34,6 +34,13 @@ class API {
 	private $error = null;
 
 	/**
+	 * Check connection status
+	 *
+	 * @var mixed
+	 */
+	public $connection_status = null;
+
+	/**
 	 * Retuirn license
 	 *
 	 * @return [type] [description]
@@ -55,6 +62,15 @@ class API {
 	}
 
 	/**
+	 * Send incorrcet key to check is Crocoblock server available
+	 *
+	 * @return void
+	 */
+	public function check_connection_status() {
+		return $this->license_request( 'check_license', 'incorrect_key' );
+	}
+
+	/**
 	 * Check if license is already active
 	 *
 	 * @return boolean
@@ -64,6 +80,7 @@ class API {
 		$license = $this->get_license();
 
 		if ( ! $license ) {
+			$this->check_connection_status();
 			return false;
 		}
 
@@ -110,7 +127,15 @@ class API {
 			'sslverify' => false
 		);
 
-		return wp_remote_get( $url, $args );
+		$response = wp_remote_get( $url, $args );
+
+		if ( is_wp_error( $response ) ) {
+			$this->connection_status = $response;
+		} else {
+			$this->connection_status = true;
+		}
+
+		return $response;
 
 	}
 

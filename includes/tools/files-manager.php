@@ -146,12 +146,24 @@ class Files_Manager {
 	 *
 	 * @return string|bool
 	 */
-	public function get_json( $relative_path = null ) {
+	public function get_json( $relative_path = null, $expiration = false ) {
 
 		$file = $this->base_path() . $relative_path;
 
 		if ( ! is_file( $file ) ) {
 			return false;
+		}
+
+		if ( $expiration ) {
+
+			$modified = filemtime( $file );
+			$current  = time();
+			$lifetime = $current - $modified;
+
+			if ( $expiration >= $lifetime ) {
+				return false;
+			}
+
 		}
 
 		ob_start();

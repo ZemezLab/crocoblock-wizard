@@ -14,14 +14,16 @@ class Files_Download {
 	private $filename;
 	private $filepath;
 	private $format;
+	private $content;
 
 	/**
 	 * Constructor for the class
 	 */
-	function __construct( $filename = null, $filepath = null, $format = 'zip' ) {
+	function __construct( $filename = null, $filepath = null, $format = 'zip', $content = false ) {
 		$this->filename = $filename;
 		$this->filepath = $filepath;
 		$this->format   = $format;
+		$this->content  = $content;
 	}
 
 	/**
@@ -47,18 +49,27 @@ class Files_Download {
 		header( "Content-Disposition: attachment; filename=\"" . $this->filename . "\";" );
 		header( "Content-Transfer-Encoding: binary" );
 
-		// Set the file size header
-		header( "Content-Length: " . @filesize( $this->filepath ) );
+		if ( $this->filepath ) {
+			// Set the file size header
+			header( "Content-Length: " . @filesize( $this->filepath ) );
+		}
 
 	}
 
 	/**
 	 * Preocess file download by path and name
 	 */
-	private function download() {
+	public function download() {
 
 		$this->set_headers();
-		$this->readfile_chunked( $this->filepath );
+
+		if ( $this->filepath ) {
+			$this->readfile_chunked( $this->filepath );
+		} elseif ( $this->content ) {
+			echo $this->content;
+		} else {
+			echo 'Incorrect input';
+		}
 
 		die();
 
