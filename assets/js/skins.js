@@ -10,6 +10,9 @@
 				allowedTypes: window.CBWPageConfig.allowed_types,
 				uploadedSkin: false,
 				uploadedSkinSlug: false,
+				action: window.CBWPageConfig.allowed_types,
+				pageTitle: window.CBWPageConfig.page_title,
+				firstTab: window.CBWPageConfig.first_tab,
 				loading: false,
 				backURL: window.CBWPageConfig.default_back,
 			};

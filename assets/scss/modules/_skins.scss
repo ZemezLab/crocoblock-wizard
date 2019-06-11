@@ -36,6 +36,7 @@
 		}
 	}
 	&__choices {
+		padding: 0 0 15px;
 		.cx-vui-component {
 			padding: 0;
 			&__control {
@@ -46,8 +47,11 @@
 				display: flex;
 				justify-content: space-between;
 			}
-			.cx-vui-radio{
+			.cx-vui-radio {
+				font-size: 15px;
+				margin: 0;
 				&__mark {
+					margin: 0 6px 0 0;
 					border-color: $color__accent;
 				}
 			}

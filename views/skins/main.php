@@ -5,13 +5,14 @@
 	<cx-vui-tabs
 		:invert="true"
 		:in-panel="true"
-		value="skin"
+		:value="firstTab"
 	>
 		<cx-vui-tabs-panel
 			v-for="( typeLabel, typeSlug ) in allowedTypes"
 			:name="typeSlug"
 			:label="typeLabel"
 			:key="typeSlug"
+			v-if="'select' === action"
 		>
 			<div class="cbw-skins-list">
 				<cbw-skin

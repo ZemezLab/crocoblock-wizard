@@ -82,7 +82,12 @@ class Module extends Module_Base {
 				'icon'         => '<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4C1 2.34315 2.34315 1 4 1H42C43.6569 1 45 2.34315 45 4V14H1V4Z" fill="white" fill-opacity="0.3" stroke="white" stroke-width="2"/><circle cx="7.5" cy="7.5" r="1.5" fill="white"/><circle cx="12.5" cy="7.5" r="1.5" fill="white"/><circle cx="17.5" cy="7.5" r="1.5" fill="white"/><path d="M1 14H45V56C45 57.6569 43.6569 59 42 59H4C2.34314 59 1 57.6569 1 56V14Z" stroke="white" stroke-width="2"/><path d="M59 45C59.5523 45 60 44.5523 60 44C60 43.4477 59.5523 43 59 43L27 43C26.4477 43 26 43.4477 26 44C26 44.5523 26.4477 45 27 45L59 45Z" fill="white"/><path d="M31.2805 49.705C31.6739 50.0983 32.3116 50.0983 32.705 49.705C33.0983 49.3116 33.0983 48.6739 32.705 48.2805L27.7195 43.295C27.3261 42.9017 26.6884 42.9017 26.295 43.295C25.9017 43.6884 25.9017 44.3261 26.295 44.7195L31.2805 49.705Z" fill="white"/><path d="M31.2805 38.295C31.6739 37.9017 32.3116 37.9017 32.705 38.295C33.0983 38.6884 33.0983 39.3261 32.705 39.7195L27.7195 44.705C27.3261 45.0983 26.6884 45.0983 26.295 44.705C25.9017 44.3116 25.9017 43.6739 26.295 43.2805L31.2805 38.295Z" fill="white"/><rect x="6" y="19" width="15" height="2" rx="1" fill="white"/><rect x="6" y="23" width="8" height="2" rx="1" fill="white"/></svg>',
 				'title'        => __( 'Import skin', 'crocoblock-wizard' ),
 				'action_label' => __( 'Click here', 'crocoblock-wizard' ),
-				'action_url'   => Plugin::instance()->dashboard->page_url( 'import-skin' ),
+				'action_url'   => Plugin::instance()->dashboard->page_url(
+					'select-skin',
+					array(
+						'action' => 'import',
+					)
+				),
 				'desc'         => __( 'Choose this option to import the skin that’s been previously exported using Crocoblock Wizard. All the data that was included in it will be applied to this site. The wizard will do the following tasks: <ul><li>Install the required plugins;</li><li>Install the full demo content.</li></ul>', 'crocoblock-wizard' ),
 				'featured'     => 0,
 			),

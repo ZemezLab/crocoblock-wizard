@@ -11,21 +11,6 @@
 	</div>
 	<div class="cbw-skin__content">
 		<div class="cbw-skin__name">{{ template.name }}</div>
-		<div class="cbw-skin__choices">
-			<cx-vui-radio
-				v-model="importType"
-				:options-list="[
-					{
-						value: 'jet',
-						label: '<?php _e( 'Jet plugins', 'crocoblock-wizard' ); ?>',
-					},
-					{
-						value: 'pro',
-						label: '<?php _e( 'Elementor PRO', 'crocoblock-wizard' ); ?>',
-					}
-				]"
-			></cx-vui-radio>
-		</div>
 	</div>
 	<transition name="fade-in">
 		<div
@@ -42,6 +27,21 @@
 			</div>
 			<div class="cbw-skin__content">
 				<div class="cbw-skin__name">{{ template.name }}</div>
+				<div class="cbw-skin__choices">
+					<cx-vui-radio
+						v-model="importType"
+						:options-list="[
+							{
+								value: 'jet',
+								label: '<?php _e( 'Jet plugins', 'crocoblock-wizard' ); ?>',
+							},
+							{
+								value: 'pro',
+								label: '<?php _e( 'Elementor PRO', 'crocoblock-wizard' ); ?>',
+							}
+						]"
+					></cx-vui-radio>
+				</div>
 				<div class="cbw-skin__actions">
 					<cx-vui-button
 						:size="'mini'"

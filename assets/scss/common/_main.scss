@@ -17,6 +17,9 @@
 		line-height: 23px;
 		margin: 0;
 		padding: 0 0 20px;
+		&.cbw-indent-top {
+			padding-top: 25px;
+		}
 	}
 	&__content {
 		padding: 30px 40px 40px;

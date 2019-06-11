@@ -46,11 +46,25 @@ class Module extends Module_Base {
 	 */
 	public function page_config( $config = array(), $subpage = '' ) {
 
-		$config['title']          = __( 'Select skin and start install', 'crocoblock-wizard' );
-		$config['cover']          = false;
+		if ( ! empty( $_GET['action'] ) && 'import' === $_GET['action'] ) {
+			$back       = $config['main_page'];
+			$page_title = __( 'Upload your skin', 'crocoblock-wizard' );
+			$action     = 'import';
+			$first_tab  = 'upload-skin';
+
+		} else {
+			$back       = Plugin::instance()->dashboard->page_url( 'install-theme' );
+			$page_title = __( 'Select skin and start install', 'crocoblock-wizard' );
+			$action     = 'select';
+			$first_tab  = 'skin';
+		}
+
+		$config['page_title']     = $page_title;
 		$config['body']           = 'cbw-skins';
+		$config['action']         = $action;
 		$config['wrapper_css']    = 'panel-wide';
-		$config['default_back']   = Plugin::instance()->dashboard->page_url( 'install-theme' );
+		$config['default_back']   = $back;
+		$config['first_tab']      = $first_tab;
 		$config['skins_by_types'] = Plugin::instance()->skins->get_skins_by_types();
 		$config['allowed_types']  = Plugin::instance()->skins->get_types();
 		$config['upload_hook']    = array(

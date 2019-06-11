@@ -160,7 +160,7 @@ class Files_Manager {
 			$current  = time();
 			$lifetime = $current - $modified;
 
-			if ( $expiration >= $lifetime ) {
+			if ( $lifetime >= $expiration ) {
 				return false;
 			}
 
