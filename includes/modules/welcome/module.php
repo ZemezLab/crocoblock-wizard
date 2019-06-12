@@ -67,7 +67,7 @@ class Module extends Module_Base {
 				'title'        => __( 'Install Crocoblock', 'crocoblock-wizard' ),
 				'action_label' => __( 'Let\'s Go', 'crocoblock-wizard' ),
 				'action_url'   => Plugin::instance()->dashboard->page_url( 'license' ),
-				'desc'         => __( 'Choose this option to install Crocoblock products. This step allows installation of the plugins, or you can pick a skin to install on your site.', 'crocoblock-wizard' ),
+				'desc'         => __( 'Choose this option to install Crocoblock products. This step allows to install one of the skins provided by Crocoblock, as well as the plugins needed for it to work.', 'crocoblock-wizard' ),
 				'featured'     => 1,
 			),
 			array(
@@ -75,7 +75,7 @@ class Module extends Module_Base {
 				'title'        => __( 'Export skin', 'crocoblock-wizard' ),
 				'action_label' => __( 'Click here', 'crocoblock-wizard' ),
 				'action_url'   => Plugin::instance()->dashboard->page_url( 'export-skin' ),
-				'desc'         => __( 'Choose this option in case you’ve built your own skin, the Wizard will help you export it to another site. The skin might contain: <ul><li>Elementor templates;</li><li>Custom post types;</li><li>Custom taxonomies;</li><li>Meta fields;</li><li>Required plugins;</li><li>Imagery.</li></ul>', 'crocoblock-wizard' ),
+				'desc'         => __( 'Choose this option in case you’ve built your own skin with all the content and structure preserved. The Wizard will help you export it to another site.', 'crocoblock-wizard' ),
 				'featured' => 0,
 			),
 			array(
@@ -88,7 +88,7 @@ class Module extends Module_Base {
 						'action' => 'import',
 					)
 				),
-				'desc'         => __( 'Choose this option to import the skin that’s been previously exported using Crocoblock Wizard. All the data that was included in it will be applied to this site. The wizard will do the following tasks: <ul><li>Install the required plugins;</li><li>Install the full demo content.</li></ul>', 'crocoblock-wizard' ),
+				'desc'         => __( 'Choose this option to import the skin that’s been previously exported using Crocoblock Wizard. All the data that was included in it will be applied to this site. ', 'crocoblock-wizard' ),
 				'featured'     => 0,
 			),
 			array(
@@ -96,7 +96,7 @@ class Module extends Module_Base {
 				'title'        => __( 'Install free templates', 'crocoblock-wizard' ),
 				'action_label' => __( 'Click here', 'crocoblock-wizard' ),
 				'action_url'   => Plugin::instance()->dashboard->page_url( 'import-template' ),
-				'desc'         => __( 'Choose this option to install the free templates acquited from Crocoblock.', 'crocoblock-wizard' ),
+				'desc'         => __( 'Choose this option to install the free templates acquired from Crocoblock to use them either with Jet plugins, or Elementor Pro version.', 'crocoblock-wizard' ),
 				'featured'     => 0,
 			),
 		) );

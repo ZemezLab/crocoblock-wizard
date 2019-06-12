@@ -48,7 +48,7 @@ class Module extends Module_Base {
 	 */
 	public function page_config( $config = array(), $subpage = '' ) {
 
-		$config['title']       = __( 'Configure Skin For Export', 'crocoblock-wizard' );
+		$config['title']       = __( 'Export Skin', 'crocoblock-wizard' );
 		$config['body']        = 'cbw-export-skin';
 		$config['wrapper_css'] = 'export-skin';
 		$config['plugins']     = $this->get_plugins_config();

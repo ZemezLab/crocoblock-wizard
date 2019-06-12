@@ -97,6 +97,7 @@ class Plugin {
 
 		$this->register_autoloader();
 		$this->init_components();
+
 	}
 
 }

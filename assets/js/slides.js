@@ -8,7 +8,7 @@
 			return {
 				slides: [],
 				slider: false,
-				autoplay: 5000,
+				autoplay: 15000,
 				autoplayInterval: false,
 			};
 		},

@@ -60,6 +60,7 @@
 	border: 1px solid $color__border-in-panel;
 	border-radius: 4px;
 	margin: 30px 0 0 0;
+	background: #fff;
 	table {
 		width: 100%;
 		th {
@@ -130,5 +131,17 @@
 	&__desc {
 		font-size: 15px;
 		line-height: 140%;
+	}
+}
+
+.cx-vui-panel {
+	&.content-page {
+		background-image: url( '../img/content-cover.png' );
+	}
+	&.content-page.import-step {
+		background-image: url( '../img/content-alt-cover.png' );
+	}
+	&.content-page.regenerate-step {
+		background-image: none;
 	}
 }

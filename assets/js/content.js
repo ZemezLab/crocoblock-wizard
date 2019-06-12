@@ -57,6 +57,8 @@
 						storage.removeItem( 'cbw-import-type' );
 						this.nextStepAllowed = false;
 
+						this.$emit( 'change-wrapper-css', 'content-page vertical-flex' );
+
 						break;
 
 					case 'cbw-import-content':
@@ -73,6 +75,8 @@
 							type: 'component',
 							value: 'cbw-regenerate-thumb',
 						};
+
+						this.$emit( 'change-wrapper-css', 'content-page import-step vertical-flex' );
 
 						this.nextStepAllowed = false;
 
@@ -93,6 +97,8 @@
 						};
 
 						this.nextStepAllowed = false;
+
+						this.$emit( 'change-wrapper-css', 'content-page regenerate-step vertical-flex' );
 
 						break;
 
@@ -246,6 +252,7 @@
 							self.regenerateChunk( response.data.step, response.data.offset, response.data.total );
 						} else {
 							self.$emit( 'next-allowed', true );
+							window.location = window.CBWPageConfig.next_step;
 						}
 
 					} else {

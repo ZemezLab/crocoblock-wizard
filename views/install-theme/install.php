@@ -20,6 +20,7 @@
 		<cx-vui-button
 			:button-style="'accent'"
 			:disabled="!nextStep"
+			:loading="loading"
 			@click="goToNextStep"
 		>
 			<span slot="label"><?php _e( 'Continue', 'crocoblock-wizard' ); ?></span>

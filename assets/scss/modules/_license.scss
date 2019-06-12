@@ -1,10 +1,17 @@
-.cbw-body.license-panel {
+.cbw-body.license-panel,
+.cbw-body.connection-error-panel {
 	.cbw-body__content {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 	.cx-vui-component {
+		&.no-indents {
+			.cx-vui-component__label {
+				padding: 0;
+				margin: 0;
+			}
+		}
 		&__label {
 			font-size: 24px;
 			margin: 0 0 10px;
@@ -25,7 +32,8 @@
 	}
 }
 .cbw-block {
-	.license-panel & {
+	.license-panel &,
+	.connection-error-panel & {
 		width: 530px;
 		flex: 0 0 530px;
 		&.cbw-connection-error {
@@ -87,5 +95,14 @@
 		path {
 			fill: $color__accent;
 		}
+	}
+}
+
+.cx-vui-panel {
+	&.license-panel {
+		background-image: url( '../img/license-cover.png' );
+	}
+	&.connection-error-panel {
+		background-image: url( '../img/connection-error-cover.png' );
 	}
 }

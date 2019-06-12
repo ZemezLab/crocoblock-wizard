@@ -17,6 +17,7 @@
 			<span slot="label"><?php _e( 'Back', 'crocoblock-wizard' ); ?></span>
 		</cx-vui-button>
 		<cx-vui-button
+			v-if="'cbw-regenerate-thumb' !== currentComponent"
 			:disabled="!nextStepAllowed"
 			:button-style="'accent'"
 			@click="goToNextStep"

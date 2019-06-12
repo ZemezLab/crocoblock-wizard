@@ -1,4 +1,10 @@
-<div>
+<div
+	:class="[ 'cbw-skin-' + action ]"
+>
+	<div
+		class="cbw-body__title"
+		v-html="pageTitle"
+	></div>
 	<p><?php
 		_e( 'Each skin comes with custom demo content and predefined set of plugins. Depending upon the selected skin the wizard will install required plugins and some demo post and pages.', 'crocoblock-wizard' );
 	?></p>
@@ -33,11 +39,26 @@
 			>
 				<div
 					class="cbw-uploaded-skin__thumb-wrap"
-					v-if="uploadedSkin.thumb"
 				>
-					<a :href="uploadedSkin.demo">
+					<a
+						:href="uploadedSkin.demo"
+						v-if="uploadedSkin.thumb"
+					>
 						<img :src="uploadedSkin.thumb" alt="" class="cbw-uploaded-skin__thumb">
 					</a>
+					<svg
+						v-else
+						width="306"
+						height="229"
+						viewBox="0 0 306 229"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						xmlns:xlink="http://www.w3.org/1999/xlink"
+					>
+						<path d="M0.5 4C0.5 2.06701 2.067 0.5 4 0.5H302C303.933 0.5 305.5 2.067 305.5 4V225C305.5 226.933 303.933 228.5 302 228.5H4C2.067 228.5 0.5 226.933 0.5 225V4Z" fill="white"/>
+						<path d="M0.5 4C0.5 2.06701 2.067 0.5 4 0.5H302C303.933 0.5 305.5 2.067 305.5 4V225C305.5 226.933 303.933 228.5 302 228.5H4C2.067 228.5 0.5 226.933 0.5 225V4Z" fill="#fff"/>
+						<path d="M0.5 4C0.5 2.06701 2.067 0.5 4 0.5H302C303.933 0.5 305.5 2.067 305.5 4V225C305.5 226.933 303.933 228.5 302 228.5H4C2.067 228.5 0.5 226.933 0.5 225V4Z" stroke="#ECECEC"/>
+					</svg>
 				</div>
 				<div class="cbw-uploaded-skin__content">
 					<div class="cbw-uploaded-skin__name">{{ uploadedSkin.name }}</div>

@@ -159,7 +159,7 @@
 	}
 	&__actions {
 		display: flex;
-		justify-content: space-between;
+		justify-content: center;
 		.cx-vui-button {
 			width: calc( 50% - 5px );
 		}
@@ -177,6 +177,30 @@
 			align-items: center;
 			svg {
 				margin: 0 5px 0 0;
+			}
+		}
+	}
+}
+
+.cbw-skin-import {
+	.cx-vui-tabs__nav-item {
+		display: none;
+	}
+}
+
+.cbw-skin-select,
+.import-template-page {
+	.cx-vui-tabs {
+		&__content {
+			border-top: 3px solid $color__accent;
+		}
+		&__nav-item {
+			padding-top: 10px;
+			padding-bottom: 10px;
+			&--active {
+				background: $color__accent;
+				color: #fff;
+				border: none;
 			}
 		}
 	}

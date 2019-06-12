@@ -68,3 +68,9 @@
 .cbw-install-theme {
 	flex: 1 1 auto;
 }
+
+.cx-vui-panel {
+	&.theme-page.install-theme {
+		background-image: url( '../img/theme-cover.png' );
+	}
+}

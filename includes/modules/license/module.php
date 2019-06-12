@@ -122,7 +122,7 @@ class Module extends Module_Base {
 		if ( true !== $license_api->connection_status ) {
 
 			$config['body']        = 'cbw-connection-error';
-			$config['wrapper_css'] = 'license-panel';
+			$config['wrapper_css'] = 'connection-error-panel';
 			$config['report_url']  = add_query_arg(
 				array(
 					'action'  => Plugin::instance()->dashboard->page_slug . '/' . $this->get_slug(),
@@ -155,7 +155,7 @@ class Module extends Module_Base {
 		$config['redirect_full']      = Plugin::instance()->dashboard->page_url( 'install-theme' );
 		$config['redirect_plugins']   = Plugin::instance()->dashboard->page_url(
 			'install-plugins',
-			array( 'type' => 'plugins' )
+			array( 'action' => 'plugins' )
 		);
 
 		return $config;

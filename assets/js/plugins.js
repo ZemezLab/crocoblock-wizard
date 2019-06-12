@@ -18,11 +18,12 @@
 				var newTitle = window.CBWPageConfig.title;
 
 				if ( 'cbw-install-plugins' === component ) {
-					newTitle = window.CBWPageConfig.install_title;
+					this.$emit( 'change-wrapper-css', 'plugins-page install-step' );
+				} else {
+					this.$emit( 'change-wrapper-css', 'plugins-page' );
 				}
 
 				this.currentComponent = component;
-				this.$emit( 'change-title', newTitle );
 
 			}
 		}
@@ -140,6 +141,7 @@
 				if ( index + 1 < this.pluginsToInstall.length ) {
 					this.installPlugin( index + 1 );
 				} else {
+					window.location = window.CBWPageConfig.next_step;
 					this.done = true;
 				}
 
@@ -174,6 +176,7 @@
 			return {
 				selectedSkinPlugins: window.CBWPageConfig.rec_plugins,
 				selectedExtraPlugins: [],
+				action: window.CBWPageConfig.action,
 				showRec: true,
 				showExtra: false,
 			};

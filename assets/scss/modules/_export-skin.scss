@@ -1,0 +1,34 @@
+.export-skin {
+	.cx-vui-collapse {
+		border: 1px solid $color__border-in-panel;
+		border-radius: 4px;
+		margin: 28px 0 20px;
+		padding: 35px 40px;
+		+ .cx-vui-collapse {
+			margin-top: 0;
+		}
+		&__heading {
+			padding: 0;
+		}
+		.cx-vui-component {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+	.export-skin-actions {
+		padding-top: 20px;
+	}
+	.cbw-export-error {
+		padding: 10px 20px;
+		margin: 10px 0 0 0;
+		background: $color__error-light;
+		color: $color__error;
+		font-weight: 500;
+	}
+	.cx-vui-component-raw {
+		&.source-select,
+		&.zip-url {
+			margin-top: 10px;
+		}
+	}
+}

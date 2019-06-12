@@ -46,26 +46,40 @@ class Module extends Module_Base {
 	 */
 	public function page_config( $config = array(), $subpage = '' ) {
 
-		$skin         = isset( $_GET['skin'] ) ? $_GET['skin'] : false;
-		$is_uploaded  = isset( $_GET['is_uploaded'] ) ? $_GET['is_uploaded'] : false;
-		$skin_plugins = Plugin::instance()->skins->get_skin_plugins( $skin, $is_uploaded );
-		$all_plugins  = Plugin::instance()->skins->get_all_plugins( $skin, $is_uploaded );
+		$skin        = isset( $_GET['skin'] ) ? $_GET['skin'] : false;
+		$is_uploaded = isset( $_GET['is_uploaded'] ) ? $_GET['is_uploaded'] : false;
+		$action      = ! empty( $_GET['action'] ) ? $_GET['action'] : 'full';
+
+		if ( 'full' === $action ) {
+			$skin_plugins = Plugin::instance()->skins->get_skin_plugins( $skin, $is_uploaded );
+			$all_plugins  = Plugin::instance()->skins->get_all_plugins( $skin, $is_uploaded );
+			$prev_step    = Plugin::instance()->dashboard->page_url( 'select-skin' );
+
+			$next_step = add_query_arg(
+				array(
+					'skin'        => $skin,
+					'is_uploaded' => $is_uploaded
+				),
+				Plugin::instance()->dashboard->page_url( 'import-content' )
+			);
+
+		} else {
+			$skin_plugins = array_keys( Plugin::instance()->skins->get_plugins_for_license() );
+			$all_plugins  = Plugin::instance()->skins->get_all_plugins();
+			$prev_step    = Plugin::instance()->dashboard->page_url( 'license' );
+			$next_step    = Plugin::instance()->dashboard->page_url( 'onboarding' );
+		}
 
 		$config['body']          = 'cbw-plugins';
 		$config['wrapper_css']   = 'plugins-page';
 		$config['is_uploaded']   = $is_uploaded;
 		$config['skin']          = $skin;
+		$config['action']        = $action;
 		$config['rec_plugins']   = $skin_plugins;
 		$config['extra_plugins'] = $this->get_rest_of_plugins( $skin_plugins, $all_plugins );
 		$config['all_plugins']   = $all_plugins;
-		$config['prev_step']     = Plugin::instance()->dashboard->page_url( 'select-skin' );
-		$config['next_step']     = add_query_arg(
-			array(
-				'skin'        => $skin,
-				'is_uploaded' => $is_uploaded
-			),
-			Plugin::instance()->dashboard->page_url( 'import-content' )
-		);
+		$config['prev_step']     = $prev_step;
+		$config['next_step']     = $next_step;
 
 		return $config;
 

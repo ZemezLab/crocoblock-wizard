@@ -49,6 +49,7 @@ class Module extends Module_Base {
 	public function page_config( $config = array(), $subpage = '' ) {
 
 		$config['body']            = 'cbw-free-templates';
+		$config['title']           = __( 'Import Template', 'crocoblock-wizard' );
 		$config['wrapper_css']     = 'import-template-page';
 		$config['templates']       = $this->get_templates();
 		$config['template_button'] = __( 'Import Template', 'crocoblock-wizard' );
@@ -70,7 +71,7 @@ class Module extends Module_Base {
 	 */
 	public function get_templates() {
 
-		$templates = Plugin::instance()->files_manager->get_json( 'templates.json', DAY_IN_SECONDS );
+		$templates = Plugin::instance()->files_manager->get_json( 'templates.json', 3 * DAY_IN_SECONDS );
 
 		if ( ! $templates ) {
 			$response  = wp_remote_get( $this->templates_server, array( 'timeout' => 30 ) );
@@ -129,8 +130,6 @@ class Module extends Module_Base {
 			),
 			esc_url( admin_url( 'post.php' ) )
 		);
-
-		die();
 
 		wp_send_json_success( array(
 			'message'      => __( 'Congratulations! The template was successfully imported', 'crocoblock-wizard' ),

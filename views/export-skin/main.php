@@ -1,4 +1,7 @@
 <div class="export-skin">
+	<div class="cbw-body__title"><?php
+		_e( 'Configure Skin For Export', 'crocoblock-wizard' );
+	?></div>
 	<cx-vui-collapse
 		:collapsed="false"
 	>
@@ -67,78 +70,81 @@
 	>
 		<h3 class="cx-vui-subtitle" slot="title"><?php _e( 'Include Plugins', 'crocoblock-wizard' ); ?></h3>
 		<div slot="content">
-			<div v-for="plugin in plugins">
-				<cx-vui-component-wrapper
-					:label="plugin.name"
-					:description="plugin.description"
-					:wrapper-css="['fields-group']"
-				>
-					<cx-vui-switcher
-						:prevent-wrap="true"
-						v-model="exportPlugins[ plugin.slug ].include"
-						:wrapper-css="['include-switcher']"
-					></cx-vui-switcher>
-					<cx-vui-select
-						:prevent-wrap="true"
-						placeholder="<?php _e( 'Plugin Source', 'crocoblock-wizard' ); ?>"
-						:wrapper-css="['source-select']"
-						:conditions="[
-							{
-								input: exportPlugins[ plugin.slug ].include,
-								compare: 'equal',
-								value: true,
-							}
-						]"
-						:options-list="[
-							{
-								value: 'wordpress',
-								label: '<?php _e( 'Wordpress plugins repository', 'crocoblock-wizard' ); ?>',
-							},
-							{
-								value: 'crocoblock',
-								label: '<?php _e( 'CrocoBlock', 'crocoblock-wizard' ); ?>',
-							},
-							{
-								value: 'remote',
-								label: '<?php _e( 'Remote URL', 'crocoblock-wizard' ); ?>',
-							},
-						]"
-						v-model="exportPlugins[ plugin.slug ].source"
-					></cx-vui-select>
-					<cx-vui-input
-						:prevent-wrap="true"
-						:wrapper-css="['zip-url']"
-						:conditions="[
-							{
-								input: exportPlugins[ plugin.slug ].include,
-								compare: 'equal',
-								value: true,
-							},
-							{
-								input: exportPlugins[ plugin.slug ].source,
-								compare: 'equal',
-								value: 'remote',
-							},
-							{
-								'operator': 'AND',
-							}
-						]"
-						placeholder="<?php _e( 'Plugin ZIP URL', 'crocoblock-wizard' ); ?>"
-						size="fullwidth"
-						v-model="exportPlugins[ plugin.slug ].url"
-					></cx-vui-input>
-				</cx-vui-component-wrapper>
-			</div>
+			<cx-vui-component-wrapper
+				v-for="plugin in plugins"
+				:key="plugin.slug"
+				:label="plugin.name"
+				:description="plugin.description"
+				:wrapper-css="['equalwidth']"
+			>
+				<cx-vui-switcher
+					:prevent-wrap="true"
+					v-model="exportPlugins[ plugin.slug ].include"
+					:wrapper-css="['include-switcher']"
+				></cx-vui-switcher>
+				<cx-vui-select
+					:prevent-wrap="true"
+					placeholder="<?php _e( 'Plugin Source', 'crocoblock-wizard' ); ?>"
+					size="fullwidth"
+					:wrapper-css="['source-select']"
+					:conditions="[
+						{
+							input: exportPlugins[ plugin.slug ].include,
+							compare: 'equal',
+							value: true,
+						}
+					]"
+					:options-list="[
+						{
+							value: 'wordpress',
+							label: '<?php _e( 'Wordpress plugins repository', 'crocoblock-wizard' ); ?>',
+						},
+						{
+							value: 'crocoblock',
+							label: '<?php _e( 'CrocoBlock', 'crocoblock-wizard' ); ?>',
+						},
+						{
+							value: 'remote',
+							label: '<?php _e( 'Remote URL', 'crocoblock-wizard' ); ?>',
+						},
+					]"
+					v-model="exportPlugins[ plugin.slug ].source"
+				></cx-vui-select>
+				<cx-vui-input
+					:prevent-wrap="true"
+					:wrapper-css="['zip-url']"
+					:conditions="[
+						{
+							input: exportPlugins[ plugin.slug ].include,
+							compare: 'equal',
+							value: true,
+						},
+						{
+							input: exportPlugins[ plugin.slug ].source,
+							compare: 'equal',
+							value: 'remote',
+						},
+						{
+							'operator': 'AND',
+						}
+					]"
+					placeholder="<?php _e( 'Plugin ZIP URL', 'crocoblock-wizard' ); ?>"
+					size="fullwidth"
+					v-model="exportPlugins[ plugin.slug ].url"
+				></cx-vui-input>
+			</cx-vui-component-wrapper>
 		</div>
 	</cx-vui-collapse>
-	<cx-vui-button
-		:loading="loading"
-		button-style="accent"
-		@click="exportSkin"
-	><span slot="label"><?php _e( 'Export Skin', 'crocoblock-wizard' ); ?></span></cx-vui-button>
-	<div
-		class="cbw-export-error"
-		v-if="error"
-		v-html="errorMessage"
-	></div>
+	<div class="export-skin-actions">
+		<cx-vui-button
+			:loading="loading"
+			button-style="accent"
+			@click="exportSkin"
+		><span slot="label"><?php _e( 'Export Skin', 'crocoblock-wizard' ); ?></span></cx-vui-button>
+		<div
+			class="cbw-export-error"
+			v-if="error"
+			v-html="errorMessage"
+		></div>
+	</div>
 </div>

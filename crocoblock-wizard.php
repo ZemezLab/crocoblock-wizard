@@ -45,3 +45,14 @@ function crocoblock_wizard_init() {
 function crocoblock_wizard() {
 	return Crocoblock_Wizard\Plugin::instance();
 }
+
+register_activation_hook( __FILE__, 'crocoblock_wizard_activation' );
+
+/**
+ * Callback for plugin activation hook
+ *
+ * @return void
+ */
+function crocoblock_wizard_activation() {
+	set_transient( 'crocoblock_wizard_redirect', true, MINUTE_IN_SECONDS );
+}

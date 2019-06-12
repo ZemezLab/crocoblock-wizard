@@ -34,6 +34,7 @@
 	position: relative;
 	border: 1px solid $color__border-in-panel;
 	margin: 0 0 20px;
+	background: #fff;
 	&:first-child {
 		margin-top: 28px;
 	}
@@ -81,6 +82,7 @@
 	border: 1px solid $color__border-in-panel;
 	border-radius: 4px;
 	margin: 0 0 10px;
+	background: #fff;
 	&--expanded {
 		background: $color__bg-canvas;
 		border-color: $color__bg-canvas;
@@ -139,5 +141,11 @@
 		to {
 			transform: rotate(360deg);
 		}
+	}
+}
+
+.cx-vui-panel {
+	&.plugins-page:not(.install-step) {
+		background-image: url( '../img/plugins-cover.png' );
 	}
 }

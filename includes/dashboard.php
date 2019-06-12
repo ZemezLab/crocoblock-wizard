@@ -17,6 +17,37 @@ class Dashboard {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'register_menu_page' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
+		add_action( 'admin_init', array( $this, 'maybe_redirect_after_activation' ) );
+	}
+
+	/**
+	 * Maybe redirect to plugin start page after activation
+	 *
+	 * @return [type] [description]
+	 */
+	public function maybe_redirect_after_activation() {
+
+		if ( ! get_transient( 'crocoblock_wizard_redirect' ) ) {
+			return;
+		}
+
+		if ( wp_doing_ajax() ) {
+			return;
+		}
+
+		delete_transient( 'crocoblock_wizard_redirect' );
+
+		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
+			return;
+		}
+
+		if ( $this->is_dashboard_page() ) {
+			return;
+		}
+
+		wp_safe_redirect( $this->page_url( $this->get_initial_page() ) );
+		die();
+
 	}
 
 	/**
@@ -27,8 +58,8 @@ class Dashboard {
 	public function register_menu_page() {
 
 		add_management_page(
-			__( 'CrocoBlock Wizard', 'crocoblock-wizard' ),
-			__( 'CrocoBlock Wizard', 'crocoblock-wizard' ),
+			__( 'Crocoblock Wizard', 'crocoblock-wizard' ),
+			__( 'Crocoblock Wizard', 'crocoblock-wizard' ),
 			'manage_options',
 			$this->page_slug,
 			array( $this, 'render_wizard' )

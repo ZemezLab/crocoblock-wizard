@@ -5,8 +5,9 @@
 		?></div>
 		<cbw-progress :value="progress"></cbw-progress>
 		<p>
-			<?php _e( 'Before demo data import a set of required plugins will bee installed.', 'crocoblock-wizard' ); ?><br>
-			<?php _e( 'Please be patient, this way take few minutes.', 'crocoblock-wizard' ); ?>
+			<span v-if="'full' === action">
+			<?php _e( 'Before demo data import a set of required plugins will bee installed.', 'crocoblock-wizard' ); ?></span><br v-if="'full' === action">
+			<span><?php _e( 'Please be patient, this may take few minutes.', 'crocoblock-wizard' ); ?></span>
 		</p>
 		<div
 			v-for="( plugin, slug ) in installedPlugins"
@@ -33,7 +34,7 @@
 				v-html="plugin.log"
 			></div>
 		</div>
-		<p v-if="done"><?php
+		<p v-if="done && 'full' === action"><?php
 			_e( 'All plugins are installed! Press Continue to start demo content import', 'crocoblock-wizard' );
 		?></p>
 	</div>
@@ -43,15 +44,6 @@
 		>
 			<svg slot="label" width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.67089 0L-4.76837e-07 6L5.67089 12L7 10.5938L2.65823 6L7 1.40625L5.67089 0Z" fill="#007CBA"/></svg>
 			<span slot="label"><?php _e( 'Back', 'crocoblock-wizard' ); ?></span>
-		</cx-vui-button>
-		<cx-vui-button
-			:disabled="!done"
-			:button-style="'accent'"
-			:loading="loading"
-			@click="goToNextStep"
-		>
-			<span slot="label"><?php _e( 'Continue', 'crocoblock-wizard' ); ?></span>
-			<svg slot="label" width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.32911 0L7 6L1.32911 12L0 10.5938L4.34177 6L0 1.40625L1.32911 0Z" fill="white"/></svg>
 		</cx-vui-button>
 	</div>
 </div>

@@ -85,6 +85,10 @@
 				width: 120px;
 				box-sizing: border-box;
 				text-align: center;
+				&:hover {
+					color: #fff;
+					background: $color__accent;
+				}
 			}
 		}
 	}

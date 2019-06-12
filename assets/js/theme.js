@@ -18,6 +18,7 @@
 			};
 		},
 		mounted: function() {
+			this.$emit( 'change-wrapper-css', 'theme-page install-theme' );
 			this.theme = storage.getItem( 'cbw-theme-to-install' );
 		},
 		methods: {
@@ -82,6 +83,9 @@
 				nextTheme: window.CBWPageConfig.select.next_step.selected,
 				themes: window.CBWPageConfig.select.themes,
 			};
+		},
+		mounted: function() {
+			this.$emit( 'change-wrapper-css', 'theme-page select-theme' );
 		},
 		created: function() {
 

@@ -12,8 +12,14 @@
 					}"
 					@click="showRec = !showRec"
 				>
-					<div class="cbw-plugins-group__heading-title"><?php
+					<div
+						class="cbw-plugins-group__heading-title"
+						v-if="'full' === action"
+					><?php
 						_e( 'Required plugins', 'crocoblock-wizard' );
+					?></div>
+					<div v-else class="cbw-plugins-group__heading-title"><?php
+						_e( 'Select plugins to install', 'crocoblock-wizard' );
 					?></div>
 					<div class="cbw-plugins-group__heading-desc" v-if="showRec"><?php
 						_e( 'The recommended set of basic plugins to display the template’s pages. The best option for your site’s future configuration. If you will not install one or more plugins from this list, the specific sections of the template, for which these plugins are responsible, will not be displayed.', 'crocoblock-wizard' );
@@ -33,7 +39,10 @@
 					></cx-vui-checkbox>
 				</div>
 			</div>
-			<div class="cbw-plugins-group">
+			<div
+				class="cbw-plugins-group"
+				v-if="'full' === action"
+			>
 				<div
 					:class="{
 						'cbw-plugins-group__heading': true,
@@ -80,6 +89,7 @@
 		</cx-vui-button>
 		<cx-vui-button
 			@click="skipPlugins"
+			v-if="'full' === action"
 		>
 			<span slot="label"><?php _e( 'Skip', 'crocoblock-wizard' ); ?></span>
 			<svg slot="label" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.32911 1L14 7L8.32911 13L7 11.5938L11.3418 7L7 2.40625L8.32911 1Z" fill="#007CBA"/><path d="M1.32911 1L7 7L1.32911 13L0 11.5938L4.34177 7L0 2.40625L1.32911 1Z" fill="#007CBA"/></svg>

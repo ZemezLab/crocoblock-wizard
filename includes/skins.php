@@ -224,6 +224,21 @@ class Skins {
 	}
 
 	/**
+	 * Returns all plugin allowed for license
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_plugins_for_license() {
+
+		$plugins = Plugin::instance()->settings->get_all_plugins();
+
+		return array_filter( $plugins, function( $plugin ) {
+			return 'crocoblock' === $plugin['source'];
+		} );
+
+	}
+
+	/**
 	 * Returns all registered plugins
 	 *
 	 * @return [type] [description]
