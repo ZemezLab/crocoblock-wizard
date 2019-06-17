@@ -1,7 +1,7 @@
 <div class="cbw-select-theme-wrap">
 	<div class="cbw-body__title"><?php _e( 'Choose the theme to use with Crocoblock', 'crocoblock-wizard' ); ?></div>
 	<p><?php
-		_e( 'Specify the theme you’d like to use with Crocoblock products.', 'crocoblock-wizard' );
+		_e( 'You can choose one of the free themes that have maximum compatibility with Elementor. If you\'re satisfied with your current theme, you can install Crocoblock and keep on using it.', 'crocoblock-wizard' );
 	?></p>
 	<div class="cbw-select-theme">
 		<div class="cbw-select-theme__themes">

@@ -2,7 +2,7 @@
 	<div class="cbw-install-theme">
 		<div class="cbw-body__title"><?php _e( 'Use child theme?', 'crocoblock-wizard' ); ?></div>
 		<p><?php
-			_e( 'Install child theme or continue with parent?', 'crocoblock-wizard' );
+			_e( 'We recommend you to use the child theme to continue the installation process. While using the child theme, you can safely make changes in the code, without having to worry about losing them when the theme is updated. Besides, the child theme is offered to install is fully adjusted for the best compatibility with Crocoblock functionality.', 'crocoblock-wizard' );
 		?></p>
 		<cbw-choices
 			:choices="choices"

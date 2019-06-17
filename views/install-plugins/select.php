@@ -19,11 +19,17 @@
 						_e( 'Required plugins', 'crocoblock-wizard' );
 					?></div>
 					<div v-else class="cbw-plugins-group__heading-title"><?php
-						_e( 'Select plugins to install', 'crocoblock-wizard' );
+						_e( 'Choose the plugins to install', 'crocoblock-wizard' );
 					?></div>
-					<div class="cbw-plugins-group__heading-desc" v-if="showRec"><?php
-						_e( 'The recommended set of basic plugins to display the template’s pages. The best option for your site’s future configuration. If you will not install one or more plugins from this list, the specific sections of the template, for which these plugins are responsible, will not be displayed.', 'crocoblock-wizard' );
-					?></div>
+					<div class="cbw-plugins-group__heading-desc" v-if="showRec">
+						<span v-if="'full' === action"><?php
+						_e( 'The required set of basic plugins are necessary for the skin’s pages to work smoothly. The best option for your website’s configuration. If you won’t install one or more plugins from this list, the specific sections of this skin, that are displayed with this plugin’s functionality, will be missing. ', 'crocoblock-wizard' );
+
+						?></span>
+						<span v-else><?php
+							_e( 'You can find the full list of the Crocoblock plugins available for your license key below. Choose the ones you want to install and clock “Continue”', 'crocoblock-wizard' );
+						?></span>
+					</div>
 				</div>
 				<div
 					class="cbw-plugins-group__body"
