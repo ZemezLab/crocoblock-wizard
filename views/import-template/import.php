@@ -1,9 +1,11 @@
 <div class="cbw-import-template">
 	<div
-		:class="[
-			'cbw-import-template__msg',
-			'cbw-import-template__msg--' + result.type
-		]"
+		:class="{
+			'cbw-import-template__msg': true,
+			'cbw-import-template__msg--hidden': 'default' === result.message,
+			'cbw-import-template__msg--success': 'success' === result.type,
+			'cbw-import-template__msg--error': 'error' === result.type,
+		}"
 	>{{ result.message }}</div>
 	<div class="cbw-import-template__name">{{ template.name }}</div>
 	<div class="cbw-import-template__thumb">

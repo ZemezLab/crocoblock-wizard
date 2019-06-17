@@ -62,11 +62,13 @@
 			border-bottom: 2px solid rgba( 255, 255, 255, .4 );
 			padding: 0 10px 0 0;
 			color: #fff;
+			transition: all 150ms linear;
 			&:hover {
 				color: #fff;
 				border-color: #fff;
 				box-shadow: none;
 				outline: none;
+				padding: 0 14px 0 0;
 			}
 			&:focus,
 			&:active {
@@ -88,6 +90,7 @@
 				&:hover {
 					color: #fff;
 					background: $color__accent;
+					box-shadow: none;
 				}
 			}
 		}

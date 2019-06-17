@@ -23,9 +23,12 @@
 					<svg v-if="'error' === plugin.status" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.71489 10.1136V6.71605H7.28511V10.1136H8.71489ZM8.71489 13.4716V11.7728H7.28511V13.4716H8.71489ZM0 16L8 0L16 16H0Z" fill="#C92C2C"/></svg>
 				</div>
 				<div class="cbw-plugin__heading-label">
-					<?php
-						_ex( 'Install plugin', 'for "Install plugin: Plugin Name" message', 'crocoblcok-wizard' );
-					?>: {{ plugin.name }}
+					<span>
+						<?php
+							_ex( 'Install plugin', 'for "Install plugin: Plugin Name" message', 'crocoblcok-wizard' );
+						?>: {{ plugin.name }}
+					</span>
+					<svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.32911L6 7L0 1.32911L1.40625 0L6 4.34177L10.5938 4.01598e-07L12 1.32911Z" fill="#7B7E81"/></svg>
 				</div>
 			</div>
 			<div

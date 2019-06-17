@@ -5,17 +5,20 @@
 }
 .cbw-import-template {
 	text-align: center;
-	padding: 40px 0 0 0;
+	padding: 0;
 	&__msg {
-		position: absolute;
-		left: 0;
-		top: 0;
-		right: 0;
+		position: -webkit-sticky; /* Safari */
+		position: sticky;
+		top: 32px;
 		padding: 16px;
 		text-align: center;
 		font-weight: 500;
 		font-size: 15px;
 		line-height: 18px;
+		margin: -30px -40px 40px;
+		&--hidden {
+			opacity: 0;
+		}
 		&--success {
 			background: $color__success-light;
 			color: $color__success;

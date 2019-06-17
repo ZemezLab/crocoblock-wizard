@@ -54,7 +54,7 @@
 						_e( 'Extra plugins', 'crocoblock-wizard' );
 					?></div>
 					<div class="cbw-plugins-group__heading-desc" v-if="showExtra"><?php
-						_e( 'The full list of plugins available for a template installation is recommended if you want to get additional functionality to your theme.', 'crocoblock-wizard' );
+						_e( 'The full list of plugins available for installation. Is recommended if you want to get additional functionality to your website.', 'crocoblock-wizard' );
 					?></div>
 				</div>
 				<div

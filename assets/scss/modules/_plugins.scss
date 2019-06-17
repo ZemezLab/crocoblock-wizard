@@ -102,7 +102,7 @@
 		&-icon {
 			font-size: 0;
 			line-height: 0;
-			margin: 0 10px 0 0;
+			margin: -1px 10px 0 0;
 			.spin-icon {
 				animation: spin 1200ms infinite linear;
 			}
@@ -112,11 +112,20 @@
 			font-size: 15px;
 			line-height: 23px;
 			color: $color__heading;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex: 1 1 auto;
 			.cbw-plugin--success & {
 				color: $color__success;
 			}
 			.cbw-plugin--error & {
 				color: $color__error;
+			}
+			.cbw-plugin--expanded & {
+				svg {
+					transform: scale( 1, -1 );
+				}
 			}
 		}
 	}

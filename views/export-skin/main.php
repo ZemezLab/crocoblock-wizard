@@ -44,7 +44,7 @@
 	<cx-vui-collapse
 		:collapsed="true"
 	>
-		<h3 class="cx-vui-subtitle" slot="title"><?php _e( 'Sample Content Settings', 'crocoblock-wizard' ); ?></h3>
+		<h3 class="cx-vui-subtitle" slot="title"><?php _e( 'Export Content Settings', 'crocoblock-wizard' ); ?></h3>
 		<div slot="content">
 			<cx-vui-textarea
 				:wrapper-css="['equalwidth']"

@@ -166,7 +166,7 @@ class Module extends Module_Base {
 				array(
 					'value'       => 'parent',
 					'label'       => __( 'Continue with parent theme', 'crocoblock-wizard' ),
-					'description' => __( 'Skip child theme installation and continute with paarent theme.', 'crocoblock-wizard' ),
+					'description' => __( 'Skip child theme installation and continute with parent theme.', 'crocoblock-wizard' ),
 				),
 				array(
 					'value'       => 'child',
@@ -234,6 +234,8 @@ class Module extends Module_Base {
 
 		$theme_url  = isset( $install_data['link'] ) ? $install_data['link'] : false;
 		$theme_slug = isset( $install_data['id'] ) ? $install_data['id'] : false;
+
+		Plugin::instance()->storage->store( 'theme_data', $install_data );
 
 		/**
 		 * Allow to filter parent theme URL

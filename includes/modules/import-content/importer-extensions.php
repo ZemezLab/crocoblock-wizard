@@ -30,6 +30,7 @@ class Importer_Extensions {
 		add_action( 'crocoblock-wizard/import/after-options-processing', array( $this, 'set_required_options' ) );
 
 		add_action( 'crocoblock-wizard/import/after-import-tables', array( $this, 'clear_woo_transients' ) );
+		add_filter( 'woocommerce_prevent_automatic_wizard_redirect', '__return_true' );
 
 	}
 

@@ -18,7 +18,6 @@
 			v-model="password"
 		></cx-vui-input>
 		<cx-vui-button
-			size="mini"
 			button-style="accent"
 			:disabled="!password || success"
 			:loading="loading"

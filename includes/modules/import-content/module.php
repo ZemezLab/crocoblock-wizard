@@ -90,12 +90,12 @@ class Module extends Module_Base {
 			array(
 				'value'       => 'append',
 				'label'       => __( 'Append demo content to my existing content', 'crocoblock-wizard' ),
-				'description' => __( 'Skip child theme installation and continute with parent theme.', 'crocoblock-wizard' ),
+				'description' => __( 'If you have chosen this option, the sample data will be added to the current content of your website.', 'crocoblock-wizard' ),
 			),
 			array(
 				'value'       => 'replace',
 				'label'       => __( 'Replace my existing content with demo content', 'crocoblock-wizard' ),
-				'description' => __( 'Download and install child theme. We recommend doing this, because it’s the most safe way to make future modifications.', 'crocoblock-wizard' ),
+				'description' => __( 'NB! If you want to install theme demo content, you agree that your current data will be replaced by the new demo content (sample data).', 'crocoblock-wizard' ),
 			),
 		);
 

@@ -39,7 +39,7 @@
 			return {
 				result: {
 					type: '',
-					message: '',
+					message: 'default',
 				},
 				pageTitle: '',
 				template: {},

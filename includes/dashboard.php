@@ -18,6 +18,28 @@ class Dashboard {
 		add_action( 'admin_menu', array( $this, 'register_menu_page' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
 		add_action( 'admin_init', array( $this, 'maybe_redirect_after_activation' ) );
+		add_filter( 'plugin_action_links_' . CB_WIZARD_PLUGIN_BASE, array( $this, 'plugin_action_links' ) );
+	}
+
+	/**
+	 * Plugin action links.
+	 * Adds ink to wizard strat page to the plugin list table
+	 * Fired by `plugin_action_links` filter.
+	 *
+	 * @param array $links An array of plugin action links.
+	 * @return array An array of plugin action links.
+	 */
+	public function plugin_action_links( $links ) {
+
+		$start_page = sprintf(
+			'<a href="%1$s">%2$s</a>',
+			$this->page_url( $this->get_initial_page() ),
+			__( 'Start Page', 'crocoblock-wizard' )
+		);
+
+		array_unshift( $links, $start_page );
+
+		return $links;
 	}
 
 	/**
