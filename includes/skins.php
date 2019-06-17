@@ -230,12 +230,21 @@ class Skins {
 	 */
 	public function get_plugins_for_license() {
 
-		$plugins = Plugin::instance()->settings->get_all_plugins();
+		$plugins          = Plugin::instance()->settings->get_all_plugins();
+		$filtered_plugins = array();
+		$excluded_plugins = get_option( 'jet_excluded_plugins', array() );
 
-		return array_filter( $plugins, function( $plugin ) {
-			return 'crocoblock' === $plugin['source'];
-		} );
+		if ( ! is_array( $excluded_plugins ) ) {
+			$excluded_plugins = array();
+		}
 
+		foreach ( $plugins as $slug => $plugin ) {
+			if ( 'crocoblock' === $plugin['source'] && ! in_array( $slug, $excluded_plugins ) ) {
+				$filtered_plugins[ $slug ] = $plugin;
+			}
+		}
+
+		return $filtered_plugins;
 	}
 
 	/**

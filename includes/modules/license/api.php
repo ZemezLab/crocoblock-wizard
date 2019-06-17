@@ -23,6 +23,7 @@ class API {
 	 * Config properties
 	 */
 	public $license_option = 'jet_theme_core_license';
+	public $plugins_option = 'jet_excluded_plugins';
 	public $api            = 'https://account.crocoblock.com/';
 	public $item_id        = 9;
 	public $theme_link     = 'https://account.crocoblock.com/free-download/kava.zip';
@@ -47,6 +48,15 @@ class API {
 	 */
 	public function get_license() {
 		return get_option( $this->license_option );
+	}
+
+	/**
+	 * Delete license option
+	 *
+	 * @return [type] [description]
+	 */
+	public function delete_license() {
+		return delete_option( $this->license_option );
 	}
 
 	/**
@@ -172,6 +182,10 @@ class API {
 			if ( 'valid' === $result['license'] ) {
 
 				update_option( $this->license_option, $license, 'no' );
+
+				if ( isset( $result['excluded_plugins'] ) ) {
+					update_option( $this->plugins_option, $result['excluded_plugins'], 'no' );
+				}
 
 				return $this->get_kava_installation_data();
 

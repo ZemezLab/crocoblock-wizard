@@ -106,3 +106,20 @@
 		background-image: url( '../img/connection-error-cover.png' );
 	}
 }
+
+.cbw-deactivate-license {
+	text-align: center;
+	padding: 10px 0 0 0;
+	a {
+		color: $color__text;
+		opacity: .7;
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+		&:hover {
+			text-decoration: none;
+			opacity: 1;
+		}
+	}
+}

@@ -65,6 +65,16 @@
 	>
 		<span slot="label">{{ buttonLabel }}</span>
 	</cx-vui-button>
+	<div
+		v-if="isActivated"
+		class="cbw-deactivate-license"
+	>
+		<a
+			:href="deactivateLink"
+		><?php
+			_e( 'Deactivate current license', 'crocoblock-wizard' );
+		?></a>
+	</div>
 	<cbw-video-popup
 		:url="videoURL"
 		:active="showVideo"

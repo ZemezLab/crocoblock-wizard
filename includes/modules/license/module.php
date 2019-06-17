@@ -108,6 +108,26 @@ class Module extends Module_Base {
 	}
 
 	/**
+	 * Deactivate currently stored license key
+	 *
+	 * @return [type] [description]
+	 */
+	public function deactivate_license() {
+
+		$api     = $this->get_api();
+		$license = $this->get_license();
+
+		if ( $license ) {
+			$api->license_request( 'deactivate_license', $license );
+			$api->delete_license();
+		}
+
+		wp_safe_redirect( Plugin::instance()->dashboard->page_url( 'license' ) );
+		die();
+
+	}
+
+	/**
 	 * License page config
 	 *
 	 * @param  array  $config  [description]
@@ -138,11 +158,12 @@ class Module extends Module_Base {
 		if ( $is_active ) {
 			$page_title = __( 'Select installation type', 'crocoblock-wizard' );
 		} else {
-			$page_title = __( 'Please, enter your license key to start installation', 'crocoblock-wizard' );
+			$page_title = __( 'Please, enter your license key to start', 'crocoblock-wizard' );
 		}
 
 		$config['title']              = __( 'Installation wizard', 'crocoblock-wizard' );
 		$config['body']               = 'cbw-license';
+		$config['deactivate_link']    = $this->get_deactivate_url( $config );
 		$config['wrapper_css']        = 'license-panel';
 		$config['button_label']       = __( 'Choose the installation type', 'crocoblock-wizard' );
 		$config['ready_button_label'] = __( 'Start Install', 'crocoblock-wizard' );
@@ -159,6 +180,24 @@ class Module extends Module_Base {
 		);
 
 		return $config;
+
+	}
+
+	/**
+	 * Returns deactivate license URL
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_deactivate_url( $config ) {
+
+		return add_query_arg(
+			array(
+				'action'  => str_replace( '%module%', $this->get_slug(), $config['action_mask'] ),
+				'handler' => 'deactivate_license',
+				'nonce'   => $config['nonce'],
+			),
+			esc_url( admin_url( 'admin-ajax.php' ) )
+		);
 
 	}
 

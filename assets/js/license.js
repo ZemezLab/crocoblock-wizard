@@ -26,6 +26,7 @@
 				pageTitle: window.CBWPageConfig.page_title,
 				buttonLabel: window.CBWPageConfig.button_label,
 				isActivated: window.CBWPageConfig.license_is_active,
+				deactivateLink: window.CBWPageConfig.deactivate_link,
 				videoURL: '',
 				showVideo: false,
 				tutorials: window.CBWPageConfig.tutorials,
