@@ -166,12 +166,12 @@ class Module extends Module_Base {
 				array(
 					'value'       => 'parent',
 					'label'       => __( 'Continue with parent theme', 'crocoblock-wizard' ),
-					'description' => __( 'Skip child theme installation and continute with parent theme.', 'crocoblock-wizard' ),
+					'description' => __( 'Install the Parent theme only, and skip the installation of the Child theme', 'crocoblock-wizard' ),
 				),
 				array(
 					'value'       => 'child',
 					'label'       => __( 'Use child theme', 'crocoblock-wizard' ),
-					'description' => __( 'Download and install child theme. We recommend doing this, because it’s the most safe way to make future modifications.', 'crocoblock-wizard' ),
+					'description' => __( 'Download and install the Child theme. We recommend doing this because it’s the safest way to make future modifications', 'crocoblock-wizard' ),
 				),
 			),
 		);

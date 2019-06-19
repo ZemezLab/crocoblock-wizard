@@ -1,6 +1,6 @@
 <div class="cbw-regenerate">
 	<div class="cbw-body__title"><?php
-		_e( 'Regenerate thumbnail', 'crocoblock-wizard' );
+		_e( 'Regenerating thumbnails', 'crocoblock-wizard' );
 	?></div>
 	<cbw-progress :value="progress"></cbw-progress>
 	<p v-if="!progress"><?php

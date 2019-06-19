@@ -8,7 +8,7 @@
 				_e( 'Congratulations! You’re all set!', 'crocblock-wizard' );
 			?></div>
 			<div class="cbw-onboarding__desc"><?php
-				_e( 'Don’t know from where to start & let us help you!', 'crocblock-wizard' );
+				_e( 'Choose from where you’d like to start', 'crocblock-wizard' );
 			?></div>
 		</div>
 		<div class="cbw-panels-grid">

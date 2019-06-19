@@ -23,7 +23,7 @@
 					?></div>
 					<div class="cbw-plugins-group__heading-desc" v-if="showRec">
 						<span v-if="'full' === action"><?php
-						_e( 'The required set of basic plugins are necessary for the skin’s pages to work smoothly. The best option for your website’s configuration. If you won’t install one or more plugins from this list, the specific sections of this skin, that are displayed with this plugin’s functionality, will be missing. ', 'crocoblock-wizard' );
+						_e( 'The required set of basic plugins which are necessary for the skin’s pages to work smoothly. The best option for your website’s configuration. If you don’t install one or more plugins from this list, the specific sections of this skin, that are displayed with this plugin’s functionality, will be missing. ', 'crocoblock-wizard' );
 
 						?></span>
 						<span v-else><?php
@@ -60,7 +60,7 @@
 						_e( 'Extra plugins', 'crocoblock-wizard' );
 					?></div>
 					<div class="cbw-plugins-group__heading-desc" v-if="showExtra"><?php
-						_e( 'The full list of plugins available for installation. Is recommended if you want to get additional functionality to your website.', 'crocoblock-wizard' );
+						_e( 'The full list of plugins available for installation. It is recommended if you want to add additional functionality to your website.', 'crocoblock-wizard' );
 					?></div>
 				</div>
 				<div

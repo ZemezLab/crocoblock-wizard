@@ -51,7 +51,7 @@
 						@click="startInstall"
 					>
 						<span slot="label"><?php
-							_e( 'Start Install', 'crocoblock-wizard' );
+							_e( 'Start Installation', 'crocoblock-wizard' );
 						?></span>
 					</cx-vui-button>
 					<cx-vui-button

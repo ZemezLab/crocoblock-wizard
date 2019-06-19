@@ -166,7 +166,7 @@ class Module extends Module_Base {
 		$config['deactivate_link']    = $this->get_deactivate_url( $config );
 		$config['wrapper_css']        = 'license-panel';
 		$config['button_label']       = __( 'Choose the installation type', 'crocoblock-wizard' );
-		$config['ready_button_label'] = __( 'Start Install', 'crocoblock-wizard' );
+		$config['ready_button_label'] = __( 'Start Installation', 'crocoblock-wizard' );
 		$config['license_is_active']  = $is_active;
 		$config['page_title']         = $page_title;
 		$config['tutorials']          = array(

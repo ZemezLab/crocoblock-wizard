@@ -17,7 +17,7 @@
 					>
 				</div>
 				<div class="cbw-select-theme__item-label"><?php
-					_e( 'Start Install', 'crocoblock-wizard' );
+					_e( 'Install', 'crocoblock-wizard' );
 				?></div>
 			</div>
 		</div>
@@ -30,7 +30,7 @@
 				tag-name="a"
 				:url="nextCurrent"
 			>
-				<span slot="label">Continue with your Current Theme</span>
+				<span slot="label">Continue with your current theme</span>
 			</cx-vui-button>
 		</div>
 	</div>

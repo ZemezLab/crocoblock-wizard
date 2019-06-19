@@ -95,7 +95,7 @@ class Module extends Module_Base {
 			array(
 				'value'       => 'replace',
 				'label'       => __( 'Replace my existing content with demo content', 'crocoblock-wizard' ),
-				'description' => __( 'NB! If you want to install theme demo content, you agree that your current data will be replaced by the new demo content (sample data).', 'crocoblock-wizard' ),
+				'description' => __( 'Choose this option if you want to install the demo content, and agree to replace your current data by the new demo content (sample data).', 'crocoblock-wizard' ),
 			),
 		);
 

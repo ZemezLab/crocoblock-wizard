@@ -13,7 +13,7 @@
 				<tr>
 					<th class="summary-label"><?php _e( 'Import summary', 'crocoblock-wizard' ); ?></th>
 					<th class="summary-progress"><?php _e( 'Progress', 'crocoblock-wizard' ); ?></th>
-					<th class="summary-total"><?php _e( 'Completed', 'crocoblock-wizard' ); ?></th>
+					<th class="summary-total"><?php _e( 'Complete', 'crocoblock-wizard' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
