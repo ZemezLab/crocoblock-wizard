@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: CrocoBlock Wizard
+ * Plugin Name: Crocoblock Wizard
  * Plugin URI:
- * Description:
+ * Description: Crocoblock installation wizard
  * Version:     1.0.0
- * Author:      CrocoBlock
+ * Author:      Crocoblock
  * Author URI:
  * Text Domain: crocoblock-wizard
  * License:     GPL-3.0+

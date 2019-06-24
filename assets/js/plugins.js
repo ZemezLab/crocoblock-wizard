@@ -53,6 +53,7 @@
 				progress: 0,
 				installedPlugins: {},
 				done: false,
+				action: window.CBWPageConfig.action,
 				loading: false,
 			};
 		},
@@ -141,6 +142,13 @@
 				if ( index + 1 < this.pluginsToInstall.length ) {
 					this.installPlugin( index + 1 );
 				} else {
+
+					/**
+					 * By default nex step after plugins is demo content, so ensure it will be stqarted correctlly
+					 */
+					window.sessionStorage.removeItem( 'cbw-import-type' );
+					window.sessionStorage.removeItem( 'cbw-import-content-step' );
+
 					window.location = window.CBWPageConfig.next_step;
 					this.done = true;
 				}
@@ -231,6 +239,13 @@
 		},
 		methods: {
 			skipPlugins: function() {
+
+				/**
+				 * By default nex step after plugins is demo content, so ensure it will be stqarted correctlly
+				 */
+				window.sessionStorage.removeItem( 'cbw-import-type' );
+				window.sessionStorage.removeItem( 'cbw-import-content-step' );
+
 				window.location = window.CBWPageConfig.next_step;
 			},
 			emitPluginsToInstall: function() {

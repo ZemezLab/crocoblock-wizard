@@ -50,6 +50,8 @@ class Installer {
 		$plugin         = $this->plugin;
 		$plugin['slug'] = $this->slug;
 
+		new Extensions();
+
 		/**
 		 * Hook fires before plugin installation.
 		 *

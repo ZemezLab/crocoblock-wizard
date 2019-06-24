@@ -100,9 +100,7 @@
 
 						self.success        = true;
 						self.successMessage = response.data.message;
-						self.loading        = false;
-
-						window.location = window.CBWPageConfig[ 'redirect_' + self.installationType ];
+						window.location     = window.CBWPageConfig[ 'redirect_' + self.installationType ];
 
 					}
 

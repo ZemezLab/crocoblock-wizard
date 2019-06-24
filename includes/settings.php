@@ -40,6 +40,15 @@ class Settings {
 	private $has_external = false;
 
 	/**
+	 * Class sonstructor
+	 */
+	public function __construct() {
+		if ( isset( $_GET['clear_settings_cache'] ) ) {
+			$this->clear_transient_data();
+		}
+	}
+
+	/**
 	 * Get settings from array.
 	 *
 	 * @param  array  $settings Settings trail to get.

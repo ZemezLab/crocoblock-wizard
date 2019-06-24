@@ -38,7 +38,7 @@
 			></div>
 		</div>
 		<p v-if="done && 'full' === action"><?php
-			_e( 'All plugins are installed! Press Continue to start demo content import', 'crocoblock-wizard' );
+			_e( 'All plugins are installed! You will be automatically redirected to the next step.', 'crocoblock-wizard' );
 		?></p>
 	</div>
 	<div class="cbw-footer">

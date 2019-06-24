@@ -54,7 +54,7 @@ class Module extends Module_Base {
 
 		} else {
 			$back       = Plugin::instance()->dashboard->page_url( 'install-theme' );
-			$page_title = __( 'Select skin and start install', 'crocoblock-wizard' );
+			$page_title = __( 'Select skin and start installation', 'crocoblock-wizard' );
 			$action     = 'select';
 			$first_tab  = 'skin';
 		}
