@@ -159,7 +159,7 @@
 	}
 	&__actions {
 		display: flex;
-		justify-content: center;
+		justify-content: space-between;
 		.cx-vui-button {
 			width: calc( 50% - 5px );
 		}
