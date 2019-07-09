@@ -27,6 +27,10 @@ const Repeater = {
 			type: Number,
 			default: 20,
 		},
+		useDragHandle: {
+			type: Boolean,
+			default: true,
+		},
 		conditions: {
 			type: Array,
 			default() {

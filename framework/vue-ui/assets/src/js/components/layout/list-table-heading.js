@@ -8,6 +8,10 @@ const ListTableHeading = {
 				return [];
 			}
 		},
+		className: {
+			type: String,
+			default: '',
+		},
 	},
 };
 

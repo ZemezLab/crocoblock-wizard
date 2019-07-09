@@ -15,6 +15,12 @@
 			class="cx-vui-repeater-item__heading-start"
 			@click.stop="isCollapsed = ! isCollapsed"
 		>
+			<div
+				v-handle
+				class="cx-vui-repeater-item__handle"
+			>
+				<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="2" y1="3" x2="14" y2="3" stroke-width="2"/><line x1="2" y1="11" x2="14" y2="11" stroke-width="2"/><line x1="2" y1="7" x2="14" y2="7" stroke-width="2"/></svg>
+			</div>
 			<svg
 				:class="{
 					'cx-vui-repeater-item__collapse':true,

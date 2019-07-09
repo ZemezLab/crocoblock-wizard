@@ -22,4 +22,17 @@
 	&--error {
 		background: $color__error-light;
 	}
+	&--success {
+		background: $color__success-light;
+	}
+}
+
+.cx-vui-inline-notice {
+	font-weight: bold;
+	&--error {
+		color: $color__error;
+	}
+	&--success {
+		color: $color__success;
+	}
 }

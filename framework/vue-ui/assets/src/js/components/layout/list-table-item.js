@@ -17,6 +17,10 @@ const ListTableItem = {
 				return [];
 			}
 		},
+		className: {
+			type: String,
+			default: '',
+		},
 	},
 };
 

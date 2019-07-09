@@ -1,4 +1,7 @@
-<div class="list-table-heading">
+<div :class="[
+	'list-table-heading',
+	className
+]">
 	<div
 		:class="[
 			'list-table-heading__cell',

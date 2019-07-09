@@ -6,7 +6,7 @@
 	@keyup.alt.n.stop="handleClick"
 	v-if="isVisible()"
 >
-	<div class="cx-vui-repeater__items" >
+	<div class="cx-vui-repeater__items">
 		<slot></slot>
 	</div>
 	<div class="cx-vui-repeater__actions">

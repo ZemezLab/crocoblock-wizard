@@ -1690,6 +1690,10 @@ const Repeater = {
 			type: Number,
 			default: 20
 		},
+		useDragHandle: {
+			type: Boolean,
+			default: true
+		},
 		conditions: {
 			type: Array,
 			default() {
@@ -1724,6 +1728,7 @@ const RepeaterItem = {
 	name: 'cx-vui-repeater-item',
 	template: '#cx-vui-repeater-item',
 	mixins: [__WEBPACK_IMPORTED_MODULE_0_vue_slicksort__["ElementMixin"]],
+	directives: { handle: __WEBPACK_IMPORTED_MODULE_0_vue_slicksort__["HandleDirective"] },
 	props: {
 		title: {
 			type: String
@@ -1859,6 +1864,14 @@ const ListTable = {
 			default() {
 				return [];
 			}
+		},
+		isEmpty: {
+			type: Boolean,
+			default: false
+		},
+		emptyMessage: {
+			type: String,
+			default: ''
 		}
 	}
 };
@@ -1889,6 +1902,10 @@ const ListTableItem = {
 			default() {
 				return [];
 			}
+		},
+		className: {
+			type: String,
+			default: ''
 		}
 	}
 };
@@ -1909,6 +1926,10 @@ const ListTableHeading = {
 			default() {
 				return [];
 			}
+		},
+		className: {
+			type: String,
+			default: ''
 		}
 	}
 };
@@ -2958,6 +2979,10 @@ const FilterableSelect = {
 		name: {
 			type: String
 		},
+		error: {
+			type: Boolean,
+			default: false
+		},
 		multiple: {
 			type: Boolean,
 			default: false
@@ -3267,15 +3292,17 @@ const FilterableSelect = {
 
 						value.forEach(singleVal => {
 							if (!Object(__WEBPACK_IMPORTED_MODULE_0__utils_assist__["b" /* oneOf */])(singleVal, this.currentValues)) {
-								this.currentValues.push(value);
+								this.currentValues.push(singleVal);
 								this.pushToSelected(singleVal);
 							}
 						});
 					} else {
+
 						this.currentValues.push(value);
 						this.pushToSelected(value);
 					}
 				} else {
+
 					this.currentValues.push(value);
 					this.pushToSelected(value);
 				}
@@ -3291,10 +3318,12 @@ const FilterableSelect = {
 							this.pushToSelected(singleVal, true);
 						});
 					} else {
+
 						this.currentValues = [value];
 						this.pushToSelected(value, true);
 					}
 				} else {
+
 					this.currentValues = [value];
 					this.pushToSelected(value, true);
 				}

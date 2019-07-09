@@ -1,9 +1,10 @@
-import { ElementMixin } from 'vue-slicksort';
+import { ElementMixin, HandleDirective } from 'vue-slicksort';
 
 const RepeaterItem = {
 	name: 'cx-vui-repeater-item',
 	template: '#cx-vui-repeater-item',
 	mixins: [ ElementMixin ],
+	directives: { handle: HandleDirective },
 	props: {
 		title: {
 			type: String,

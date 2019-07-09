@@ -11,6 +11,14 @@ const ListTable = {
 				return [];
 			}
 		},
+		isEmpty: {
+			type: Boolean,
+			default: false,
+		},
+		emptyMessage: {
+			type: String,
+			default: '',
+		},
 	},
 };
 

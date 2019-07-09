@@ -46,6 +46,7 @@
 					'cx-vui-input--in-focus': this.inFocus,
 					'cx-vui-input': true,
 					'size-fullwidth': true,
+					'has-error': error,
 				}"
 			>
 			<div class="cx-vui-f-select__results" v-if="inFocus">

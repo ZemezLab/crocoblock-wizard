@@ -16,6 +16,19 @@
 			}
 		}
 	}
+	&--vertical-fullwidth {
+		flex-direction: column;
+		padding-left: 0;
+		padding-right: 0;
+		.cx-vui-component__meta {
+			padding: 0 0 20px;
+			margin: 0 0 25px;
+			border-bottom: 1px solid $color__border-in-panel;
+		}
+		.cx-vui-component__label {
+			padding: 0 0 5px;
+		}
+	}
 	&--fullwidth-control {
 		.cx-vui-component__control {
 			max-width: 100%;

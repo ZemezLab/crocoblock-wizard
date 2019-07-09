@@ -34,6 +34,10 @@ const FilterableSelect = {
 		name: {
 			type: String
 		},
+		error: {
+			type: Boolean,
+			default: false
+		},
 		multiple: {
 			type: Boolean,
 			default: false
@@ -199,8 +203,8 @@ const FilterableSelect = {
 				promise.then( options => {
 					if ( options ) {
 						this.selectedOptions = options;
-						this.loaded  = true;
-						this.loading = false;
+						this.loaded          = true;
+						this.loading         = false;
 					}
 				} );
 			}
@@ -357,17 +361,19 @@ const FilterableSelect = {
 
 						value.forEach( singleVal => {
 							if ( ! oneOf( singleVal, this.currentValues ) ) {
-								this.currentValues.push( value );
+								this.currentValues.push( singleVal );
 								this.pushToSelected( singleVal );
 							}
 						} );
 
 					} else {
+
 						this.currentValues.push( value );
 						this.pushToSelected( value );
 					}
 
 				} else {
+
 					this.currentValues.push( value );
 					this.pushToSelected( value );
 				}
@@ -385,10 +391,12 @@ const FilterableSelect = {
 						} );
 
 					} else {
+
 						this.currentValues = [ value ];
 						this.pushToSelected( value, true );
 					}
 				} else {
+
 					this.currentValues = [ value ];
 					this.pushToSelected( value, true );
 				}
