@@ -19,14 +19,16 @@
 		},
 		mounted: function() {
 			this.$emit( 'change-wrapper-css', 'theme-page install-theme' );
-			this.theme = storage.getItem( 'cbw-theme-to-install' );
 		},
 		methods: {
 			goToNextStep: function() {
 
 				var config = window.CBWPageConfig;
 
+				this.theme = storage.getItem( 'cbw-theme-to-install' );
 				this.loading = true;
+
+				console.log( storage.getItem( 'cbw-theme-to-install' ) );
 
 				switch ( this.nextStep ) {
 					case 'parent':
@@ -55,11 +57,13 @@
 								key: 'get_parent',
 								status: 'in-progress',
 								message: config.install.get_parent,
+								theme: this.theme,
 							},
 							{
 								action: window.CBWPageConfig.action_mask.replace( /%module%/, config.module ),
 								handler: 'install_parent',
 								child: true,
+								theme: this.theme,
 							}
 						);
 

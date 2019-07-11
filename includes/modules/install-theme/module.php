@@ -260,9 +260,23 @@ class Module extends Module_Base {
 			) );
 		}
 
+		switch ( $theme_slug ) {
+			case 'generatepress':
+				$theme_name = 'GeneratePress';
+				break;
+
+			case 'oceanwp':
+				$theme_name = 'OceanWP';
+				break;
+
+			default:
+				$theme_name = ucfirst( $theme_slug );
+				break;
+		}
+
 		Plugin::instance()->storage->store( $this->settings['parent_data'], array(
 			'TextDomain' => $theme_slug,
-			'ThemeName'  => ucfirst( $theme_slug ),
+			'ThemeName'  => $theme_name,
 		) );
 
 		/**
