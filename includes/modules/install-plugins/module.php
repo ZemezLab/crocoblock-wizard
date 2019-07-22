@@ -70,16 +70,17 @@ class Module extends Module_Base {
 			$next_step    = Plugin::instance()->dashboard->page_url( 'onboarding' );
 		}
 
-		$config['body']          = 'cbw-plugins';
-		$config['wrapper_css']   = 'plugins-page';
-		$config['is_uploaded']   = $is_uploaded;
-		$config['skin']          = $skin;
-		$config['action']        = $action;
-		$config['rec_plugins']   = $skin_plugins;
-		$config['extra_plugins'] = $this->get_rest_of_plugins( $skin_plugins, $all_plugins );
-		$config['all_plugins']   = $all_plugins;
-		$config['prev_step']     = $prev_step;
-		$config['next_step']     = $next_step;
+		$config['body']             = 'cbw-plugins';
+		$config['wrapper_css']      = 'plugins-page';
+		$config['is_uploaded']      = $is_uploaded;
+		$config['skin']             = $skin;
+		$config['action']           = $action;
+		$config['rec_plugins']      = $skin_plugins;
+		$config['extra_plugins']    = $this->get_rest_of_plugins( $skin_plugins, $all_plugins );
+		$config['all_plugins']      = $all_plugins;
+		$config['disabled_plugins'] = Plugin::instance()->skins->disabled_plugins();
+		$config['prev_step']        = $prev_step;
+		$config['next_step']        = $next_step;
 
 		return $config;
 

@@ -195,13 +195,15 @@
 			},
 			skinPlugins: function() {
 
-				var result = [];
+				var result = [],
+					self   = this;
 
 				window.CBWPageConfig.rec_plugins.forEach( function( plugin ) {
 					if ( window.CBWPageConfig.all_plugins[ plugin ] ) {
 						result.push( {
 							value: plugin,
 							label: window.CBWPageConfig.all_plugins[ plugin ].name,
+							disabled: self.isDisabledPlugin( plugin )
 						} );
 					} else {
 						result.push( {
@@ -238,6 +240,11 @@
 			}
 		},
 		methods: {
+			isDisabledPlugin: function( plugin ) {
+				console.log( window.CBWPageConfig.disabled_plugins );
+				return ( 0 <= window.CBWPageConfig.disabled_plugins.indexOf( plugin ) );
+			},
+
 			skipPlugins: function() {
 
 				/**

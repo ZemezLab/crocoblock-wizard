@@ -10,6 +10,7 @@ import ListTableItem from './components/layout/list-table-item';
 import ListTableHeading from './components/layout/list-table-heading';
 import Tabs from './components/layout/tabs';
 import TabsPanel from './components/layout/tabs-panel';
+import CXNotice from './components/layout/notice';
 
 import Input from './components/form/input';
 import Textarea from './components/form/textarea';
@@ -19,6 +20,8 @@ import SelectPlain from './components/form/select';
 import FilterableSelect from './components/form/f-select';
 import Checkbox from './components/form/checkbox';
 import Radio from './components/form/radio';
+
+import './../scss/cx-vue-ui.scss';
 
 Vue.component( Title.name, Title );
 Vue.component( Collapse.name, Collapse );
@@ -41,3 +44,5 @@ Vue.component( SelectPlain.name, SelectPlain );
 Vue.component( FilterableSelect.name, FilterableSelect );
 Vue.component( Checkbox.name, Checkbox );
 Vue.component( Radio.name, Radio );
+
+Vue.prototype.$CXNotice = CXNotice;

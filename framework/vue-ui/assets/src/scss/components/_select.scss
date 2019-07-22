@@ -2,4 +2,5 @@
 .wp-admin .cx-vui-select {
 	@include input();
 	height: auto;
+	-webkit-appearance:none;
 }

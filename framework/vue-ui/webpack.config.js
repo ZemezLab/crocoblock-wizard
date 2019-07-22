@@ -1,37 +1,60 @@
-var path = require('path');
-var webpack = require('webpack');
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const path = require('path');
+const glob = require('glob');
+const argv = require('yargs').argv;
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-module.exports = {
+const isDevelopment = argv.mode === 'development';
+const distPath = path.join(__dirname, '/assets/js/');
+
+const config = {
 	entry: {
-		'cx-vue-ui': './assets/src/js/cx-vue-ui.js',
+		main: './assets/src/js/cx-vue-ui.js'
 	},
 	output: {
-		path: path.resolve(__dirname, 'assets/js'),
-		filename: '[name].js',
+		filename: 'cx-vue-ui.js',
+		path: path.resolve( __dirname, 'assets/js' )
 	},
 	watch: true,
 	module: {
-		rules: [{
-				test: /\.(js|jsx|mjs)$/,
-				exclude: /(node_modules|bower_components)/,
-				use: {
-					loader: 'babel-loader',
-				},
+		rules: [
+			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: [{
+					loader: 'babel-loader'
+				}]
+			},
+			{
+				test: /\.scss$/,
+				exclude: /node_modules/,
+				use: [
+					'style-loader',
+					'css-loader',
+					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: function () {
+								return [
+									require('cssnano')({
+										autoprefixer: false,
+										safe: true
+									})
+								];
+							}
+						}
+					},
+					'sass-loader'
+				]
 			}
-		],
-	},
-	resolve: {
-		modules: [
-			path.resolve(__dirname, 'src'),
-			'node_modules'
-		],
+		]
 	},
 	optimization: {
 		minimizer: [
 			new UglifyJsPlugin({
 				test: /\.js(\?.*)?$/i,
-			}),
+			})
 		],
-	},
+	}
 };
+
+module.exports = config;

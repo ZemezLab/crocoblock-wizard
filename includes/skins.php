@@ -21,6 +21,13 @@ class Skins {
 	private $uploaded_skins_settings = array();
 
 	/**
+	 * Currently disabled plugins list
+	 *
+	 * @var array
+	 */
+	private $disabled_plugins = array();
+
+	/**
 	 * Holder for current skin data.
 	 *
 	 * @var array
@@ -90,7 +97,7 @@ class Skins {
 	public function get_types() {
 		return array(
 			'skin'  => __( 'Pre-made sites', 'crocoblock-wizard' ),
-			'model' => __( 'Models', 'crocoblock-wizard' ),
+			//'model' => __( 'Models', 'crocoblock-wizard' ),
 		);
 	}
 
@@ -241,10 +248,37 @@ class Skins {
 		foreach ( $plugins as $slug => $plugin ) {
 			if ( 'crocoblock' === $plugin['source'] && ! in_array( $slug, $excluded_plugins ) ) {
 				$filtered_plugins[ $slug ] = $plugin;
+			} else {
+				$this->disabled_plugins[ $slug ] = $plugin;
 			}
 		}
 
 		return $filtered_plugins;
+	}
+
+	/**
+	 * Check if plugin is disabled
+	 *
+	 * @param  [type]  $slug [description]
+	 * @return boolean       [description]
+	 */
+	public function is_plugin_disabled( $slug ) {
+
+		if ( empty( $this->disabled_plugins ) ) {
+			return false;
+		}
+
+		return isset( $this->disabled_plugins[ $slug ] );
+
+	}
+
+	/**
+	 * Return disabled plugins
+	 *
+	 * @return [type] [description]
+	 */
+	public function disabled_plugins() {
+		return array_keys( $this->disabled_plugins );
 	}
 
 	/**

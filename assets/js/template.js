@@ -23,7 +23,10 @@
 				var result = {};
 
 				for ( var slug in this.items ) {
-					if ( this.items[ slug ].tab === tab ) {
+
+					if ( ! this.items[ slug ].tab ) {
+						result[ slug ] = this.items[ slug ];
+					} else if ( this.items[ slug ].tab === tab ) {
 						result[ slug ] = this.items[ slug ];
 					}
 				}

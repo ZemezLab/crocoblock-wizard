@@ -96,20 +96,13 @@ if ( ! class_exists( 'CX_Vue_UI' ) ) {
 
 			wp_enqueue_script(
 				'cx-vue-ui',
-				$this->url . 'assets/js/cx-vue-ui' . $suffix . '.js',
+				$this->url . 'assets/js/cx-vue-ui.js',
 				array( 'cx-vue' ),
 				$this->version,
 				true
 			);
 
 			add_action( 'admin_footer', array( $this, 'print_templates' ), 0 );
-
-			wp_enqueue_style(
-				'cx-vue-ui',
-				$this->url . 'assets/css/cx-vue-ui.css',
-				array(),
-				$this->version
-			);
 
 			$this->assets_enqueued = true;
 
@@ -136,6 +129,7 @@ if ( ! class_exists( 'CX_Vue_UI' ) ) {
 				'list-table-item',
 				'tabs',
 				'tabs-panel',
+				'notice',
 
 				// Form elements
 				'input',
