@@ -16,6 +16,7 @@
 			placeholder="<?php esc_html_e( 'Please, enter your password', 'crocoblock-wizard' ); ?>"
 			:prevent-wrap="true"
 			v-model="password"
+			@on-keyup.enter="clearContent"
 		></cx-vui-input>
 		<cx-vui-button
 			button-style="accent"
