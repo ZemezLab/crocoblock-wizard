@@ -6,7 +6,7 @@
 		<cbw-progress :value="progress"></cbw-progress>
 		<p>
 			<span v-if="'full' === action">
-			<?php _e( 'Before demo data import a set of required plugins will bee installed.', 'crocoblock-wizard' ); ?></span><br v-if="'full' === action">
+			<?php _e( 'Before demo data import a set of required plugins will be installed.', 'crocoblock-wizard' ); ?></span><br v-if="'full' === action">
 			<span><?php _e( 'Please be patient, this may take few minutes.', 'crocoblock-wizard' ); ?></span>
 		</p>
 		<div
