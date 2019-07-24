@@ -33,7 +33,7 @@
 						:options-list="[
 							{
 								value: 'jet',
-								label: '<?php _e( 'Jet plugins', 'crocoblock-wizard' ); ?>',
+								label: '<?php _e( 'Jet Plugins', 'crocoblock-wizard' ); ?>',
 							},
 							{
 								value: 'pro',
