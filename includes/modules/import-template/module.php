@@ -11,7 +11,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 class Module extends Module_Base {
 
-	private $templates_server = 'https://dev.crocoblock.com/wp-json/croco-site-api/v1/free-templates';
+	private $templates_server = 'https://crocoblock.com/wp-json/croco-site-api/v1/free-templates';
 
 	/**
 	 * Returns module slug
