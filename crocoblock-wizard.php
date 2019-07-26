@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Crocoblock Wizard
- * Plugin URI:
- * Description: Crocoblock installation wizard
- * Version:     1.0.0
+ * Plugin URI:  https://crocoblock.com/
+ * Description: A powerful tool to install Crocoblock package, Jet Plugins, export and import skins quick and easy!
+ * Version:     1.0.1
  * Author:      Crocoblock
- * Author URI:
+ * Author URI:  https://crocoblock.com/
  * Text Domain: crocoblock-wizard
  * License:     GPL-3.0+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -26,7 +26,7 @@ add_action( 'plugins_loaded', 'crocoblock_wizard_init' );
  */
 function crocoblock_wizard_init() {
 
-	define( 'CB_WIZARD_VERSION', '1.0.0-' . time() );
+	define( 'CB_WIZARD_VERSION', '1.0.1' );
 
 	define( 'CB_WIZARD__FILE__', __FILE__ );
 	define( 'CB_WIZARD_PLUGIN_BASE', plugin_basename( CB_WIZARD__FILE__ ) );

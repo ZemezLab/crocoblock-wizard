@@ -97,11 +97,11 @@
 					:options-list="[
 						{
 							value: 'wordpress',
-							label: '<?php _e( 'Wordpress plugins repository', 'crocoblock-wizard' ); ?>',
+							label: '<?php _e( 'WordPress plugins repository', 'crocoblock-wizard' ); ?>',
 						},
 						{
 							value: 'crocoblock',
-							label: '<?php _e( 'CrocoBlock', 'crocoblock-wizard' ); ?>',
+							label: '<?php _e( 'Crocoblock', 'crocoblock-wizard' ); ?>',
 						},
 						{
 							value: 'remote',
