@@ -179,7 +179,20 @@ class WXR_Importer extends \WP_Importer {
 				break;
 
 			case 'wp:user_tables':
-				$summary['tables']++;
+
+				$node = $this->reader->expand();
+
+				foreach ( $node->childNodes as $child ) {
+
+					// We only care about child elements
+					if ( $child->nodeType !== XML_ELEMENT_NODE ) {
+						continue;
+					}
+
+					$summary['tables']++;
+
+				}
+
 				break;
 
 			case 'wp:wp_author':
