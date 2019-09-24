@@ -241,15 +241,17 @@ class WXR_Exporter {
 		global $wpdb;
 
 		if ( ! empty( $this->tables ) ) {
+
 			$instance_tables = array_map( function( $table_name ) use ( $wpdb ) {
 
-				if ( false === strpos( $table_name, $wpdb->prefix ) ) {
-					$table_name = $wpdb->prefix . $table_name;
+				if ( false !== strpos( $table_name, $wpdb->prefix ) ) {
+					$table_name = str_replace( $wpdb->prefix, '', $table_name );
 				}
 
 				return $table_name;
 
 			}, $this->tables );
+
 		}
 
 		if ( ! empty( $instance_tables ) ) {
