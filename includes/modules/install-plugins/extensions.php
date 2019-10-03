@@ -22,6 +22,7 @@ class Extensions {
 		add_action( 'crocoblock-wizard/after-plugin-activation', array( $this, 'prevent_booked_redirect' ) );
 		add_action( 'crocoblock-wizard/after-plugin-activation', array( $this, 'prevent_tribe_redirect' ) );
 		add_action( 'crocoblock-wizard/after-plugin-activation', array( $this, 'prevent_woo_redirect' ) );
+		add_action( 'crocoblock-wizard/after-plugin-activation', array( $this, 'prevent_give_redirect' ) );
 		add_action( 'crocoblock-wizard/install-finished', array( $this, 'ensure_prevent_booked_redirect' ) );
 
 		// Booked sometimes not processed correctly and still redirect so pervent it hard
@@ -174,6 +175,25 @@ class Extensions {
 
 		return true;
 	}
+
+	/**
+	 * Prevent redirect after WooCommerce activation.
+	 *
+	 * @param  string $plugin Plugin slug.
+	 * @return bool
+	 */
+	public function prevent_give_redirect( $plugin ) {
+
+		if ( 'give' !== $plugin['slug'] ) {
+			return false;
+		}
+
+		delete_option( 'give_cache__give_activation_redirect' );
+
+		return true;
+	}
+
+
 
 	/**
 	 * Prevent BuddyPress redirect.
