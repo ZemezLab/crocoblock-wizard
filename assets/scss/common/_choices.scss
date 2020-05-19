@@ -10,14 +10,14 @@
 	&--selected {
 		background: $color__bg-canvas;
 		border-color: $color__bg-canvas;
-		box-shadow: 0px 4px 4px rgba( 35, 40, 45, 0.24 );
+		box-shadow: 0 4px 4px rgba( 35, 40, 45, 0.24 );
 	}
 	&__label {
 		color: $color__heading;
 		font-weight: 500;
 	}
 	&__mark {
-		margin: 1px 10px 0 0;
+		@include margin(1px, 10px, 0, 0);
 		border: 2px solid $color__text;
 		box-sizing: border-box;
 		width: 18px;

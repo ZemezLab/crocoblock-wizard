@@ -1,9 +1,12 @@
 <div
-	:class="{
-		'cx-vui-repeater-item': true,
-		'cx-vui-panel': true,
-		'cx-vui-repeater-item--is-collpased': this.isCollapsed
-	}"
+	:class="[
+		{
+			'cx-vui-repeater-item': true,
+			'cx-vui-panel': true,
+			'cx-vui-repeater-item--is-collpased': this.isCollapsed,
+		},
+		this.customCssClass
+	]"
 >
 	<div
 		:class="{

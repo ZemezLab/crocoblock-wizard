@@ -64,6 +64,7 @@ const Tabs = {
 		},
 		updateState() {
 			const tabs = this.getTabs();
+			this.navList = tabs;
 			tabs.forEach( tab => {
 				tab.show = this.activeTab === tab.name;
 			} );

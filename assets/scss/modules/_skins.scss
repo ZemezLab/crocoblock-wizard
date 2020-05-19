@@ -51,7 +51,7 @@
 				font-size: 15px;
 				margin: 0;
 				&__mark {
-					margin: 0 6px 0 0;
+					@include margin(0, 6px, 0, 0);
 					border-color: $color__accent;
 				}
 			}
@@ -87,7 +87,7 @@
 
 .cbw-uploader {
 	background: #fff;
-	box-shadow: 0px 2px 6px rgba(35, 40, 45, 0.07);
+	box-shadow: 0 2px 6px rgba(35, 40, 45, 0.07);
 	border-radius: 4px;
 	padding: 42px;
 	&__inner {
@@ -129,7 +129,7 @@
 .cbw-uploaded-skin {
 	margin: 0;
 	background: #fff;
-	box-shadow: 0px 2px 6px rgba(35, 40, 45, 0.07);
+	box-shadow: 0 2px 6px rgba(35, 40, 45, 0.07);
 	border-radius: 4px;
 	display: flex;
 	align-items: center;
@@ -162,6 +162,10 @@
 		justify-content: space-between;
 		.cx-vui-button {
 			width: calc( 50% - 5px );
+
+			&:only-child {
+				margin: 0 auto;
+			}
 		}
 	}
 	&__cnacel {
@@ -176,7 +180,7 @@
 			display: inline-flex;
 			align-items: center;
 			svg {
-				margin: 0 5px 0 0;
+				@include margin(0, 5px, 0, 0);
 			}
 		}
 	}

@@ -11,6 +11,10 @@
 		&-icon {
 			font-size: 18px;
 			margin: 0 5px 0 0;
+			.rtl & {
+				margin: 0 0 0 5px;
+				transform: scaleX(-1);
+			}
 		}
 	}
 	&__content {

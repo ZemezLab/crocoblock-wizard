@@ -155,9 +155,11 @@ class Dashboard {
 
 		add_action( 'admin_footer', array( $this, 'print_js_templates' ) );
 
+		$direction_suffix = is_rtl() ? '-rtl' : '';
+
 		wp_enqueue_style(
 			'crocoblock-wizard',
-			CB_WIZARD_URL . 'assets/css/wizard.css',
+			CB_WIZARD_URL . 'assets/css/wizard' . $direction_suffix . '.css',
 			array(),
 			CB_WIZARD_VERSION
 		);

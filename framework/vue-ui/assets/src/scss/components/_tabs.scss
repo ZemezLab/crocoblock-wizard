@@ -5,17 +5,17 @@
 	}
 	&__nav {
 		background: $color__bg-canvas;
-		.cx-vui-tabs--layout-vertical & {
+		.cx-vui-tabs--layout-vertical > & {
 			width: 20%;
 			flex: 0 0 20%;
 			max-width: 220px;
 			padding: 0 0 40px;
 		}
-		.cx-vui-tabs--layout-horizontal & {
+		.cx-vui-tabs--layout-horizontal > & {
 			display: flex;
 			padding: 0 40px;
 		}
-		.cx-vui-tabs--invert & {
+		.cx-vui-tabs--invert > & {
 			background: $color__bg-panel;
 		}
 		&-item {
@@ -55,18 +55,23 @@
 	}
 	&__content {
 		padding: 40px;
-		.cx-vui-tabs--invert & {
+		.cx-vui-tabs--invert > & {
 			background: $color__bg-canvas;
 		}
-		.cx-vui-tabs--layout-horizontal & {
+		.cx-vui-tabs--layout-horizontal > & {
 			border-top: 1px solid $color__border-off-panel;
 			margin: -1px 0 0 0;
 		}
-		.cx-vui-tabs--layout-vertical & {
+		.cx-vui-tabs--layout-vertical > & {
 			flex: 1 1 auto;
 			border-left: 1px solid $color__border-off-panel;
 			margin: 0 0 0 -1px;
 			padding: 15px 40px;
+			.rtl & {
+				border-left: none;
+				border-right: 1px solid $color__border-off-panel;
+				margin: 0 -1px 0 0;
+			}
 		}
 	}
 }

@@ -186,18 +186,6 @@ const Checkbox = {
 			this.$emit( 'input', this.currentValues );
 			this.$emit( 'on-change', event );
 		},
-		isDisabled( option ) {
-
-			if ( this.disabled ) {
-				return true;
-			}
-
-			if ( option.disabled ) {
-				return true;
-			} else {
-				return false;
-			}
-		},
 		isOptionInFocus( value ) {
 			return value === this.optionInFocus;
 		},

@@ -17,6 +17,9 @@
 		:name="name"
 		:value="currentValue"
 		:autofocus="autofocus"
+		:min="min"
+		:max="max"
+		:step="step"
 		@keyup.enter="handleEnter"
 		@keyup="handleKeyup"
 		@keypress="handleKeypress"
@@ -26,4 +29,5 @@
 		@input="handleInput"
 		@change="handleChange"
 	>
+	<slot></slot>
 </cx-vui-component-wrapper>

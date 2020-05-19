@@ -18,7 +18,7 @@
 		color: $color__error;
 		padding: 15px 0 0 0;
 		svg {
-			margin: 0 5px 0 0;
+			@include margin(0, 5px, 0, 0);
 		}
 	}
 	&__result {
@@ -44,7 +44,7 @@
 		max-width: 650px;
 		.cx-vui-button {
 			flex: 0 0 100px;
-			margin: 0 0 0 10px;
+			@include margin(0, 0, 0, 10px);
 		}
 		.cx-vui-component-raw {
 			flex: 1 1 auto;
@@ -66,7 +66,7 @@
 		width: 100%;
 		th {
 			font-weight: normal;
-			text-align: left;
+			text-align: getValueByDirection(left, right);
 			font-size: 15px;
 			line-height: 23px;
 			color: $color__text;
@@ -88,7 +88,7 @@
 		.summary-total {
 			width: 8%;
 			min-width: 100px;
-			padding: 0 0 0 30px;
+			@include padding(0, 0, 0, 30px);
 		}
 	}
 }

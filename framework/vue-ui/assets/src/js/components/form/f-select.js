@@ -141,6 +141,7 @@ const FilterableSelect = {
 			this.currentValues = [];
 		} else if ( 'object' !== typeof this.currentValues ) {
 			if ( '[object Array]' === Object.prototype.toString.call( this.currentValues ) ) {
+
 			} else {
 				this.currentValues = [ this.currentValues ];
 			}
@@ -208,6 +209,16 @@ const FilterableSelect = {
 					}
 				} );
 			}
+
+		},
+		setValues( values ) {
+
+			values = values || [];
+
+			this.selectedOptions = [];
+			this.currentValues   = [];
+
+			this.storeValues( values );
 
 		},
 		handleFocus( event ) {

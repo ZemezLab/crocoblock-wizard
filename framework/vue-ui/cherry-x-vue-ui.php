@@ -2,7 +2,7 @@
 /**
  * Vue.js based Interface Builder module
  *
- * Version: 0.0.1
+ * Version: 1.0.8
  */
 
 // If this file is called directly, abort.
@@ -42,8 +42,12 @@ if ( ! class_exists( 'CX_Vue_UI' ) ) {
 		 *
 		 * @var string
 		 */
-		protected $version = '1.0.0';
+		protected $version = '1.0.8';
 
+		/**
+		 * [$assets_enqueued description]
+		 * @var boolean
+		 */
 		protected $assets_enqueued = false;
 
 		/**
@@ -79,6 +83,8 @@ if ( ! class_exists( 'CX_Vue_UI' ) ) {
 			if ( $this->assets_enqueued ) {
 				return;
 			}
+
+			wp_enqueue_media();
 
 			$suffix = '.min';
 
@@ -129,6 +135,7 @@ if ( ! class_exists( 'CX_Vue_UI' ) ) {
 				'list-table-item',
 				'tabs',
 				'tabs-panel',
+				'pagination',
 				'notice',
 
 				// Form elements
@@ -140,6 +147,9 @@ if ( ! class_exists( 'CX_Vue_UI' ) ) {
 				'f-select',
 				'checkbox',
 				'radio',
+				'colorpicker',
+				'wp-media',
+				'dimensions',
 			) );
 		}
 

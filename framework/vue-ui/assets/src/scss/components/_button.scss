@@ -40,6 +40,28 @@
 				background: $color__accent-hover;
 			}
 		}
+		&-default-border {
+			border: 1px solid $color__border-off-panel;
+			background: transparent;
+			color: $color__text;
+			box-shadow: none;
+			&:hover {
+				border: 1px solid $color__border-off-panel;
+				color: $color__text;
+				background: #f3f5f6;
+			}
+		}
+		&-accent-border {
+			border: 1px solid $color__accent;
+			background: transparent;
+			color: $color__accent;
+			box-shadow: none;
+			&:hover {
+				border: 1px solid $color__accent-hover;
+				color: $color__accent-hover;
+				background: #f3f5f6;
+			}
+		}
 		&-link-accent {
 			color: $color__accent;
 			background: none;
@@ -74,9 +96,15 @@
 			.cx-vui-button__content {
 				.dashicons {
 					margin: 0 5px 0 -8px;
+					.rtl & {
+						margin: 0 -8px 0 5px;
+					}
 				}
 				span + .dashicons {
 					margin: -8px 0 0 5px;
+					.rtl & {
+						margin: -8px 5px 0 0;
+					}
 				}
 			}
 		}
@@ -86,9 +114,15 @@
 			.cx-vui-button__content {
 				svg {
 					margin: 0 5px 1px 0;
+					.rtl & {
+						margin: 0 0 1px 5px;
+					}
 				}
 				span + svg {
 					margin: 0 0 1px 5px;
+					.rtl & {
+						margin: 0 5px 1px 0;
+					}
 				}
 			}
 		}
@@ -99,9 +133,15 @@
 			.cx-vui-button__content {
 				.dashicons {
 					margin: 0 4px 0 -5px;
+					.rtl & {
+						margin: 0 -5px 0 4px;
+					}
 				}
 				span + .dashicons {
 					margin: -5px 0 0 4px;
+					.rtl & {
+						margin: -5px 4px 0 0;
+					}
 				}
 			}
 

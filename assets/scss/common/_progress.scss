@@ -16,7 +16,7 @@
 		min-width: 14px;
 		max-width: 100%;
 		background: $color__accent;
-		box-shadow: 0px 1px 4px rgba(35, 40, 45, 0.24);
+		box-shadow: 0 1px 4px rgba(35, 40, 45, 0.24);
 	}
 	&__value {
 		flex: 0 0 60px;
@@ -25,7 +25,7 @@
 		font-size: 18px;
 		line-height: 27px;
 		color: $color__accent;
-		text-align: right;
+		text-align: getValueByDirection(right, left);
 	}
 }
 
@@ -42,7 +42,7 @@
 		min-width: 14px;
 		max-width: 100%;
 		background: $color__accent;
-		box-shadow: 0px 1px 4px rgba(35, 40, 45, 0.24);
+		box-shadow: 0 1px 4px rgba(35, 40, 45, 0.24);
 		.cbw-progress-alt--complete & {
 			background: $color__success;
 		}

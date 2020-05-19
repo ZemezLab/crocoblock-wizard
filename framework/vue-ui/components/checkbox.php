@@ -16,17 +16,14 @@
 		@focus="handleParentFocus( $event )"
 	>
 		<div
-			:class="{
-				'cx-vui-checkbox-wrap': true,
-				'cx-vui-checkbox-wrap--disabled': isDisabled( option ),
-			}"
+			class="cx-vui-checkbox-wrap"
 			v-for="( option, index ) in optionsList"
 		>
 			<div
 				:key="name + option.value + index"
 				:class="{
 					'cx-vui-checkbox': true,
-					'cx-vui-checkbox--disabled': isDisabled( option ),
+					'cx-vui-checkbox--disabled': disabled,
 					'cx-vui-checkbox--checked': isChecked( option.value ),
 					'cx-vui-checkbox--focused': isOptionInFocus( option.value ),
 				}"
@@ -44,12 +41,12 @@
 					:name="name + '[' + option.value + ']'"
 					:value="inputValue( option.value )"
 					:checked="isChecked( option.value )"
-					:disabled="isDisabled( option )"
+					:disabled="disabled"
 				>
 				<div
 					:class="{
 						'cx-vui-checkbox__check': true,
-						'cx-vui-checkbox__check--disabled': isDisabled( option ),
+						'cx-vui-checkbox__check--disabled': disabled,
 						'cx-vui-checkbox__check--checked': isChecked( option.value ),
 						'cx-vui-checkbox__check--focused': isOptionInFocus( option.value ),
 					}"

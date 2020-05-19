@@ -46,13 +46,15 @@
 		&:before {
 			content: "";
 			position: absolute;
-			left: 0;
+			@include start(0);
 			top: 4px;
 			width: 14px;
 			height: 14px;
 			background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDcgMTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEuMzI5MTEgLTUuODA5NzRlLTA4TDcgNkwxLjMyOTExIDEyTC02LjE0NjkxZS0wOCAxMC41OTM4TDQuMzQxNzcgNkwtNi4xNDY5MmUtMDggMS40MDYyNUwxLjMyOTExIC01LjgwOTc0ZS0wOFoiIGZpbGw9IiM3QjdFODEiLz48L3N2Zz4=);
 			background-repeat: no-repeat;
 			background-position: center center;
+
+			@include rtl_inverse();
 		}
 		&--active {
 			&:before {
@@ -70,7 +72,7 @@
 			font-size: 18px;
 			line-height: 140%;
 			color: $color__heading;
-			padding: 0 0 0 20px;
+			@include padding( 0, 0, 0, 20px );
 		}
 	}
 	&__body {
@@ -102,7 +104,7 @@
 		&-icon {
 			font-size: 0;
 			line-height: 0;
-			margin: -1px 10px 0 0;
+			@include margin(-1px, 10px, 0, 0);
 			.spin-icon {
 				animation: spin 1200ms infinite linear;
 			}
@@ -132,7 +134,7 @@
 	&__log {
 		font-size: 15px;
 		line-height: 23px;
-		padding: 5px 30px 22px 41px;
+		@include padding(5px, 30px, 22px, 41px);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		ul {

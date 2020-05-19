@@ -29,7 +29,7 @@
 		padding: 0 0 70px;
 	}
 	&__icon {
-		margin: 0 20px 0 0;
+		@include margin(0, 20px, 0, 0);
 		.cbw-welcome-action--featured & {
 			margin: 0 0 5px;
 		}
@@ -51,24 +51,35 @@
 	}
 	&__action {
 		&-link {
-			background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2h0PSIxMCIgdmlld0JveD0iMCAwIDYgMTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEuMTM5MjQgMEw2IDVMMS4xMzkyNCAxMEwwIDguODI4MTJMMy43MjE1MiA1TDAgMS4xNzE4OEwxLjEzOTI0IDBaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==);
-			background-position: right center;
-			background-repeat: no-repeat;
+			position: relative;
 			display: inline-block;
 			font-weight: 500;
 			font-size: 15px;
 			line-height: 18px;
 			text-decoration: none;
 			border-bottom: 2px solid rgba( 255, 255, 255, .4 );
-			padding: 0 10px 0 0;
+			@include padding(0, 10px, 0, 0);
 			color: #fff;
 			transition: all 150ms linear;
+			&:before {
+				content: '';
+				position: absolute;
+				top: 0;
+				@include end(0);
+				width: 10px;
+				height: 18px;
+				background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2h0PSIxMCIgdmlld0JveD0iMCAwIDYgMTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEuMTM5MjQgMEw2IDVMMS4xMzkyNCAxMEwwIDguODI4MTJMMy43MjE1MiA1TDAgMS4xNzE4OEwxLjEzOTI0IDBaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==);
+				background-position: right center;
+				background-repeat: no-repeat;
+
+				@include rtl_inverse();
+			}
 			&:hover {
 				color: #fff;
 				border-color: #fff;
 				box-shadow: none;
 				outline: none;
-				padding: 0 14px 0 0;
+				@include padding(0, 14px, 0, 0);
 			}
 			&:focus,
 			&:active {
@@ -80,13 +91,16 @@
 			.cbw-welcome-action--featured & {
 				border: none;
 				background: #fff;
-				box-shadow: 0px 4px 4px rgba(35, 40, 45, 0.1);
+				box-shadow: 0 4px 4px rgba(35, 40, 45, 0.1);
 				border-radius: 4px;
 				color: $color__accent;
 				padding: 12px 10px;
 				width: 120px;
 				box-sizing: border-box;
 				text-align: center;
+				&:before {
+					content: none;
+				}
 				&:hover {
 					color: #fff;
 					background: $color__accent;

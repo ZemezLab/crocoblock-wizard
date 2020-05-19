@@ -26,10 +26,12 @@
 				:button-style="'accent'"
 				:size="'mini'"
 				@click="handleOk"
+				v-if="showOk"
 			><span slot="label">{{ okLabel }}</span></cx-vui-button>
 			<cx-vui-button
 				:size="'mini'"
 				@click="handleCancel"
+				v-if="showCancel"
 			><span slot="label">{{ cancelLabel }}</span></cx-vui-button>
 		</div>
 	</div>

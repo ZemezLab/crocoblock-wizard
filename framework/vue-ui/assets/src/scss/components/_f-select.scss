@@ -65,6 +65,10 @@
 			color: $color__text;
 			margin: 0 5px 5px 0;
 			white-space: nowrap;
+			.rtl & {
+				padding: 5px 5px 5px 11px;
+				margin: 0 0 5px 5px;
+			}
 			&-icon {
 				width: 22px;
 				height: 22px;
@@ -75,6 +79,9 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				.rtl & {
+					margin: 0 0 0 6px;
+				}
 				path {
 					transition: all 150ms liear;
 					fill: $color__text;

@@ -23,7 +23,7 @@
 			background: $color__success-light;
 			color: $color__success;
 			&:before {
-				margin: 0 5px 0 0;
+				@include margin(0, 5px, 0, 0);
 				content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxOCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNi40MDI2OCAxNEwxOCAxLjk0NjE5TDE2LjE4NzkgMEw2LjQwMjY4IDEwLjE3MDRMMS44MTIwOCA1LjM5OTFMMCA3LjI4MjUxTDYuNDAyNjggMTRaIiBmaWxsPSIjNDZCNDUwIi8+PC9zdmc+);
 			}
 		}
@@ -51,7 +51,7 @@
 		justify-content: center;
 		align-items: center;
 		.cx-vui-button {
-			margin: 0 0 0 10px;
+			@include margin(0, 0, 0, 10px);
 		}
 		.cx-vui-input {
 			width: 330px;
@@ -59,7 +59,7 @@
 		}
 	}
 	&__footer {
-		text-align: left;
+		text-align: getValueByDirection(left, right);
 		padding: 60px 0 0 0;
 	}
 }

@@ -14,6 +14,14 @@ const Popup = {
 			type: Boolean,
 			default: true,
 		},
+		showOk: {
+			type: Boolean,
+			default: true,
+		},
+		showCancel: {
+			type: Boolean,
+			default: true,
+		},
 		header: {
 			type: Boolean,
 			default: true,

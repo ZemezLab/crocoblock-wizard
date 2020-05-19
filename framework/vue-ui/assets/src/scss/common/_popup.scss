@@ -48,6 +48,9 @@
 		align-items: center;
 		.cx-vui-button + .cx-vui-button {
 			margin: 0 0 0 10px;
+			.rtl & {
+				margin: 0 10px 0 0;
+			}
 		}
 	}
 	&__close {
@@ -55,6 +58,10 @@
 		right: 12px;
 		top: 15px;
 		cursor: pointer;
+		.rtl & {
+			left: 12px;
+			right: auto;
+		}
 		path {
 			fill: $color__border-off-panel;
 		}

@@ -1,3 +1,7 @@
+$direction: ltr !default;
+
+@import "mixins/direction";
+
 @import "variables/colors";
 @import "variables/fonts";
 

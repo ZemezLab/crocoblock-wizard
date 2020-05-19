@@ -19,6 +19,9 @@ const RepeaterItem = {
 		index: {
 			type: Number,
 		},
+		customCss: {
+			type: String,
+		}
 	},
 	data() {
 		return {
@@ -26,6 +29,11 @@ const RepeaterItem = {
 			isCollapsed: this.collapsed,
 			showConfirmTip: false,
 		};
+	},
+	computed: {
+		customCssClass() {
+			return this.customCss;
+		},
 	},
 	methods: {
 		handleCopy() {

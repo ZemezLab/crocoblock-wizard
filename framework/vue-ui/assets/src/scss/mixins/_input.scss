@@ -9,6 +9,7 @@
 	box-shadow: none;
 	outline: none;
 	box-sizing: border-box;
+	max-width: 100%;
 	margin: 0;
 	&:focus {
 		box-shadow: 0 0 0 2px $color__accent-border inset;
@@ -21,5 +22,21 @@
 	}
 	&.size-fullwidth {
 		width: 100%;
+	}
+
+	&::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+		color: $color__input-placeholder;
+	}
+
+	&::-moz-placeholder { /* Firefox 19+ */
+		color: $color__input-placeholder;
+	}
+
+	&:-ms-input-placeholder { /* IE 10+ */
+		color: $color__input-placeholder;
+	}
+
+	&:-moz-placeholder { /* Firefox 18- */
+		color: $color__input-placeholder;
 	}
 }

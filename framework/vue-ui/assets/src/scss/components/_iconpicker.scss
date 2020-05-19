@@ -16,6 +16,9 @@
 		background: $color__bg-input;
 		border-radius: 4px;
 		margin: 0 5px 0 0;
+		.rtl & {
+			margin: 0 0 0 5px;
+		}
 	}
 	&__canvas {
 		position: absolute;
@@ -47,6 +50,10 @@
 			border-color: transparent transparent $color__accent-border transparent;
 			content: "";
 			z-index: 1;
+			.rtl & {
+				left: auto;
+				right: 9px;
+			}
 		}
 		&:after {
 			position: absolute;
@@ -59,6 +66,10 @@
 			z-index: 2;
 			border-color: transparent transparent $color__bg-panel transparent;
 			content: "";
+			.rtl & {
+				left: auto;
+				right: 10px;
+			}
 		}
 		&-list {
 			display: flex;

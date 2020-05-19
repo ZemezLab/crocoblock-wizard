@@ -9,7 +9,7 @@ const Input = {
 	props: {
 		type: {
 			validator ( value ) {
-				return oneOf(value, ['text', 'textarea', 'password', 'url', 'email', 'date', 'number', 'tel']);
+				return oneOf(value, ['text', 'textarea', 'password', 'url', 'email', 'date', 'number', 'range', 'tel']);
 			},
 			default: 'text'
 		},
@@ -48,6 +48,15 @@ const Input = {
 		autofocus: {
 			type: Boolean,
 			default: false
+		},
+		min: {
+			type: Number
+		},
+		max: {
+			type: Number
+		},
+		step: {
+			type: Number
 		},
 		autocomplete: {
 			validator (value) {
