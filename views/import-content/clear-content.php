@@ -34,7 +34,7 @@
 	<div
 		:class="{
 			'cbw-clear-content__result': true,
-			'cbw-clear-content__result--error': error && ! sucess,
+			'cbw-clear-content__result--error': error && ! success,
 			'cbw-clear-content__result--success': success,
 		}"
 	>{{ message }}</div>
