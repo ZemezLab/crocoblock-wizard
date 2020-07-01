@@ -22,10 +22,15 @@
 						_e( 'Choose the plugins to install', 'crocoblock-wizard' );
 					?></div>
 					<div class="cbw-plugins-group__heading-desc" v-if="showRec">
-						<span v-if="'full' === action"><?php
-						_e( 'The required set of basic plugins which are necessary for the skin’s pages to work smoothly. The best option for your website’s configuration. If you don’t install one or more plugins from this list, the specific sections of this skin, that are displayed with this plugin’s functionality, will be missing. ', 'crocoblock-wizard' );
-
-						?></span>
+						<div v-if="'full' === action">
+							<div><?php
+								_e( 'A basic set of required plugins. They are indispensable for the skin pages to work smoothly.', 'crocoblock-wizard' );
+							?></div>
+							<div class="cbw-warning">
+								<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.71489 10.1136V6.71605H7.28511V10.1136H8.71489ZM8.71489 13.4716V11.7728H7.28511V13.4716H8.71489ZM0 16L8 0L16 16H0Z" fill="#C92C2C"/></svg>
+								<?php _e( 'If you don\'t install one or more plugins from this list, the specific sections of the skin displayed via this plugin will be missing. ', 'crocoblock-wizard' ); ?>
+							</div>
+						</div>
 						<span v-else><?php
 							_e( 'You can find the full list of the Crocoblock plugins available for your license key below. Choose the ones you want to install and clock “Continue”', 'crocoblock-wizard' );
 						?></span>

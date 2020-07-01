@@ -96,8 +96,8 @@ class Skins {
 	 */
 	public function get_types() {
 		return array(
+			'model' => __( 'Models', 'crocoblock-wizard' ),
 			'skin'  => __( 'Pre-made sites', 'crocoblock-wizard' ),
-			//'model' => __( 'Models', 'crocoblock-wizard' ),
 		);
 	}
 

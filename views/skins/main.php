@@ -5,13 +5,16 @@
 		class="cbw-body__title"
 		v-html="pageTitle"
 	></div>
-	<p><?php
-		_e( 'Each skin comes with the custom demo content and a predefined set of plugins. Depending upon the selected skin the wizard will install the required plugins and some demo post and pages.', 'crocoblock-wizard' );
+	<p v-if="'model' === firstTab"><?php
+		_e( 'Design combined with <b>ready to use dynamic functionality inside</b>. Free for All-Inclusive set owners.', 'crocoblock-wizard' );
+	?></p>
+	<p v-else><?php
+		_e( '<b>Pre-designed static pages that can easily be adjusted to your website</b>. Free for All-Inclusive set owners. ', 'crocoblock-wizard' );
 	?></p>
 	<cx-vui-tabs
 		:invert="true"
 		:in-panel="true"
-		:value="firstTab"
+		v-model="firstTab"
 	>
 		<cx-vui-tabs-panel
 			v-for="( typeLabel, typeSlug ) in allowedTypes"
@@ -30,6 +33,7 @@
 			</div>
 		</cx-vui-tabs-panel>
 		<cx-vui-tabs-panel
+			v-if="allowUpload"
 			name="upload-skin"
 			label="<?php _e( 'Upload Yours', 'crocoblock-wizard' ); ?>"
 		>

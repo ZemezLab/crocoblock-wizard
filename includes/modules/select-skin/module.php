@@ -3,6 +3,7 @@ namespace Crocoblock_Wizard\Modules\Select_Skin;
 
 use Crocoblock_Wizard\Base\Module as Module_Base;
 use Crocoblock_Wizard\Plugin as Plugin;
+use Crocoblock_Wizard\Modules\License\API as License_API;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -47,16 +48,35 @@ class Module extends Module_Base {
 	public function page_config( $config = array(), $subpage = '' ) {
 
 		if ( ! empty( $_GET['action'] ) && 'import' === $_GET['action'] ) {
-			$back       = $config['main_page'];
-			$page_title = __( 'Upload your skin', 'crocoblock-wizard' );
-			$action     = 'import';
-			$first_tab  = 'upload-skin';
+			$back         = $config['main_page'];
+			$page_title   = __( 'Upload your skin', 'crocoblock-wizard' );
+			$action       = 'import';
+			$first_tab    = 'upload-skin';
+			$allow_upload = true;
 
 		} else {
-			$back       = Plugin::instance()->dashboard->page_url( 'install-theme' );
-			$page_title = __( 'Select skin and start installation', 'crocoblock-wizard' );
-			$action     = 'select';
-			$first_tab  = 'skin';
+
+			$license_api  = new License_API();
+			$back         = Plugin::instance()->dashboard->page_url( 'install-theme' );
+			$page_title   = __( 'Select skin and start installation', 'crocoblock-wizard' );
+			$action       = 'select';
+			$first_tab    = 'model';
+			$allow_upload = false;
+			$types        = Plugin::instance()->skins->get_types();
+
+			if ( ! $license_api->has_template_access() && ! $license_api->has_design_template_access() ) {
+
+				$types     = array();
+				$first_tab = false;
+
+				wp_redirect( Plugin::instance()->dashboard->page_url( 'license' ) );
+				die();
+
+			} elseif ( ! $license_api->has_template_access() && $license_api->has_design_template_access() ) {
+				unset( $types['model'] );
+				$first_tab = 'skin';
+			}
+
 		}
 
 		$config['page_title']     = $page_title;
@@ -64,9 +84,10 @@ class Module extends Module_Base {
 		$config['action']         = $action;
 		$config['wrapper_css']    = 'panel-wide';
 		$config['default_back']   = $back;
+		$config['allow_upload']   = $allow_upload;
 		$config['first_tab']      = $first_tab;
 		$config['skins_by_types'] = Plugin::instance()->skins->get_skins_by_types();
-		$config['allowed_types']  = Plugin::instance()->skins->get_types();
+		$config['allowed_types']  = $types;
 		$config['upload_hook']    = array(
 			'action'  => Plugin::instance()->dashboard->page_slug . '/' . $this->get_slug(),
 			'handler' => 'upload_user_skin',

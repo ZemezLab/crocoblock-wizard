@@ -1,8 +1,9 @@
 <?php
-namespace Crocoblock_Wizard\Modules\License;
+namespace Crocoblock_Wizard\Modules\Popups_License;
 
 use Crocoblock_Wizard\Base\Module as Module_Base;
 use Crocoblock_Wizard\Plugin as Plugin;
+use Crocoblock_Wizard\Modules\License\API as License_API;
 use Crocoblock_Wizard\Tools\Files_Download as Files_Download;
 
 // If this file is called directly, abort.
@@ -20,7 +21,7 @@ class Module extends Module_Base {
 	 * @return void
 	 */
 	public function get_slug() {
-		return 'license';
+		return 'popups-license';
 	}
 
 	/**
@@ -31,8 +32,8 @@ class Module extends Module_Base {
 	public function enqueue_module_assets() {
 
 		wp_enqueue_script(
-			'crocoblock-wizard-license',
-			CB_WIZARD_URL . 'assets/js/license.js',
+			'croco-popups-license',
+			CB_WIZARD_URL . 'assets/js/popups-license.js',
 			array( 'cx-vue-ui' ),
 			CB_WIZARD_VERSION,
 			true
@@ -48,7 +49,7 @@ class Module extends Module_Base {
 	public function get_api() {
 
 		if ( ! $this->api ) {
-			$this->api = new API();
+			$this->api = new License_API();
 		}
 
 		return $this->api;
@@ -75,6 +76,16 @@ class Module extends Module_Base {
 	}
 
 	/**
+	 * Returns stored license key
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_item_id() {
+		$license_api = $this->get_api();
+		return $license_api->item_id;
+	}
+
+	/**
 	 * Verify license key
 	 *
 	 * @return [type] [description]
@@ -85,7 +96,7 @@ class Module extends Module_Base {
 
 		if ( ! $license ) {
 			wp_send_json_error( array(
-				'message' => esc_html__( 'Please fill in License field and try again', 'crocoblock-wizard' ),
+				'message' => esc_html__( 'Please fill in License field and try again', 'croco-ik' ),
 			) );
 		}
 
@@ -97,13 +108,16 @@ class Module extends Module_Base {
 				'message' => $license_api->get_error(),
 			) );
 		} else {
-
-			Plugin::instance()->storage->store( 'theme_data', $install_data );
-
-			wp_send_json_success( array(
-				'message'             => esc_html__( 'Your license is activated.', 'crocoblock-wizard' ),
-				'has_template_access' => $license_api->has_template_access() || $license_api->has_design_template_access(),
-			) );
+			if ( ! $license_api->has_template_access() ) {
+				wp_send_json_error( array(
+					'access_error' => true,
+					'message'      => esc_html__( 'Templates is not included into your license', 'croco-ik' ),
+				) );
+			} else {
+				wp_send_json_success( array(
+					'message' => esc_html__( 'Your license is activated. Redirecting...', 'croco-ik' ),
+				) );
+			}
 		}
 
 	}
@@ -123,7 +137,7 @@ class Module extends Module_Base {
 			$api->delete_license();
 		}
 
-		wp_safe_redirect( Plugin::instance()->dashboard->page_url( 'license' ) );
+		wp_safe_redirect( Plugin::instance()->dashboard->page_url( 'popups-license' ) );
 		die();
 
 	}
@@ -157,32 +171,21 @@ class Module extends Module_Base {
 		}
 
 		if ( $is_active ) {
-			$page_title = __( 'Select installation type', 'crocoblock-wizard' );
+			$page_title = __( 'Interactive Popup Library', 'croco-ik' );
 		} else {
-			$page_title = __( 'Please, enter your license key to start', 'crocoblock-wizard' );
+			$page_title = __( 'Please, enter your license key to start', 'croco-ik' );
 		}
 
-		$config['title'] = __( 'Installation wizard', 'crocoblock-wizard' );
-		$config['body'] = 'cbw-license';
-		$config['deactivate_link'] = $this->get_deactivate_url( $config );
-		$config['wrapper_css'] = 'license-panel';
+		$config['title']               = __( 'Installation wizard', 'croco-ik' );
+		$config['body']                = 'cbw-popups-license';
+		$config['deactivate_link']     = $this->get_deactivate_url( $config );
+		$config['wrapper_css']         = 'license-panel';
+		$config['button_label']        = __( 'Enter license key', 'croco-ik' );
+		$config['ready_button_label']  = __( 'Start Installation', 'croco-ik' );
 		$config['has_template_access'] = $license_api->has_template_access();
-		$config['has_design_template_access'] = $license_api->has_design_template_access();
-		$config['button_label'] = __( 'Get Started', 'crocoblock-wizard' );
-		$config['select_type_button_label'] = __( 'Select installation type', 'crocoblock-wizard' );
-		$config['ready_button_label'] = __( 'Install', 'crocoblock-wizard' );
-		$config['license_is_active'] = $is_active;
-		$config['page_title'] = $page_title;
-		$config['page_title_active'] = __( 'Select installation type', 'crocoblock-wizard' );
-		$config['tutorials'] = array(
-			'full'    => 'https://www.youtube.com/embed/F00H7xn8PF4',
-			'plugins' => 'https://www.youtube.com/embed/F00H7xn8PF4',
-		);
-		$config['redirect_full']      = Plugin::instance()->dashboard->page_url( 'install-theme' );
-		$config['redirect_plugins']   = Plugin::instance()->dashboard->page_url(
-			'install-plugins',
-			array( 'action' => 'plugins' )
-		);
+		$config['license_is_active']   = $is_active;
+		$config['page_title']          = $page_title;
+		$config['next_step']           = Plugin::instance()->dashboard->page_url( 'popups-install-plugins' );
 
 		return $config;
 
@@ -262,8 +265,8 @@ class Module extends Module_Base {
 	 */
 	public function page_templates( $templates = array(), $subpage = '' ) {
 
-		$templates['license']          = 'license/main';
-		$templates['connection_error'] = 'license/connection-error';
+		$templates['popups_license']   = 'popups-license/main';
+		$templates['connection_error'] = 'popups-license/connection-error';
 
 		return $templates;
 

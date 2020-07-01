@@ -17,15 +17,18 @@ class Modules_Manager {
 	 * @var array
 	 */
 	private $_modules = array(
-		'welcome'         => '\\Crocoblock_Wizard\\Modules\\Welcome\\Module',
-		'license'         => '\\Crocoblock_Wizard\\Modules\\License\\Module',
-		'install-theme'   => '\\Crocoblock_Wizard\\Modules\\Install_Theme\\Module',
-		'select-skin'     => '\\Crocoblock_Wizard\\Modules\\Select_Skin\\Module',
-		'install-plugins' => '\\Crocoblock_Wizard\\Modules\\Install_Plugins\\Module',
-		'import-content'  => '\\Crocoblock_Wizard\\Modules\\Import_Content\\Module',
-		'onboarding'      => '\\Crocoblock_Wizard\\Modules\\Onboarding\\Module',
-		'export-skin'     => '\\Crocoblock_Wizard\\Modules\\Export_Skin\\Module',
-		'import-template' => '\\Crocoblock_Wizard\\Modules\\Import_Template\\Module',
+		'welcome'                => '\\Crocoblock_Wizard\\Modules\\Welcome\\Module',
+		'license'                => '\\Crocoblock_Wizard\\Modules\\License\\Module',
+		'install-theme'          => '\\Crocoblock_Wizard\\Modules\\Install_Theme\\Module',
+		'select-skin'            => '\\Crocoblock_Wizard\\Modules\\Select_Skin\\Module',
+		'install-plugins'        => '\\Crocoblock_Wizard\\Modules\\Install_Plugins\\Module',
+		'import-content'         => '\\Crocoblock_Wizard\\Modules\\Import_Content\\Module',
+		'onboarding'             => '\\Crocoblock_Wizard\\Modules\\Onboarding\\Module',
+		'export-skin'            => '\\Crocoblock_Wizard\\Modules\\Export_Skin\\Module',
+		'import-template'        => '\\Crocoblock_Wizard\\Modules\\Import_Template\\Module',
+		'popups-license'         => '\\Crocoblock_Wizard\\Modules\\Popups_License\\Module',
+		'popups-install-plugins' => '\\Crocoblock_Wizard\\Modules\\Popups_Install_Plugins\\Module',
+		'popups-import-popup'    => '\\Crocoblock_Wizard\\Modules\\Popups_Import_Popup\\Module',
 	);
 
 	private $_loaded_modules = array();

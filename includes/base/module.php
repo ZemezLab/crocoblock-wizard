@@ -47,6 +47,24 @@ abstract class Module {
 	}
 
 	/**
+	 * Check if currently page
+	 * @return boolean [description]
+	 */
+	public function is_module_page() {
+
+		if ( ! Plugin::instance()->dashboard->is_dashboard_page() ) {
+			return false;
+		}
+
+		if ( ! empty( $_GET['sub'] ) && $this->get_slug() === $_GET['sub'] ) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	/**
 	 * Process ajax
 	 *
 	 * @return [type] [description]

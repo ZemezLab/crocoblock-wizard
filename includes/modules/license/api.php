@@ -25,6 +25,7 @@ class API {
 	public $license_option = 'jet_theme_core_license';
 	public $plugins_option = 'jet_excluded_plugins';
 	public $api            = 'https://account.crocoblock.com/';
+	//public $api            = 'http://192.168.9.40/_2018/04_April/crocoblock-api/';
 	public $item_id        = 9;
 	public $theme_link     = 'https://account.crocoblock.com/free-download/kava.zip';
 	public $theme_slug     = 'kava';
@@ -56,6 +57,7 @@ class API {
 	 * @return [type] [description]
 	 */
 	public function delete_license() {
+		$this->reset_template_access();
 		return delete_option( $this->license_option );
 	}
 
@@ -77,6 +79,8 @@ class API {
 	 * @return void
 	 */
 	public function check_connection_status() {
+		$this->connection_status = true;
+		return;
 		return $this->license_request( 'check_license', 'incorrect_key' );
 	}
 
@@ -170,8 +174,20 @@ class API {
 			return $this->set_error( __( 'Request failed: ', 'crocoblock-wizard' ) . $response->get_error_message() );
 		}
 
-		$result   = wp_remote_retrieve_body( $response );
-		$result   = json_decode( $result, true );
+		$result = wp_remote_retrieve_body( $response );
+		$result = json_decode( $result, true );
+
+		if ( isset( $result['has_templates_access'] ) ) {
+			$template_access = true === $result['has_templates_access'] ? 1 : -1;
+			update_option( 'has_template_access', $template_access, false );
+		} else {
+			$this->reset_template_access();
+		}
+
+		if ( isset( $result['has_design_templates_access'] ) ) {
+			$design_templates_access = true === $result['has_design_templates_access'] ? 1 : -1;
+			update_option( 'has_design_templates_access', $design_templates_access, false );
+		}
 
 		if ( ! isset( $result['success'] ) ) {
 			return $this->set_error( __( 'Internal error, please try again later.', 'crocoblock-wizard' ) );
@@ -212,6 +228,33 @@ class API {
 	 */
 	public function set_error( $error ) {
 		$this->error = $error;
+	}
+
+	/**
+	 * Check if current license has template access
+	 * @return boolean [description]
+	 */
+	public function has_template_access() {
+		$option_val = intval( get_option( 'has_template_access', false ) );
+		return ( 0 <= $option_val );
+	}
+
+	/**
+	 * Check if current license has template access
+	 * @return boolean [description]
+	 */
+	public function has_design_template_access() {
+		$option_val = intval( get_option( 'has_design_templates_access', false ) );
+		return ( 0 <= $option_val );
+	}
+
+	/**
+	 * Reset template access option
+	 *
+	 * @return [type] [description]
+	 */
+	public function reset_template_access() {
+		delete_option( 'has_template_access' );
 	}
 
 	/**

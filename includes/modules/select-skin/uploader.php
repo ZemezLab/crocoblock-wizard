@@ -165,7 +165,7 @@ class Uploader {
 		}
 
 		$del = $wp_filesystem->rmdir( $this->unzip_path, true );
-		var_dump( $del );
+
 	}
 
 	/**

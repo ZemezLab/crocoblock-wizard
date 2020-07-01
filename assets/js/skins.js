@@ -14,6 +14,7 @@
 				pageTitle: window.CBWPageConfig.page_title,
 				firstTab: window.CBWPageConfig.first_tab,
 				loading: false,
+				allowUpload: window.CBWPageConfig.allow_upload,
 				backURL: window.CBWPageConfig.default_back,
 			};
 		},

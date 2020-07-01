@@ -1065,7 +1065,13 @@ class WXR_Importer extends \WP_Importer {
 		foreach ( $data as $table => $values ) {
 
 			if ( ! Tools\DB_Tables::is_db_table_exists( $table ) ) {
-				continue;
+
+				$created = apply_filters( 'crocoblock-wizard/import/create-missing-table/' . $table, false );
+
+				if ( ! $created ) {
+					continue;
+				}
+
 			}
 
 			$this->process_single_table( $table, $values );

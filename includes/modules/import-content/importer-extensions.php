@@ -32,6 +32,44 @@ class Importer_Extensions {
 		add_action( 'crocoblock-wizard/import/after-import-tables', array( $this, 'clear_woo_transients' ) );
 		add_filter( 'woocommerce_prevent_automatic_wizard_redirect', '__return_true' );
 
+		add_filter( 'crocoblock-wizard/import/create-missing-table/jet_apartment_bookings', array( $this, 'create_bookings_table' ) );
+
+		// Re-index Smart filters after import
+		add_action( 'crocoblock-wizard/import/finish', array( $this, 'reindex_filters' ) );
+
+	}
+
+	/**
+	 * Reindex Smrt Filters after import
+	 *
+	 * @return [type] [description]
+	 */
+	public function reindex_filters() {
+
+		if ( ! function_exists( 'jet_smart_filters' ) ) {
+			return;
+		}
+
+		jet_smart_filters()->indexer->index_filters();
+
+	}
+
+	/**
+	 * Create appointments table
+	 * @return [type] [description]
+	 */
+	public function create_bookings_table( $result = false ) {
+
+		if ( ! function_exists( 'jet_abaf' ) ) {
+			return $result;
+		}
+
+		jet_abaf()->db->install_table();
+
+		$result = true;
+
+		return $result;
+
 	}
 
 	/**

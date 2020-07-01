@@ -229,3 +229,13 @@
 	@include end(100px);
 	z-index: 0;
 }
+
+.cbw-warning {
+	color: $color__error;
+	padding: 5px 0 0 0;
+	svg {
+		display: inline-block;
+		vertical-align: text-top;
+		margin: 0 3px 0 0;
+	}
+}

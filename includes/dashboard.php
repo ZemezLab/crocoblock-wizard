@@ -164,6 +164,9 @@ class Dashboard {
 			CB_WIZARD_VERSION
 		);
 
+		remove_all_actions( 'admin_notices' );
+		remove_all_actions( 'all_admin_notices' );
+
 	}
 
 	/**

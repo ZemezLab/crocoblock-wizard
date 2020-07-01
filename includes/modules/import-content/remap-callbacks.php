@@ -25,6 +25,8 @@ class Remap_Callbacks {
 
 	public $importer;
 
+	public $visual_filters = array();
+
 	/**
 	 * Store processed shortcodes data
 	 *
@@ -45,6 +47,7 @@ class Remap_Callbacks {
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_thumbs' ) );
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_elementor_pages_posts' ) );
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_home_page' ) );
+		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_posts_visual_filters' ) );
 
 		// Manipulations with terms remap array
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_term_parents' ) );
@@ -52,6 +55,7 @@ class Remap_Callbacks {
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_nav_menu_widgets' ) );
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_elementor_pages_terms' ) );
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_home_page' ) );
+		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_terms_visual_filters' ) );
 
 	}
 
@@ -312,6 +316,87 @@ class Remap_Callbacks {
 
 		return '/(\[(' . $item['shortcode'] . ')[^\]]*(' . $item['attr'] . '))="([0-9\,\s]*)"/';
 
+	}
+
+	/**
+	 * Set correct term IDs for visual filters
+	 *
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
+	public function process_posts_visual_filters( $data ) {
+
+		global $wpdb;
+		$postmeta = $wpdb->postmeta;
+		$this->visual_filters = $wpdb->get_results( "SELECT postmeta1.post_id, postmeta2.meta_value AS source, postmeta1.meta_value FROM $postmeta AS postmeta1 INNER JOIN $postmeta AS postmeta2 ON postmeta1.post_id = postmeta2.post_id WHERE postmeta2.meta_key = '_data_source' AND postmeta2.meta_value IN ( 'taxonomies', 'posts' ) AND postmeta1.meta_key = '_source_color_image_input'" );
+
+		if ( empty( $this->visual_filters ) ) {
+			return;
+		}
+
+		$this->update_visual_filters_meta( 'posts', $data );
+
+	}
+
+	/**
+	 * Iterate visual filters meta
+	 *
+	 * @param  string $context [description]
+	 * @param  array  $data    [description]
+	 * @return [type]          [description]
+	 */
+	public function update_visual_filters_meta( $context = 'posts', $data = array() ) {
+
+		foreach ( $this->visual_filters as $filter_index => $row ) {
+
+			$meta_value = maybe_unserialize( $row->meta_value );
+			$changed    = false;
+
+			foreach ( $meta_value as $index => $item_value ) {
+
+				if ( 'posts' === $context && ! empty( $item_value['source_image'] ) ) {
+					$current = $item_value['source_image'];
+					$item_value['source_image'] = ! empty( $data[ $current ] ) ? $data[ $current ] : $current;
+
+					if ( 'posts' === $row->source ) {
+						$meta_value[ $index ] = $item_value;
+						$changed = true;
+					} else {
+						$meta_value[ $index ] = $item_value;
+						$this->visual_filters[ $filter_index ]->meta_value = maybe_serialize( $meta_value );
+					}
+				}
+
+				if ( $row->source === $context && ! empty( $item_value['selected_value'] ) ) {
+					$current = $item_value['selected_value'];
+					$item_value['selected_value'] = ! empty( $data[ $current ] ) ? $data[ $current ] : $current;
+					$meta_value[ $index ] = $item_value;
+					$changed = true;
+				}
+
+			}
+
+			if ( $changed ) {
+				update_post_meta( $row->post_id, '_source_color_image_input', $meta_value );
+			}
+
+		}
+
+	}
+
+	/**
+	 * Set correct term IDs for visual filters
+	 *
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
+	public function process_terms_visual_filters( $data ) {
+
+		if ( empty( $this->visual_filters ) ) {
+			return;
+		}
+
+		$this->update_visual_filters_meta( 'taxonomies', $data );
 	}
 
 	/**

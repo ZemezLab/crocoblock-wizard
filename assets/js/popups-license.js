@@ -11,79 +11,46 @@
 		}
 	} );
 
-	Vue.component( 'cbw-license', {
-		template: '#cbw_license',
+	Vue.component( 'cbw-popups-license', {
+		template: '#cbw_popups_license',
 		data: function() {
 			return {
 				licenseKey: null,
-				installationType: null,
+				installationType: 'full',
 				loading: false,
 				log: {},
 				error: false,
 				errorMessage: '',
 				success: false,
 				successMessage: '',
-				hasTemplateAccess: window.CBWPageConfig.has_template_access,
-				hasDesignTemplateAccess: window.CBWPageConfig.has_design_template_access,
 				pageTitle: window.CBWPageConfig.page_title,
-				pageTitleActive: window.CBWPageConfig.page_title_active,
+				buttonLabel: window.CBWPageConfig.button_label,
 				isActivated: window.CBWPageConfig.license_is_active,
 				deactivateLink: window.CBWPageConfig.deactivate_link,
 				videoURL: '',
 				showVideo: false,
+				hasTemplateAccess: window.CBWPageConfig.has_template_access,
 				tutorials: window.CBWPageConfig.tutorials,
 			};
 		},
 		mounted: function() {
-
-			var storage = window.sessionStorage;
-			storage.removeItem( 'cbw-theme-to-install' );
-
-			if ( this.isActivated && ! this.templatesAllowed() ) {
-				this.installationType = 'plugins';
-			}
-
+			this.maybeChangeBtnLabel();
 		},
 		computed: {
 			startLocked: function() {
 				if ( this.isActivated ) {
 					return null === this.installationType;
 				} else {
-					return null === this.licenseKey;
+					return null === this.installationType || null === this.licenseKey;
 				}
 			},
-			buttonLabel: function() {
-				var label = window.CBWPageConfig.button_label;
-
-				if ( this.isActivated ) {
-					if ( ! this.startLocked ) {
-						label = window.CBWPageConfig.ready_button_label;
-					} else {
-						label = window.CBWPageConfig.select_type_button_label;
-					}
-
-				}
-
-				return label;
-			},
-			currentPageTitle: function() {
-
-				var title = this.pageTitle;
-
-				if ( ! this.isActivated ) {
-					title = this.pageTitleActive;
-				}
-
-				return title;
-
-			}
 		},
 		methods: {
-			templatesAllowed: function() {
-				if ( this.hasTemplateAccess || this.hasDesignTemplateAccess ) {
-					return true;
+			maybeChangeBtnLabel: function() {
+				if ( ! this.startLocked ) {
+					this.buttonLabel = window.CBWPageConfig.ready_button_label;
 				} else {
-					return false;
+					this.buttonLabel = window.CBWPageConfig.button_label;
 				}
 			},
 			clearErrors: function() {
@@ -102,7 +69,7 @@
 				self.log     = {};
 
 				if ( self.isActivated ) {
-					window.location = window.CBWPageConfig[ 'redirect_' + self.installationType ];
+					window.location = window.CBWPageConfig.next_step;
 					return;
 				}
 
@@ -126,20 +93,23 @@
 					}
 
 					if ( ! response.success ) {
-						self.error        = true;
-						self.errorMessage = response.data.message;
-						self.loading      = false;
+
+						self.loading = false;
+
+						if ( response.data.access_error ) {
+							self.success           = true;
+							self.isActivated       = true;
+							self.hasTemplateAccess = false;
+						} else {
+							self.error        = true;
+							self.errorMessage = response.data.message;
+						}
+
 					} else {
 
-						self.success = true;
-
-						if ( response.data.has_template_access ) {
-							self.loading = false;
-							self.isActivated = true;
-						} else {
-							self.successMessage = response.data.message;
-							window.location = window.CBWPageConfig['redirect_plugins'];
-						}
+						self.success        = true;
+						self.successMessage = response.data.message;
+						window.location     = window.CBWPageConfig.next_step;
 
 					}
 
