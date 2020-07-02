@@ -15,7 +15,7 @@ class Dashboard {
 	public $page_slug = 'crocoblock-wizard';
 
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'register_menu_page' ) );
+		add_action( 'admin_menu', array( $this, 'register_menu_page' ), 9999 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
 		add_action( 'admin_init', array( $this, 'maybe_redirect_after_activation' ) );
 		add_filter( 'plugin_action_links_' . CB_WIZARD_PLUGIN_BASE, array( $this, 'plugin_action_links' ) );
@@ -79,13 +79,28 @@ class Dashboard {
 	 */
 	public function register_menu_page() {
 
-		add_management_page(
-			__( 'Crocoblock Wizard', 'crocoblock-wizard' ),
-			__( 'Crocoblock Wizard', 'crocoblock-wizard' ),
-			'manage_options',
-			$this->page_slug,
-			array( $this, 'render_wizard' )
-		);
+		global $admin_page_hooks;
+
+		if ( isset( $admin_page_hooks['jet-dashboard'] ) ) {
+			add_submenu_page(
+				'jet-dashboard',
+				__( 'Installation Wizard', 'crocoblock-wizard' ),
+				__( 'Installation Wizard', 'crocoblock-wizard' ),
+				'manage_options',
+				$this->page_slug,
+				array( $this, 'render_wizard' )
+			);
+		} else {
+			add_menu_page(
+				'JetPlugins',
+				'JetPlugins',
+				'manage_options',
+				$this->page_slug,
+				array( $this, 'render_wizard' ),
+				"data:image/svg+xml,%3Csvg width='18' height='15' viewBox='0 0 18 15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16.0767 0.00309188C17.6897 -0.0870077 18.6099 1.81257 17.5381 3.02007L7.99824 13.7682C6.88106 15.0269 4.79904 14.2223 4.82092 12.5403L4.87766 8.17935C4.88509 7.60797 4.62277 7.06644 4.16961 6.71768L0.710961 4.05578C-0.623014 3.02911 0.0373862 0.899003 1.71878 0.805085L16.0767 0.00309188Z' fill='white'/%3E%3C/svg%3E%0A",
+				59
+			);
+		}
 
 	}
 
@@ -96,7 +111,7 @@ class Dashboard {
 	 */
 	public function assets( $hook ) {
 
-		if ( 'tools_page_' . $this->page_slug !== $hook ) {
+		if ( false === strpos( $hook, $this->page_slug ) ) {
 			return;
 		}
 
@@ -222,7 +237,7 @@ class Dashboard {
 			$page_args = array_merge( $page_args, $args );
 		}
 
-		return add_query_arg( $page_args, admin_url( 'tools.php' ) );
+		return add_query_arg( $page_args, admin_url( 'admin.php' ) );
 	}
 
 	/**

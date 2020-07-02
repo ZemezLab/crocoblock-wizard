@@ -168,6 +168,7 @@ class Module extends Module_Base {
 			);
 
 			return $config;
+
 		}
 
 		if ( $is_active ) {

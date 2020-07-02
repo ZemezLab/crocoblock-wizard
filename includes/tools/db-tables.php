@@ -86,6 +86,9 @@ class DB_Tables {
 				delete_option( $widget->option_name );
 			}
 		}
+
+		do_action( 'crocoblock-wizard/tools/db-tables/content-cleared' );
+
 	}
 
 }

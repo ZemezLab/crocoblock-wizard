@@ -23,8 +23,14 @@ class Importer_Extensions {
 		// Prevent from errors triggering while MotoPress Booking posts importing (loving it)
 		add_filter( 'crocoblock-wizard/import/skip-post', array( $this, 'prevent_import_errors' ), 10, 2 );
 
-		// Clear fonts cache after import
+		// After import actions
 		add_action( 'crocoblock-wizard/import/finish', array( $this, 'clear_fonts_cache' ) );
+		add_action( 'crocoblock-wizard/import/finish', array( $this, 'reindex_filters' ) );
+		add_action( 'crocoblock-wizard/import/finish', array( $this, 'update_booking_table' ) );
+		add_action( 'crocoblock-wizard/import/finish', array( $this, 'update_appointment_table' ) );
+
+		add_action( 'crocoblock-wizard/tools/db-tables/content-cleared', array( $this, 'drop_bookings_table' ) );
+		add_action( 'crocoblock-wizard/tools/db-tables/content-cleared', array( $this, 'drop_appointments_table' ) );
 
 		add_action( 'crocoblock-wizard/import/before-options-processing', array( $this, 'set_container_width' ) );
 		add_action( 'crocoblock-wizard/import/after-options-processing', array( $this, 'set_required_options' ) );
@@ -33,9 +39,7 @@ class Importer_Extensions {
 		add_filter( 'woocommerce_prevent_automatic_wizard_redirect', '__return_true' );
 
 		add_filter( 'crocoblock-wizard/import/create-missing-table/jet_apartment_bookings', array( $this, 'create_bookings_table' ) );
-
-		// Re-index Smart filters after import
-		add_action( 'crocoblock-wizard/import/finish', array( $this, 'reindex_filters' ) );
+		add_filter( 'crocoblock-wizard/import/create-missing-table/jet_appointments', array( $this, 'create_appointments_table' ) );
 
 	}
 
@@ -69,6 +73,99 @@ class Importer_Extensions {
 		$result = true;
 
 		return $result;
+
+	}
+
+	public function create_appointments_table( $result ) {
+
+		if ( ! function_exists( 'jet_apb' ) ) {
+			return $result;
+		}
+
+		jet_apb()->db->appointments->install_table();
+		jet_apb()->db->excluded_dates->install_table();
+
+		$result = true;
+
+		return $result;
+
+	}
+
+	public function update_booking_table() {
+
+		if ( ! function_exists( 'jet_abaf' ) ) {
+			return;
+		}
+
+		if ( ! jet_abaf()->db->is_bookings_table_exists() ) {
+			return;
+		}
+
+		$db_columns = jet_abaf()->settings->get( 'additional_columns' );
+
+		if ( empty( $db_columns ) ) {
+			return;
+		}
+
+		foreach ( $db_columns as $column ) {
+
+			$column_name = jet_abaf()->settings->sanitize_column_name( $column['column'] );
+
+			if ( ! jet_abaf()->db->column_exists( $column_name ) ) {
+				jet_abaf()->db->insert_table_columns( array( $column_name ) );
+			}
+		}
+
+	}
+
+	public function update_appointment_table() {
+
+		if ( ! function_exists( 'jet_apb' ) ) {
+			return;
+		}
+
+		if ( ! jet_apb()->db->appointments->is_table_exists() ) {
+			return;
+		}
+
+		$db_columns = jet_apb()->settings->get( 'db_columns' );
+
+		if ( empty( $db_columns ) ) {
+			return;
+		}
+
+		foreach ( $db_columns as $column ) {
+			$column = jet_apb()->settings->sanitize_column( $column );
+			if ( ! jet_apb()->db->appointments->column_exists( $column ) ) {
+				jet_apb()->db->appointments->insert_table_columns( array( $column ) );
+			}
+		}
+
+	}
+
+	public function drop_bookings_table() {
+
+		if ( ! function_exists( 'jet_abaf' ) ) {
+			return;
+		}
+
+		if ( jet_abaf()->db->is_bookings_table_exists() ) {
+			$table = jet_abaf()->db::bookings_table();
+			jet_abaf()->db::wpdb()->query( "DROP TABLE $table;" );
+		}
+
+	}
+
+	public function drop_appointments_table() {
+
+		if ( ! function_exists( 'jet_apb' ) ) {
+			return;
+		}
+
+		if ( jet_apb()->db->appointments->is_table_exists() ) {
+			$table = jet_apb()->db->appointments->table();
+			jet_apb()->db->appointments->wpdb()->query( "DROP TABLE $table;" );
+		}
 
 	}
 

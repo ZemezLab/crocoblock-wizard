@@ -190,6 +190,8 @@ class Module extends Module_Base {
 
 		if ( wp_check_password( $password, $data->user_pass, $user_id ) ) {
 
+			new Importer_Extensions();
+
 			DB_Tables::clear_content();
 
 			$cache->write_cache();

@@ -1062,6 +1062,8 @@ class WXR_Importer extends \WP_Importer {
 			return;
 		}
 
+		ob_start();
+
 		foreach ( $data as $table => $values ) {
 
 			if ( ! Tools\DB_Tables::is_db_table_exists( $table ) ) {
@@ -1078,6 +1080,8 @@ class WXR_Importer extends \WP_Importer {
 			$this->update_processed_summary( 'tables' );
 
 		}
+
+		ob_get_clean();
 
 		do_action( 'crocoblock-wizard/import/after-import-tables' );
 
