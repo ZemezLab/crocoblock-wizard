@@ -238,6 +238,7 @@ class Dashboard {
 		}
 
 		return add_query_arg( $page_args, admin_url( 'admin.php' ) );
+
 	}
 
 	/**

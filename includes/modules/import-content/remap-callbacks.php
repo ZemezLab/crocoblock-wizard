@@ -57,6 +57,31 @@ class Remap_Callbacks {
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_home_page' ) );
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_terms_visual_filters' ) );
 
+		// Various changes
+		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'adjust_profile_builder' ) );
+
+	}
+
+	public function adjust_profile_builder( $data ) {
+
+		$profile_builder_options = get_option( 'profile-builder' );
+
+		if ( empty( $profile_builder_options ) ) {
+			return;
+		}
+
+		if ( ! empty( $profile_builder_options['not_logged_in_redirect'] ) ) {
+			$initial_url = $this->importer->cache->get( 'initial_url' );
+
+			if ( false !== strpos( $profile_builder_options['not_logged_in_redirect'], $initial_url ) ) {
+				$new_url = str_replace( $initial_url, home_url( '' ), $profile_builder_options['not_logged_in_redirect'] );
+				$profile_builder_options['not_logged_in_redirect'] = $new_url;
+			}
+
+		}
+
+		update_option( 'profile-builder', $profile_builder_options );
+
 	}
 
 	public function elementor_pages() {
@@ -140,6 +165,19 @@ class Remap_Callbacks {
 				}
 
 			}, $new_data );
+
+			if ( class_exists( '\Elementor\Utils' ) ) {
+
+				$initial_url = $this->importer->cache->get( 'initial_url' );
+				$current_url = home_url( '' );
+
+				try {
+					\Elementor\Utils::replace_urls( $initial_url, $current_url );
+				} catch ( \Exception $e ) {
+					var_dump( $e->getMessage() );
+				}
+
+			}
 
 			update_post_meta( $page->ID, '_elementor_data', wp_slash( $new_data ) );
 

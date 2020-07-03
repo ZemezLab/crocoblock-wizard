@@ -328,6 +328,17 @@ class WXR_Importer extends \WP_Importer {
 			}
 
 			switch ( $this->reader->name ) {
+
+				case 'link':
+
+					$initial_url = $this->cache->get( 'initial_url' );
+
+					if ( ! $initial_url ) {
+						$this->cache->update( 'initial_url', $this->reader->readString() );
+					}
+
+					break;
+
 				case 'wp:wxr_version':
 
 					// Upgrade to the correct version
@@ -2148,6 +2159,12 @@ class WXR_Importer extends \WP_Importer {
 				}
 
 				if ( in_array( $key, array( '_form_data', '_notifications_data' ) ) ) {
+
+					$value       = str_replace( '\n', '', $value );
+					$initial_url = str_replace( '/', '\\\/', $this->cache->get( 'initial_url' ) );
+					$current_url = str_replace( '/', '\\\/', home_url( '' ) );
+					$value       = str_replace( $initial_url, $current_url, $value );
+
 					update_post_meta( $post_id, $key, $value );
 				} else {
 					add_post_meta( $post_id, $key, $value );
