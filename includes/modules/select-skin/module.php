@@ -58,7 +58,7 @@ class Module extends Module_Base {
 
 			$license_api  = new License_API();
 			$back         = Plugin::instance()->dashboard->page_url( 'install-theme' );
-			$page_title   = __( 'Select skin and start installation', 'crocoblock-wizard' );
+			$page_title   = __( 'Select the template and start installation', 'crocoblock-wizard' );
 			$action       = 'select';
 			$first_tab    = 'model';
 			$allow_upload = false;

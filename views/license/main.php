@@ -18,7 +18,7 @@
 	></cx-vui-input>
 	<div class="cbw-block__error-message" v-if="errorMessage && error">{{ errorMessage }}</div>
 	<div class="cbw-block__success-message" v-if="successMessage && success">{{ successMessage }}</div>
-	<br v-if="! isActivated">
+	<div style="height:15px;" v-if="! isActivated"></div>
 	<div class="cbw-radiogroup" v-if="isActivated">
 		<div class="cbw-radio" v-if="hasDesignTemplateAccess || hasTemplateAccess">
 			<label>

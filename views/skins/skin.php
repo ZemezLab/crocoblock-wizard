@@ -21,7 +21,7 @@
 				class="cbw-skin__thumb-wrap"
 				v-if="skin.thumb"
 			>
-				<a :href="skin.demo">
+				<a :href="skin.demo" target="_blank">
 					<img :src="skin.thumb" alt="" class="cbw-skin__thumb">
 				</a>
 			</div>
@@ -40,6 +40,7 @@
 					</cx-vui-button>
 					<cx-vui-button
 						v-if="skin.demo"
+						target="_blank"
 						:size="'mini'"
 						:url="skin.demo"
 						:tag-name="'a'"

@@ -70,7 +70,7 @@
 
 				var title = this.pageTitle;
 
-				if ( ! this.isActivated ) {
+				if ( this.isActivated ) {
 					title = this.pageTitleActive;
 				}
 
