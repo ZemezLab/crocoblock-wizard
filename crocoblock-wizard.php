@@ -3,7 +3,7 @@
  * Plugin Name: Crocoblock Wizard
  * Plugin URI:  https://crocoblock.com/
  * Description: A powerful tool to install Crocoblock package, Jet Plugins, export and import skins quick and easy!
- * Version:     1.0.1
+ * Version:     1.1.0
  * Author:      Crocoblock
  * Author URI:  https://crocoblock.com/
  * Text Domain: crocoblock-wizard
