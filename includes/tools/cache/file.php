@@ -14,9 +14,9 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Define Jet_Data_Importer_File_Cache class
+ * Define file cache class
  */
-class Jet_Data_Importer_File_Cache extends Jet_Data_Importer_Cache_Handler {
+class File extends Base {
 
 	private $_object_cache = null;
 	private $_updated      = false;

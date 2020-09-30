@@ -81,7 +81,7 @@ class Cache {
 			$this->caching_method = 'session';
 		}
 
-		$cache_handler = get_option( 'crocoblock_wizard_cache_handler', 'session' );
+		$cache_handler = get_option( 'crocoblock_wizard_cache_handler' );
 
 		if ( $cache_handler ) {
 			$this->caching_method = $cache_handler;
