@@ -2166,6 +2166,9 @@ class WXR_Importer extends \WP_Importer {
 					$value       = str_replace( $initial_url, $current_url, $value );
 
 					update_post_meta( $post_id, $key, $value );
+				} elseif ( in_array( $key, array( '_elementor_template_type' ) ) ) {
+					// In some cases we need to update meta instead of adding to avoid duplicating meta rows
+					update_post_meta( $post_id, $key, $value );
 				} else {
 					add_post_meta( $post_id, $key, $value );
 				}

@@ -46,6 +46,7 @@ class Remap_Callbacks {
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'postprocess_posts' ) );
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_thumbs' ) );
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_elementor_pages_posts' ) );
+		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_elementor_active_kit' ) );
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_home_page' ) );
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_posts_visual_filters' ) );
 
@@ -59,6 +60,22 @@ class Remap_Callbacks {
 
 		// Various changes
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'adjust_profile_builder' ) );
+
+	}
+
+	public function process_elementor_active_kit( $data ) {
+
+		$active_kit_id = get_option( 'elementor_active_kit' );
+
+		if ( ! $active_kit_id ) {
+			return;
+		}
+
+		$new_id = isset( $data[ $active_kit_id ] ) ? $data[ $active_kit_id ] : false;
+
+		if ( $new_id ) {
+			update_option( 'elementor_active_kit', $new_id );
+		}
 
 	}
 
@@ -783,4 +800,3 @@ class Remap_Callbacks {
 	}
 
 }
-

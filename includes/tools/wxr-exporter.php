@@ -95,6 +95,8 @@ class WXR_Exporter {
 				'jet_site_conditions',
 				'elementor_container_width',
 				'jet-elements-settings',
+				'elementor_active_kit',
+				'elementor_cpt_support',
 			) );
 
 			$user_options = Plugin::instance()->settings->get( array( 'export', 'options' ) );

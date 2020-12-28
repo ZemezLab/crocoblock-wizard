@@ -53,6 +53,7 @@ class Module extends Module_Base {
 			$action       = 'import';
 			$first_tab    = 'upload-skin';
 			$allow_upload = true;
+			$types        = array();
 
 		} else {
 
