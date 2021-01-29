@@ -150,8 +150,9 @@ class Importer_Extensions {
 		}
 
 		if ( jet_abaf()->db->is_bookings_table_exists() ) {
-			$table = jet_abaf()->db::bookings_table();
-			jet_abaf()->db::wpdb()->query( "DROP TABLE $table;" );
+			$db    = jet_abaf()->db;
+			$table = $db::bookings_table();
+			$db::wpdb()->query( "DROP TABLE $table;" );
 		}
 
 	}

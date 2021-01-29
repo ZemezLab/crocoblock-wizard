@@ -189,7 +189,7 @@
 
 				}).fail( function( xhr, textStatus, error ) {
 					self.error = true;
-					lf.message = textStatus;
+					self.message = textStatus;
 				} );
 
 			},
