@@ -105,7 +105,7 @@ class Remap_Callbacks {
 
 		if ( null === $this->pages ) {
 			$this->pages = get_posts( array(
-				'post_type'      => array( 'page', 'jet-theme-core', 'elementor_library' ),
+				'post_type'      => array( 'page', 'jet-theme-core', 'elementor_library', 'jet-menu' ),
 				'posts_per_page' => -1,
 			) );
 		}
@@ -208,6 +208,7 @@ class Remap_Callbacks {
 		$ids_keys = apply_filters( 'crocoblock-wizard/import/terms/elementor-ids-to-remap', array(
 			'category_ids',
 			'menu',
+			'mobile_menu',
 			'nav_menu',
 		) );
 
