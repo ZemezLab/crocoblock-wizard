@@ -104,6 +104,10 @@ class Module extends Module_Base {
 				'source' => 'wordpress',
 				'logo'   => CB_WIZARD_URL . 'assets/img/hello.png',
 			),
+			'blocksy' => array(
+				'source' => 'wordpress',
+				'logo'   => CB_WIZARD_URL . 'assets/img/blocksy.png',
+			),
 		) );
 	}
 
