@@ -88,6 +88,10 @@ class Module extends Module_Base {
 				'source' => 'crocoblock',
 				'logo'   => CB_WIZARD_URL . 'assets/img/kava.png',
 			),
+			'blocksy' => array(
+				'source' => 'wordpress',
+				'logo'   => CB_WIZARD_URL . 'assets/img/blocksy.png',
+			),
 			'oceanwp' => array(
 				'source' => 'wordpress',
 				'logo'   => CB_WIZARD_URL . 'assets/img/ocean.png',
@@ -103,10 +107,6 @@ class Module extends Module_Base {
 			'hello-elementor' => array(
 				'source' => 'wordpress',
 				'logo'   => CB_WIZARD_URL . 'assets/img/hello.png',
-			),
-			'blocksy' => array(
-				'source' => 'wordpress',
-				'logo'   => CB_WIZARD_URL . 'assets/img/blocksy.png',
 			),
 		) );
 	}
