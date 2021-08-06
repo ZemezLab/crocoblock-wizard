@@ -66,6 +66,7 @@ class Child_API {
 				'id'   => $this->id,
 				'slug' => $this->slug,
 				'name' => $this->name,
+				't'    => time(),
 			),
 			$this->server
 		);
