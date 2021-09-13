@@ -68,6 +68,11 @@ class Remap_Callbacks {
 		$active_kit_id = get_option( 'elementor_active_kit' );
 
 		if ( ! $active_kit_id ) {
+
+			if ( class_exists( '\Elementor\Core\Kits\Manager' ) ) {
+				\Elementor\Core\Kits\Manager::create_default_kit();
+			}
+
 			return;
 		}
 

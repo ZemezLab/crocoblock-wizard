@@ -68,6 +68,7 @@ class DB_Tables {
 
 		$options = apply_filters( 'crocoblock-wizard/tools/db-tables/clear-options-on-remove', array(
 			'sidebars_widgets',
+			'elementor_active_kit',
 		) );
 
 		foreach ( $options as $option ) {
