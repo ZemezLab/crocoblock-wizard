@@ -1941,7 +1941,12 @@ class WXR_Importer extends \WP_Importer {
 		}
 
 		foreach ( $meta as $meta_item ) {
-			$value = maybe_unserialize( $meta_item['value'] );
+
+			if ( empty( $meta_item ) ) {
+				continue;
+			}
+
+			// $value = maybe_unserialize( $meta_item['value'] );
 			add_term_meta( $term_id, $meta_item['key'], $meta_item['value'] );
 		}
 
