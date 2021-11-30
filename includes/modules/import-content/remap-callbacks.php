@@ -193,10 +193,14 @@ class Remap_Callbacks {
 				$initial_url = $this->importer->cache->get( 'initial_url' );
 				$current_url = home_url( '' );
 
+				if ( empty( $initial_url ) ) {
+					continue;
+				}
+
 				try {
 					\Elementor\Utils::replace_urls( $initial_url, $current_url );
 				} catch ( \Exception $e ) {
-					var_dump( $e->getMessage() );
+					error_log( $e->getMessage() );
 				}
 
 			}
