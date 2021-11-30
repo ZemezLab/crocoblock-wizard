@@ -21,7 +21,7 @@ class Module extends Module_Base {
 	/**
 	 * Returns module slug
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function get_slug() {
 		return 'import-content';
@@ -233,7 +233,7 @@ class Module extends Module_Base {
 
 		if ( ! $chunks ) {
 			wp_send_json_error( array(
-				'message' => __( 'Can`t calculate import steps. Please relaod page and try again.', $domain = 'default' )
+				'message' => __( 'Can`t calculate import steps. Please reload page and try again.', $domain = 'default' )
 			) );
 		}
 
@@ -246,6 +246,7 @@ class Module extends Module_Base {
 				// Process last step (remapping and finalizing)
 				$this->remap_all( $importer );
 				$importer->cache->clear_cache();
+				$importer->cache->delete_caching_method_option();
 				flush_rewrite_rules();
 
 				$processed = $importer->cache->get( 'processed_summary' );
@@ -442,6 +443,7 @@ class Module extends Module_Base {
 	public function get_import_info() {
 
 		$importer = $this->get_importer();
+		$importer->cache->update_caching_method_option();
 		$importer->prepare_import();
 
 		$total        = $importer->cache->get( 'total_count' );

@@ -16,11 +16,18 @@ if ( ! defined( 'WPINC' ) ) {
 class Cache {
 
 	/**
-	 * Import data caching metod.
+	 * Import data caching method.
 	 *
 	 * @var string
 	 */
 	private $caching_method = 'session';
+
+	/**
+	 * Option key for storing the caching method.
+	 *
+	 * @var string
+	 */
+	public $option_key = 'crocoblock_wizard_cache_handler';
 
 	/**
 	 * Active cache handler instance
@@ -50,12 +57,6 @@ class Cache {
 
 		$method = $this->get_caching_method();
 
-		if ( isset( $this->handlers[ $method ] ) ) {
-			$handler = $this->handlers[ $method ];
-		} else {
-			$handler = 'Jet_Data_Importer_Session_Cache';
-		}
-
 		switch ( $method ) {
 			case 'file':
 				$this->handler = new Cache\File( $this->base_group );
@@ -81,13 +82,21 @@ class Cache {
 			$this->caching_method = 'session';
 		}
 
-		$cache_handler = get_option( 'crocoblock_wizard_cache_handler' );
+		$cache_handler = get_option( $this->option_key );
 
 		if ( $cache_handler ) {
 			$this->caching_method = $cache_handler;
 		}
 
 		return $this->caching_method;
+	}
+
+	public function update_caching_method_option() {
+		update_option( $this->option_key, $this->caching_method );
+	}
+
+	public function delete_caching_method_option() {
+		delete_option( $this->option_key );
 	}
 
 	/**
