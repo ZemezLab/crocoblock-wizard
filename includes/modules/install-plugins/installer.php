@@ -194,6 +194,25 @@ class Installer {
 				$result = ! empty( $plugin['path'] ) ? esc_url( $plugin['path'] ) : false;
 				break;
 
+			case 'jetformbuilder':
+
+				$license = Plugin::instance()->modules->load_module( 'license' );
+
+				if ( $license ) {
+					$result  = add_query_arg(
+						array(
+							'wizard_action' => 'get_plugin',
+							'license'       => $license->get_license(),
+							'url'           => urlencode( home_url( '/' ) ),
+							'slug'          => $plugin['slug'],
+						),
+						'https://account.jetformbuilder.com/'
+					);
+				} else {
+					$this->log = __( 'Crocoblock plugins can`t be installed without a license', 'crocoblock-wizard' );
+					return false;
+				}
+
 			case 'crocoblock':
 
 				$license = Plugin::instance()->modules->load_module( 'license' );
