@@ -163,6 +163,7 @@ class Installer {
 	public function locate_source( $plugin = array() ) {
 
 		$source = isset( $plugin['source'] ) ? $plugin['source'] : 'wordpress';
+
 		$result = false;
 
 		switch ( $source ) {
@@ -212,6 +213,8 @@ class Installer {
 					$this->log = __( 'Crocoblock plugins can`t be installed without a license', 'crocoblock-wizard' );
 					return false;
 				}
+
+				break;
 
 			case 'crocoblock':
 
