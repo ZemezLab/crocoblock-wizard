@@ -41,6 +41,8 @@ class Importer_Extensions {
 
 		add_filter( 'crocoblock-wizard/import/create-missing-table/jet_apartment_bookings', array( $this, 'create_bookings_table' ) );
 		add_filter( 'crocoblock-wizard/import/create-missing-table/jet_appointments', array( $this, 'create_appointments_table' ) );
+		add_filter( 'crocoblock-wizard/import/create-missing-table/jet_rel_default', array( $this, 'create_rels_table' ) );
+		add_filter( 'crocoblock-wizard/import/create-missing-table/jet_rel_default_meta', array( $this, 'create_rels_meta_table' ) );
 
 	}
 
@@ -83,6 +85,42 @@ class Importer_Extensions {
 		}
 
 		jet_abaf()->db->install_table();
+
+		$result = true;
+
+		return $result;
+
+	}
+
+	public function create_rels_table( $result ) {
+
+		if ( ! function_exists( 'jet_engine' ) ) {
+			return $result;
+		}
+
+		$db = jet_engine()->relations->storage->get_default_db();
+
+		if ( ! $db->is_table_exists() ) {
+			$db->create_table();
+		}
+
+		$result = true;
+
+		return $result;
+
+	}
+
+	public function create_rels_meta_table( $result ) {
+
+		if ( ! function_exists( 'jet_engine' ) ) {
+			return $result;
+		}
+
+		$db = jet_engine()->relations->storage->get_default_meta_db();
+
+		if ( ! $db->is_table_exists() ) {
+			$db->create_table();
+		}
 
 		$result = true;
 
