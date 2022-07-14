@@ -107,7 +107,6 @@ class Module extends Module_Base {
 				'description' => __( 'Choose this option if you want to install the demo content, and agree to replace your current data by the new demo content (sample data).', 'crocoblock-wizard' ),
 			),
 		);
-		$config['hasXMLReader'] = class_exists( 'XMLReader' );
 
 		$this->get_import_file( $skin, $is_uploaded );
 
