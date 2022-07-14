@@ -65,6 +65,15 @@ class Module extends Module_Base {
 		$skin         = isset( $_GET['skin'] ) ? $_GET['skin'] : false;
 		$is_uploaded  = isset( $_GET['is_uploaded'] ) ? $_GET['is_uploaded'] : false;
 
+		$has_xml_reader = class_exists( 'XMLReader' );
+
+		if ( ! $has_xml_reader ) {
+			$config['body']        = 'cbw-reader-error';
+			$config['wrapper_css'] = 'connection-error-panel';
+
+			return $config;
+		}
+
 		$config['body']             = 'cbw-content';
 		$config['wrapper_css']      = 'content-page vertical-flex';
 		$config['is_uploaded']      = $is_uploaded;
@@ -98,6 +107,7 @@ class Module extends Module_Base {
 				'description' => __( 'Choose this option if you want to install the demo content, and agree to replace your current data by the new demo content (sample data).', 'crocoblock-wizard' ),
 			),
 		);
+		$config['hasXMLReader'] = class_exists( 'XMLReader' );
 
 		$this->get_import_file( $skin, $is_uploaded );
 
@@ -119,6 +129,7 @@ class Module extends Module_Base {
 		$templates['import_content']   = 'import-content/import-content';
 		$templates['regenerate_thumb'] = 'import-content/regenerate-thumb';
 		$templates['clear_content']    = 'import-content/clear-content';
+		$templates['reader_error']     = 'import-content/reader-error';
 		return $templates;
 
 	}

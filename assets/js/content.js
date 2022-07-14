@@ -446,4 +446,12 @@
 		}
 	} );
 
+	Vue.component( 'cbw-reader-error', {
+		template: '#cbw_reader_error',
+		data: function() {
+			return {};
+		},
+		methods: {}
+	} );
+
 })();
