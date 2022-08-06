@@ -142,6 +142,8 @@ class Module extends Module_Base {
 			mkdir( $skin_path );
 		}
 
+		new Export_Extensions();
+
 		$settings_file = $skin_path . 'settings.json';
 
 		$only_xml = ! empty( $settings['only_xml'] ) ? $settings['only_xml'] : false;
