@@ -20,7 +20,19 @@ class Export_Extensions {
 		}
 
 		foreach ( $all_cct as $cct ) {
-			$tables[] = $cct->db::$prefix . $cct->db->table;
+			$table = $cct->db::$prefix . $cct->db->table;
+			$tables[] = $table;
+			add_filter( 'crocoblock-wizard/export/table-schema/' . $table, function( $result ) use ( $cct ) {
+				
+				$result = str_replace( 
+					array( 'CREATE TABLE ' . $cct->db->table(), ' ' . $cct->db->wpdb()->get_charset_collate() ), 
+					'', 
+					$cct->db->get_table_schema()
+				);
+
+				return $result;
+				
+			} );
 		}
 
 		return $tables;
