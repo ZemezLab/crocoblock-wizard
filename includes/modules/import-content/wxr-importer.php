@@ -86,6 +86,8 @@ class WXR_Importer extends \WP_Importer {
 	 */
 	private $processed = 0;
 
+	private $tables_schema = array();
+
 	/**
 	 * Constructor
 	 *
@@ -185,7 +187,7 @@ class WXR_Importer extends \WP_Importer {
 				foreach ( $node->childNodes as $child ) {
 
 					// We only care about child elements
-					if ( $child->nodeType !== XML_ELEMENT_NODE ) {
+					if ( $child->nodeType !== XML_ELEMENT_NODE || false !== strpos( $child->tagName, 'schema:' ) ) {
 						continue;
 					}
 
@@ -571,6 +573,11 @@ class WXR_Importer extends \WP_Importer {
 
 			// We only care about child elements
 			if ( $child->nodeType !== XML_ELEMENT_NODE ) {
+				continue;
+			}
+
+			if ( false !== strpos( $child->tagName, 'schema:' ) ) {
+				$this->tables_schema[ str_replace( 'schema:', '', $child->tagName ) ] = $child->textContent;
 				continue;
 			}
 
@@ -1081,6 +1088,12 @@ class WXR_Importer extends \WP_Importer {
 
 				$created = apply_filters( 'crocoblock-wizard/import/create-missing-table/' . $table, false );
 
+				if ( ! $created && isset( $this->tables_schema[ $table ] ) ) {
+					// try create by schema
+					$this->create_table( $table, $this->tables_schema[ $table ] );
+					$created = true;
+				}
+
 				if ( ! $created ) {
 					continue;
 				}
@@ -1095,6 +1108,22 @@ class WXR_Importer extends \WP_Importer {
 		ob_get_clean();
 
 		do_action( 'crocoblock-wizard/import/after-import-tables' );
+
+	}
+
+	public function create_table( $table, $schema ) {
+		
+		global $wpdb;
+
+		if ( ! function_exists( 'dbDelta' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		}
+
+		$table_name = $wpdb->prefix . $table;
+		$charset_collate = $wpdb->get_charset_collate();
+		$sql = "CREATE TABLE $table_name $schema $charset_collate";
+
+		dbDelta( $sql );
 
 	}
 
