@@ -39,6 +39,12 @@
 				label="<?php _e( 'Thumbnail URL', 'crocoblock-wizard' ); ?>"
 				description="<?php _e( 'Enter the URL of an image of your skin’s preview.', 'crocoblock-wizard' ); ?>"
 			></cx-vui-input>
+			<cx-vui-switcher
+				v-model="exportSettings.export_users"
+				:wrapper-css="['equalwidth']"
+				label="<?php _e( 'Export users with usermeta', 'crocoblock-wizard' ); ?>"
+				description="<?php _e( 'By default users are not exported. Check this if you need to export all users with appropriate meta data.', 'crocoblock-wizard' ); ?>"
+			></cx-vui-switcher>
 		</div>
 	</cx-vui-collapse>
 	<cx-vui-collapse

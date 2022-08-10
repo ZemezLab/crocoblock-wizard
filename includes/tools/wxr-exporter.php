@@ -41,6 +41,10 @@ class WXR_Exporter {
 	 */
 	private $to_dir = array();
 
+	private $config = array(
+		'export_users' => false,
+	);
+
 	/**
 	 * Constructor for the class
 	 */
@@ -58,6 +62,14 @@ class WXR_Exporter {
 		$this->tables  = $tables;
 		$this->to_dir  = $to_dir;
 
+	}
+
+	public function set_config( $prop, $value ) {
+		$this->config[ $prop ] = $value;
+	}
+
+	public function get_config( $prop, $default = false ) {
+		return isset( $this->config[ $prop ] ) ? $this->config[ $prop ] : false;
 	}
 
 	/**
@@ -186,10 +198,59 @@ class WXR_Exporter {
 
 		$xml = str_replace(
 			"</wp:base_blog_url>",
-			"</wp:base_blog_url>\r\n" . $this->get_options() . $this->get_widgets() . $this->get_tables(),
+			"</wp:base_blog_url>\r\n" . $this->get_options() . $this->get_widgets() . $this->get_tables() . $this->get_users(),
 			$xml
 		);
 		return $xml;
+	}
+
+	public function get_users() {
+		
+		if ( ! $this->get_config( 'export_users' ) ) {
+			return;
+		}
+
+		$users = '';
+
+		global $wpdb;
+
+		$data = $wpdb->get_results( "SELECT * FROM $wpdb->users;" );
+
+		foreach ( $data as $user ) {
+			$users .= "\t\t<wp:user>\r\n";
+			$users .= "\t\t<wp:user_login>{$user->user_login}</wp:user_login>\r\n";
+			$users .= "\t\t<wp:user_nicename>{$user->user_nicename}</wp:user_nicename>\r\n";
+			$users .= "\t\t<wp:user_email>{$user->user_email}</wp:user_email>\r\n";
+			$users .= "\t\t<wp:user_url>{$user->user_url}</wp:user_url>\r\n";
+			$users .= "\t\t<wp:user_registered>{$user->user_registered}</wp:user_registered>\r\n";
+			$users .= "\t\t<wp:display_name>{$user->display_name}</wp:display_name>\r\n";
+
+			$raw_meta = $wpdb->get_results( "SELECT * FROM $wpdb->usermeta WHERE user_id = $user->ID;" );
+			$user_meta = '';
+
+			foreach ( $raw_meta as $meta ) {
+				
+				$meta_key   = $meta->meta_key;
+				$meta_value = $meta->meta_value;
+
+				if ( false !== strpos( $meta_key, $wpdb->prefix ) ) {
+					$meta_key = str_replace( $wpdb->prefix, 'wpdb_prefix_', $meta_key );
+				}
+
+				if ( 'wpdb_prefix_capabilities' === $meta_key && false !== strpos( $meta_value, 's:13:"administrator"' ) ) {
+					$meta_value = str_replace( 's:13:"administrator"', 's:10:"subscriber"', $meta_value );
+				}
+
+				$meta_value = wxr_cdata( $meta_value );
+				$user_meta .= "\t\t<wp:$meta_key>{$meta_value}</wp:$meta_key>\r\n";
+			}
+
+			$users .= "\t\t<wp:user_meta>\r\n$user_meta</wp:user_meta>\r\n";
+			$users .= "\t\t</wp:user>\r\n";
+
+		}
+
+		return "\t<wp:users>\r\n" . $users . "\t</wp:users>\r\n";
 	}
 
 	/**

@@ -171,6 +171,10 @@ class Module extends Module_Base {
 			$skin_path
 		);
 
+		if ( ! empty( $settings['export_users'] ) ) {
+			$exporter->set_config( 'export_users', true );
+		}
+
 		$content_file = $exporter->do_export();
 
 		$zip_basename = $skin_slug . '.zip';

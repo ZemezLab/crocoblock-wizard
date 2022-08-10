@@ -12,6 +12,7 @@
 					skin_name: '',
 					demo_url: '',
 					thumb_url: '',
+					export_users: false,
 				},
 				exportPlugins: {},
 				loading: false,

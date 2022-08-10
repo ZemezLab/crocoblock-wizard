@@ -424,6 +424,12 @@ class WXR_Importer extends \WP_Importer {
 					$this->next();
 					break;
 
+				case 'wp:users':
+					$node = $this->reader->expand();
+					$parsed = $this->parse_users_node( $node );
+					$this->next();
+					break;
+
 				case 'wp:wp_author':
 				case 'wp:author':
 
@@ -531,6 +537,92 @@ class WXR_Importer extends \WP_Importer {
 	private function next() {
 		$this->processed = $this->increment( $this->processed );
 		$this->reader->next();
+	}
+
+	protected function parse_users_node( $node ) {
+
+		$meta_keys = array(
+			'nickname',
+			'first_name',
+			'last_name',
+			'description',
+			'rich_editing',
+			'syntax_highlighting',
+		);
+
+		$props = array(
+			'user_login',
+			'user_nicename',
+			'user_url',
+			'user_email',
+			'display_name',
+			'user_registered',
+		);
+
+		foreach ( $node->childNodes as $user ) {
+
+			// We only care about child elements
+			if ( $user->nodeType !== XML_ELEMENT_NODE ) {
+				continue;
+			}
+
+			$user_arr = array(
+				'meta_input' => array(),
+			);
+
+			foreach ( $user->childNodes as $user_prop ) {
+
+				// We only care about child elements
+				if ( $user_prop->nodeType !== XML_ELEMENT_NODE ) {
+					continue;
+				}
+
+				if ( 'wp:user_meta' === $user_prop->tagName ) {					
+
+					foreach ( $user_prop->childNodes as $meta_prop ) {
+
+						if ( $meta_prop->nodeType !== XML_ELEMENT_NODE ) {
+							continue;
+						}
+
+						$key = str_replace( 'wp:', '', $meta_prop->tagName );
+
+						if ( 'wpdb_prefix_capabilities' === $key ) {
+							$role = maybe_unserialize( $meta_prop->nodeValue );
+							$role = array_keys( $role );
+							$role = $role[0];
+							$user_arr['role'] = $role;
+							continue;
+						}
+
+						global $wpdb;
+
+						$key   = str_replace( 'wpdb_prefix_', $wpdb->prefix, $key );
+						$value = maybe_unserialize( $meta_prop->nodeValue );
+
+						if ( in_array( $key, $meta_keys ) ) {
+							$user_arr[ $key ] = $value;
+						} else {
+							$user_arr['meta_input'][ $key ] = $value;
+						}
+						
+					}
+
+					continue;
+				}
+
+				$prop = str_replace( 'wp:', '', $user_prop->tagName );
+				$user_arr[ $prop ] = maybe_unserialize( $user_prop->nodeValue );
+
+			}
+
+			if ( ! username_exists( $user_arr['user_login'] ) ) {
+				$user_arr['user_pass'] = wp_generate_password();
+				wp_insert_user( $user_arr );
+			}
+
+		}
+
 	}
 
 	/**
