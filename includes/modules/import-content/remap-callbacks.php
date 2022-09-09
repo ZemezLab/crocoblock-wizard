@@ -49,6 +49,7 @@ class Remap_Callbacks {
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_elementor_active_kit' ) );
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_home_page' ) );
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_posts_visual_filters' ) );
+		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_relations_posts' ) );
 
 		// Manipulations with terms remap array
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_term_parents' ) );
@@ -57,9 +58,11 @@ class Remap_Callbacks {
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_elementor_pages_terms' ) );
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_home_page' ) );
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_terms_visual_filters' ) );
+		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_relations_terms' ) );
 
 		// Manipulations with users remap array
 		add_action( 'crocoblock-wizard/import/remap-users', array( $this, 'remap_cct_authors' ) );
+		add_action( 'crocoblock-wizard/import/remap-users', array( $this, 'process_relations_users' ) );
 
 		// Various changes
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'adjust_profile_builder' ) );
@@ -836,6 +839,120 @@ class Remap_Callbacks {
 				$author_id = isset( $data[ $author_id ] ) ? $data[ $author_id ] : get_current_user_id();
 
 				$cct->db->update( array( 'cct_author_id' => $author_id ), array( '_ID' => $item['_ID'] ) );
+			}
+		}
+	}
+
+	public function process_relations_posts( $data ) {
+		$this->remap_relations( $data, 'posts' );
+	}
+
+	public function process_relations_terms( $data ) {
+		$this->remap_relations( $data, 'terms' );
+	}
+
+	public function process_relations_users( $data ) {
+		$this->remap_relations( $data, 'mix', 'users' );
+	}
+
+	public function remap_relations( $data = array(), $type = null, $sub_type = null ) {
+
+		if ( ! jet_engine()->relations ) {
+			return;
+		}
+
+		$relations = jet_engine()->relations->get_active_relations();
+
+		if ( empty( $relations ) ) {
+			return;
+		}
+
+		foreach ( $relations as $rel_id => $relation ) {
+
+			if ( ! $relation->db->is_table_exists() ) {
+				continue;
+			}
+
+			$parent_object          = $relation->get_args( 'parent_object' );
+			$parent_obj_data        = jet_engine()->relations->types_helper->type_parts_by_name( $parent_object );
+			$parent_object_type     = $parent_obj_data[0];
+			$parent_object_sub_type = $parent_obj_data[1];
+
+			$child_object          = $relation->get_args( 'child_object' );
+			$child_obj_data        = jet_engine()->relations->types_helper->type_parts_by_name( $child_object );
+			$child_object_type     = $child_obj_data[0];
+			$child_object_sub_type = $child_obj_data[1];
+
+			$has_parent_type = $type === $parent_object_type && in_array( $sub_type, array( null, $parent_object_sub_type ) );
+			$has_child_type  = $type === $child_object_type && in_array( $sub_type, array( null, $child_object_sub_type ) );
+
+			if ( ! $has_parent_type && ! $has_child_type ) {
+				continue;
+			}
+
+			$query_args = array( array(
+				'field' => 'rel_id',
+				'value' => $relation->get_id(),
+			) );
+
+			$items = $relation->db->query( $query_args );
+
+			if ( empty( $items ) ) {
+				continue;
+			}
+
+			foreach ( $items as $item ) {
+
+				$to_update = array();
+				$where     = array(
+					'rel_id' => $relation->get_id()
+				);
+
+				if ( $has_parent_type && isset( $data[ $item['parent_object_id'] ] ) ) {
+					$to_update['parent_object_id'] = $data[ $item['parent_object_id'] ];
+					$where['parent_object_id']     = $item['parent_object_id'];
+				}
+
+				if ( $has_child_type && isset( $data[ $item['child_object_id'] ] ) ) {
+					$to_update['child_object_id'] = $data[ $item['child_object_id'] ];
+					$where['child_object_id']     = $item['child_object_id'];
+				}
+
+				if ( ! empty( $to_update ) ) {
+					$relation->db->update( $to_update, $where );
+				}
+			}
+
+			if ( ! $relation->meta_db->is_table_exists() ) {
+				continue;
+			}
+
+			$all_meta = $relation->meta_db->query( $query_args );
+
+			if ( empty( $all_meta ) ) {
+				continue;
+			}
+
+			foreach ( $all_meta as $item ) {
+
+				$to_update = array();
+				$where     = array(
+					'rel_id' => $relation->get_id()
+				);
+
+				if ( $has_parent_type && isset( $data[ $item['parent_object_id'] ] ) ) {
+					$to_update['parent_object_id'] = $data[ $item['parent_object_id'] ];
+					$where['parent_object_id']     = $item['parent_object_id'];
+				}
+
+				if ( $has_child_type && isset( $data[ $item['child_object_id'] ] ) ) {
+					$to_update['child_object_id'] = $data[ $item['child_object_id'] ];
+					$where['child_object_id']     = $item['child_object_id'];
+				}
+
+				if ( ! empty( $to_update ) ) {
+					$relation->meta_db->update( $to_update, $where );
+				}
 			}
 		}
 	}
