@@ -442,6 +442,13 @@ class Module extends Module_Base {
 		 */
 		do_action( 'crocoblock-wizard/import/remap-terms-meta', $importer->cache->get( 'terms_meta', 'requires_remapping' ) );
 
+		/**
+		 * Attach all users remapping related callbacks to this hook
+		 *
+		 * @param  array User remapping data. Format: old_id => new_id
+		 */
+		do_action( 'crocoblock-wizard/import/remap-users', $importer->cache->get( 'users', 'mapping' ) );
+
 	}
 
 

@@ -58,6 +58,9 @@ class Remap_Callbacks {
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_home_page' ) );
 		add_action( 'crocoblock-wizard/import/remap-terms', array( $this, 'process_terms_visual_filters' ) );
 
+		// Manipulations with users remap array
+		add_action( 'crocoblock-wizard/import/remap-users', array( $this, 'remap_cct_authors' ) );
+
 		// Various changes
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'adjust_profile_builder' ) );
 
@@ -807,6 +810,34 @@ class Remap_Callbacks {
 
 		update_option( 'widget_nav_menu', $new_widgets );
 
+	}
+
+	public function remap_cct_authors( $data ) {
+
+		if ( empty( $data ) ) {
+			return;
+		}
+
+		if ( ! class_exists( '\Jet_Engine\Modules\Custom_Content_Types\Module' ) ) {
+			return;
+		}
+
+		$all_cct = \Jet_Engine\Modules\Custom_Content_Types\Module::instance()->manager->get_content_types();
+
+		if ( empty( $all_cct ) ) {
+			return;
+		}
+
+		foreach ( $all_cct as $cct ) {
+			$items = $cct->db->query();
+
+			foreach ( $items as $item ) {
+				$author_id = $item['cct_author_id'];
+				$author_id = isset( $data[ $author_id ] ) ? $data[ $author_id ] : get_current_user_id();
+
+				$cct->db->update( array( 'cct_author_id' => $author_id ), array( '_ID' => $item['_ID'] ) );
+			}
+		}
 	}
 
 }

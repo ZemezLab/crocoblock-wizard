@@ -559,6 +559,12 @@ class WXR_Importer extends \WP_Importer {
 			'user_registered',
 		);
 
+		$processed_user_slug = $this->cache->get( 'user_slug', 'mapping' );
+
+		if ( empty( $processed_user_slug ) ) {
+			$processed_user_slug = array();
+		}
+
 		foreach ( $node->childNodes as $user ) {
 
 			// We only care about child elements
@@ -577,7 +583,7 @@ class WXR_Importer extends \WP_Importer {
 					continue;
 				}
 
-				if ( 'wp:user_meta' === $user_prop->tagName ) {					
+				if ( 'wp:user_meta' === $user_prop->tagName ) {
 
 					foreach ( $user_prop->childNodes as $meta_prop ) {
 
@@ -618,10 +624,16 @@ class WXR_Importer extends \WP_Importer {
 
 			if ( ! username_exists( $user_arr['user_login'] ) ) {
 				$user_arr['user_pass'] = wp_generate_password();
-				wp_insert_user( $user_arr );
+				$user_id = wp_insert_user( $user_arr );
+
+				if ( ! is_wp_error( $user_id ) ) {
+					$processed_user_slug[ $user_arr['user_login'] ] = $user_id;
+				}
 			}
 
 		}
+
+		$this->cache->update( 'user_slug', $processed_user_slug, 'mapping' );
 
 	}
 
@@ -1813,6 +1825,8 @@ class WXR_Importer extends \WP_Importer {
 				$processed_user_slug[ $original_slug ] = $existing;
 			}
 
+			$this->cache->update( 'user_slug', $processed_user_slug, 'mapping' );
+
 			$this->update_processed_summary( 'authors' );
 			return false;
 		}
@@ -1822,6 +1836,8 @@ class WXR_Importer extends \WP_Importer {
 
 			// Ensure we note the mapping too
 			$processed_users[ $original_id ] = $existing;
+
+			$this->cache->update( 'users', $processed_users, 'mapping' );
 
 			$this->update_processed_summary( 'authors' );
 			return false;
@@ -1877,6 +1893,7 @@ class WXR_Importer extends \WP_Importer {
 		if ( $original_id ) {
 			$processed_users[ $original_id ] = $user_id;
 		}
+
 		$processed_user_slug[ $original_slug ] = $user_id;
 
 		$this->logger->info( sprintf(
@@ -1889,6 +1906,9 @@ class WXR_Importer extends \WP_Importer {
 			$original_id,
 			$user_id
 		) );
+
+		$this->cache->update( 'users', $processed_users, 'mapping' );
+		$this->cache->update( 'user_slug', $processed_user_slug, 'mapping' );
 
 		$this->update_processed_summary( 'authors' );
 
