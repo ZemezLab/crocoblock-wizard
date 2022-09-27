@@ -37,7 +37,7 @@ class Child_API {
 	 *
 	 * @var string
 	 */
-	protected $server = 'https://cloud.cherryframework.com/child-generator/';
+	protected $server = 'https://account.crocoblock.com/free-download/child-themes/';
 
 	/**
 	 * Constructor for the class
@@ -61,22 +61,12 @@ class Child_API {
 	 */
 	public function api_call() {
 
-		$request = add_query_arg(
-			array(
-				'id'   => $this->id,
-				'slug' => $this->slug,
-				'name' => $this->name,
-				't'    => time(),
+		return array(
+			'success' => true,
+			'data'    => array(
+				'theme' => $this->server . $this->slug . '-child.zip',
 			),
-			$this->server
 		);
-
-		$response = wp_remote_get( $request );
-		$result   = wp_remote_retrieve_body( $response );
-
-		$result = json_decode( $result, true );
-
-		return $result;
 	}
 
 }
