@@ -857,6 +857,10 @@ class Remap_Callbacks {
 
 	public function remap_relations( $data = array(), $type = null, $sub_type = null ) {
 
+		if ( ! function_exists( 'jet_engine' ) ) {
+			return;
+		}
+
 		if ( ! jet_engine()->relations ) {
 			return;
 		}
