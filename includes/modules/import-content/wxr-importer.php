@@ -2553,7 +2553,10 @@ class WXR_Importer extends \WP_Importer {
 		$file_content = wp_remote_retrieve_body( wp_safe_remote_get( $url ) );
 
 		if ( empty( $file_content ) ) {
-			return false;
+			return new \WP_Error(
+				'import_file_error',
+				__( 'Error retrieving file contents', 'crocoblock-wizard' )
+			);
 		}
 
 		// get placeholder file in the upload dir with a unique, sanitized filename
