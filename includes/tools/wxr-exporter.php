@@ -347,7 +347,7 @@ class WXR_Exporter {
 			$schema = apply_filters( 'crocoblock-wizard/export/table-schema/' . $table, false );
 
 			if ( $schema ) {
-				$result .= "\t\t<schema:" . $table . ">" . wxr_cdata( $schema ) . "</schema:" . $table . ">\r\n";
+				$result .= "\t\t<schema__" . $table . ">" . wxr_cdata( $schema ) . "</schema__" . $table . ">\r\n";
 			}
 
 			$result .= "\t\t<" . $table . ">" . wxr_cdata( $data ) . "</" . $table . ">\r\n";

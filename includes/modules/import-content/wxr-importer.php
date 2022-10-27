@@ -187,7 +187,10 @@ class WXR_Importer extends \WP_Importer {
 				foreach ( $node->childNodes as $child ) {
 
 					// We only care about child elements
-					if ( $child->nodeType !== XML_ELEMENT_NODE || false !== strpos( $child->tagName, 'schema:' ) ) {
+					if ( $child->nodeType !== XML_ELEMENT_NODE
+						|| false !== strpos( $child->tagName, 'schema:' )
+						|| false !== strpos( $child->tagName, 'schema__' )
+					) {
 						continue;
 					}
 
@@ -682,6 +685,11 @@ class WXR_Importer extends \WP_Importer {
 
 			if ( false !== strpos( $child->tagName, 'schema:' ) ) {
 				$this->tables_schema[ str_replace( 'schema:', '', $child->tagName ) ] = $child->textContent;
+				continue;
+			}
+
+			if ( false !== strpos( $child->tagName, 'schema__' ) ) {
+				$this->tables_schema[ str_replace( 'schema__', '', $child->tagName ) ] = $child->textContent;
 				continue;
 			}
 
