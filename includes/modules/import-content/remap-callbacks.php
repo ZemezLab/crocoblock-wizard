@@ -41,6 +41,8 @@ class Remap_Callbacks {
 
 		$this->importer = $importer;
 
+		$this->create_cct_tables();
+
 		// Manipulations with posts remap array
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'process_options' ) );
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'postprocess_posts' ) );
@@ -67,6 +69,28 @@ class Remap_Callbacks {
 		// Various changes
 		add_action( 'crocoblock-wizard/import/remap-posts', array( $this, 'adjust_profile_builder' ) );
 
+	}
+
+	public function create_cct_tables() {
+
+		if ( ! class_exists( '\Jet_Engine\Modules\Custom_Content_Types\Module' ) ) {
+			return;
+		}
+
+		$all_cct = \Jet_Engine\Modules\Custom_Content_Types\Module::instance()->manager->get_content_types();
+
+		if ( empty( $all_cct ) ) {
+			return;
+		}
+
+		foreach ( $all_cct as $cct ) {
+
+			if ( $cct->db->is_table_exists() ) {
+				continue;
+			}
+
+			$cct->db->install_table();
+		}
 	}
 
 	public function process_elementor_active_kit( $data ) {
@@ -833,6 +857,10 @@ class Remap_Callbacks {
 
 		foreach ( $all_cct as $cct ) {
 			$items = $cct->db->query();
+
+			if ( empty( $items ) ) {
+				continue;
+			}
 
 			foreach ( $items as $item ) {
 				$author_id = $item['cct_author_id'];
