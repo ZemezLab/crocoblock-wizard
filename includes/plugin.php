@@ -28,6 +28,8 @@ class Plugin {
 	public $modules;
 	public $skins;
 	public $settings;
+	public $files_manager;
+	public $storage;
 
 	/**
 	 * Instance.
