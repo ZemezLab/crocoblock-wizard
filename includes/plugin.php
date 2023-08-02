@@ -30,6 +30,7 @@ class Plugin {
 	public $settings;
 	public $files_manager;
 	public $storage;
+	public $framework;
 
 	/**
 	 * Instance.
@@ -99,6 +100,21 @@ class Plugin {
 
 		$this->register_autoloader();
 		$this->init_components();
+
+		// Load framework
+		add_action( 'after_setup_theme', array( $this, 'framework_loader' ), -20 );
+
+	}
+
+	public function framework_loader() {
+
+		require CB_WIZARD_PATH . 'framework/loader.php';
+
+		$this->framework = new \Crocoblock_Wizard_CX_Loader(
+			array(
+				CB_WIZARD_PATH . 'framework/vue-ui/cherry-x-vue-ui.php',
+			)
+		);
 
 	}
 

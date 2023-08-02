@@ -1,17 +1,130 @@
 import { oneOf } from '../../utils/assist';
 import { checkConditions } from '../../mixins/check-conditions';
+import VueTimepicker from 'vue2-timepicker';
 
-const Input = {
-
-	name: 'cx-vui-input',
-	template: '#cx-vui-input',
+const Time = {
+	name: 'cx-vui-time',
+	template: '#cx-vui-time',
+	components: { VueTimepicker },
 	mixins: [ checkConditions ],
 	props: {
+		format: {
+			type: String,
+			default: 'HH:mm'
+		},
+		minValue: {
+			type: Number,
+			default: 4800
+		},
+		maxValue: {
+			type: Number,
+			default: 0
+		},
+		minuteInterval: {
+			type: Number,
+			default: 1
+		},
+		secondInterval: {
+			type: Number,
+			default: 1
+		},
+		hideClearButton: {
+			type: Boolean,
+			default: false
+		},
+		closeOnComplete: {
+			type: Boolean,
+			default: false
+		},
+		autoScroll: {
+			type: Boolean,
+			default: true
+		},
+		hourRange: {
+			type: Array,
+			default: function() {
+				return null;
+			}
+		},
+		minuteRange: {
+			type: Array,
+			default: function() {
+				return null;
+			}
+		},
+		secondRange: {
+			type: Array,
+			default: function() {
+				return null;
+			}
+		},
+		hideDisabledHours: {
+			type: Boolean,
+			default: false
+		},
+		hideDisabledMinutes: {
+			type: Boolean,
+			default: false
+		},
+		hideDisabledSeconds: {
+			type: Boolean,
+			default: false
+		},
+		hideDisabledItems: {
+			type: Boolean,
+			default: false
+		},
+		advancedKeyboard: {
+			type: Boolean,
+			default: false
+		},
+		blurDelay: {
+			type: Number,
+			default: 300
+		},
+		manualDnput: {
+			type: Boolean,
+			default: false
+		},
+		manualInputTimeout: {
+			type: Number,
+			default: 1000
+		},
+		hideDropdown: {
+			type: Boolean,
+			default: false
+		},
+		fixedDropdownButton: {
+			type: Boolean,
+			default: false
+		},
+		dropDirection: {
+			validator (value) {
+				return oneOf( value, [ 'down', 'up', 'auto' ] );
+			},
+			default: 'down'
+		},
+		containerId: {
+			type: String,
+			default: ''
+		},
+		dropOffsetHeight: {
+			type: Number,
+			default: 160
+		},
+		lazy: {
+			type: Boolean,
+			default: true
+		},
+		debugMode: {
+			type: Boolean,
+			default: true
+		},
 		type: {
 			validator ( value ) {
-				return oneOf(value, ['text', 'textarea', 'password', 'url', 'email', 'date', 'time',  'number', 'range', 'tel']);
+				return oneOf(value, [ 'time' ]);
 			},
-			default: 'text'
+			default: 'time'
 		},
 		value: {
 			type: [String, Number],
@@ -27,18 +140,7 @@ const Input = {
 			type: String,
 			default: ''
 		},
-		maxlength: {
-			type: Number
-		},
 		disabled: {
-			type: Boolean,
-			default: false
-		},
-		error: {
-			type: Boolean,
-			default: false
-		},
-		readonly: {
 			type: Boolean,
 			default: false
 		},
@@ -48,15 +150,6 @@ const Input = {
 		autofocus: {
 			type: Boolean,
 			default: false
-		},
-		min: {
-			type: Number
-		},
-		max: {
-			type: Number
-		},
-		step: {
-			type: Number
 		},
 		autocomplete: {
 			validator (value) {
@@ -109,8 +202,7 @@ const Input = {
 	},
 	computed: {
 		controlClasses() {
-
-			var classesList = [ 'cx-vui-input' ]
+			var classesList = [ 'cx-vui-time' ]
 
 			classesList.push( 'size-' + this.size );
 
@@ -140,17 +232,24 @@ const Input = {
 		handleBlur ( event ) {
 			this.$emit( 'on-blur', event );
 		},
-		handleInput ( event ) {
-			let value = event.target.value;
+		handleOpen ( event ) {
+			this.$emit( 'on-open', event );
+		},
+		handleClose ( event ) {
+			this.$emit( 'on-close', event );
+		},
+		handleError ( event ) {
+			this.$emit( 'on-error', event );
+		},
+		handleInput ( value ) {
 			this.$emit( 'input', value );
 			this.setCurrentValue( value );
-			this.$emit( 'on-change', event );
+			this.$emit( 'on-change', value );
 		},
 		handleChange ( event ) {
 			this.$emit( 'on-input-change', event );
 		},
 		setCurrentValue ( value ) {
-
 			if ( value === this.currentValue ) {
 				return;
 			}
@@ -160,4 +259,4 @@ const Input = {
 	},
 };
 
-export default Input;
+export default Time;

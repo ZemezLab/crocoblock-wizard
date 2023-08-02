@@ -3,7 +3,7 @@
  * Plugin Name: Crocoblock Wizard
  * Plugin URI:  https://crocoblock.com/
  * Description: A powerful tool to install Crocoblock package, Jet Plugins, export and import skins quick and easy!
- * Version:     1.2.8
+ * Version:     1.2.9
  * Author:      Crocoblock
  * Author URI:  https://crocoblock.com/
  * Text Domain: crocoblock-wizard
@@ -26,7 +26,7 @@ add_action( 'plugins_loaded', 'crocoblock_wizard_init' );
  */
 function crocoblock_wizard_init() {
 
-	define( 'CB_WIZARD_VERSION', '1.2.8' );
+	define( 'CB_WIZARD_VERSION', '1.2.9' );
 
 	define( 'CB_WIZARD__FILE__', __FILE__ );
 	define( 'CB_WIZARD_PLUGIN_BASE', plugin_basename( CB_WIZARD__FILE__ ) );

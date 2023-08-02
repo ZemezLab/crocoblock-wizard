@@ -36,6 +36,7 @@
 		>
 			<input
 				:id="currentId"
+				:placeholder="placeholder"
 				:autocomplete="autocomplete"
 				type="text"
 				:value="query"
@@ -91,4 +92,5 @@
 			></option>
 		</select>
 	</div>
+	<slot></slot>
 </cx-vui-component-wrapper>

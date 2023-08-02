@@ -115,12 +115,9 @@ class Dashboard {
 			return;
 		}
 
-		require_once CB_WIZARD_PATH . 'framework/vue-ui/cherry-x-vue-ui.php';
+		$module_data = crocoblock_wizard()->framework->get_included_module_data( 'cherry-x-vue-ui.php' );
 
-		$ui = new \CX_Vue_UI( array(
-			'url'  => CB_WIZARD_URL . 'framework/vue-ui/',
-			'path' => CB_WIZARD_PATH . 'framework/vue-ui/',
-		) );
+		$ui = new \CX_Vue_UI( $module_data );
 
 		$ui->enqueue_assets();
 
