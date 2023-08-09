@@ -76,7 +76,7 @@ class Cache {
 	 */
 	private function get_caching_method() {
 
-		if ( ! session_id() ) {
+		if ( ! session_id() || PHP_SESSION_ACTIVE !== session_status() ) {
 			$this->caching_method = 'file';
 		} else {
 			$this->caching_method = 'session';
@@ -87,6 +87,8 @@ class Cache {
 		if ( $cache_handler ) {
 			$this->caching_method = $cache_handler;
 		}
+
+		$this->caching_method = apply_filters( 'crocoblock-wizard/cache/method', $this->caching_method );
 
 		return $this->caching_method;
 	}
