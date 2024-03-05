@@ -84,6 +84,8 @@ class Importer_Extensions {
 			return $result;
 		}
 
+		jet_abaf()->settings->hook_db_columns();
+
 		jet_abaf()->db->install_table();
 
 		$result = true;
