@@ -1455,6 +1455,10 @@ class WXR_Importer extends \WP_Importer {
 
 			$sidebars_widgets = get_option( 'sidebars_widgets' );
 
+			if ( empty( $sidebars_widgets ) ) {
+				$sidebars_widgets = array();
+			}
+
 			// Check if inactive widgets already exists
 			if ( ! isset( $sidebars_widgets['wp_inactive_widgets'] ) ) {
 				$inactive_widgets = array();
@@ -1568,6 +1572,18 @@ class WXR_Importer extends \WP_Importer {
 		$processed_user_slug = $this->cache->get( 'user_slug', 'mapping' );
 		$processed_terms     = $this->cache->get( 'terms', 'mapping' );
 		$remap_posts         = $this->cache->get( 'posts', 'requires_remapping' );
+
+		if ( empty( $processed_posts ) ) {
+			$processed_posts = array();
+		}
+
+		if ( empty( $processed_user_slug ) ) {
+			$processed_user_slug = array();
+		}
+
+		if ( empty( $remap_posts ) ) {
+			$remap_posts = array();
+		}
 
 		// Have we already processed this?
 		if ( isset( $processed_posts[ $original_id ] ) ) {
@@ -1960,6 +1976,18 @@ class WXR_Importer extends \WP_Importer {
 		$processed_term_slug = $this->cache->get( 'term_slug', 'mapping' );
 		$remap_terms         = $this->cache->get( 'terms', 'requires_remapping' );
 
+		if ( empty( $processed_terms ) ) {
+			$processed_terms = array();
+		}
+
+		if ( empty( $processed_term_id ) ) {
+			$processed_term_id = array();
+		}
+
+		if ( empty( $processed_term_slug ) ) {
+			$processed_term_slug = array();
+		}
+
 		if ( empty( $remap_terms ) ) {
 			$remap_terms = array();
 		}
@@ -2120,6 +2148,14 @@ class WXR_Importer extends \WP_Importer {
 		$processed_comments = $this->cache->get( 'comments', 'mapping' );
 		$processed_users    = $this->cache->get( 'users', 'mapping' );
 		$remap_comments     = $this->cache->get( 'comments', 'requires_remapping' );
+
+		if ( empty( $processed_comments ) ) {
+			$processed_comments = array();
+		}
+
+		if ( empty( $remap_comments ) ) {
+			$remap_comments = array();
+		}
 
 		// Sort by ID to avoid excessive remapping later
 		usort( $comments, array( $this, 'sort_comments_by_id' ) );
@@ -2687,6 +2723,7 @@ class WXR_Importer extends \WP_Importer {
 	protected function mark_comment_exists( $data, $comment_id ) {
 		$exists_key                       = sha1( $data['comment_author'] . ':' . $data['comment_date'] );
 		$existing_comments                = $this->cache->get( 'comments', 'exists' );
+		$existing_comments                = ! empty( $existing_comments ) ? $existing_comments : array();
 		$existing_comments[ $exists_key ] = $comment_id;
 		$this->cache->update( 'comments', $existing_comments, 'exists' );
 	}
