@@ -88,6 +88,8 @@ class Importer_Extensions {
 
 		jet_abaf()->db->install_table();
 
+		$this->update_booking_table();
+
 		$result = true;
 
 		return $result;
@@ -151,11 +153,23 @@ class Importer_Extensions {
 			return;
 		}
 
+		if ( jet_abaf()->db->bookings ) {
+			jet_abaf()->db->bookings->table_exists = null;
+		}
+
 		if ( ! jet_abaf()->db->is_bookings_table_exists() ) {
 			return;
 		}
 
-		$db_columns = jet_abaf()->settings->get( 'additional_columns' );
+		//$db_columns = jet_abaf()->settings->get( 'additional_columns' );
+
+		$settings = get_option( 'jet-abaf', array() );
+
+		if ( empty( $settings['additional_columns'] ) ) {
+			return;
+		}
+
+		$db_columns = array_values( $settings['additional_columns'] );
 
 		if ( empty( $db_columns ) ) {
 			return;
@@ -166,7 +180,7 @@ class Importer_Extensions {
 			$column_name = jet_abaf()->settings->sanitize_column_name( $column['column'] );
 
 			if ( ! jet_abaf()->db->column_exists( $column_name ) ) {
-				jet_abaf()->db->insert_table_columns( array( $column_name ) );
+				jet_abaf()->db->insert_table_columns( array( $column_name => '' ) );
 			}
 		}
 
@@ -208,6 +222,8 @@ class Importer_Extensions {
 			$table = $db::bookings_table();
 			$db::wpdb()->query( "DROP TABLE $table;" );
 		}
+
+		jet_abaf()->settings->clear();
 
 	}
 
